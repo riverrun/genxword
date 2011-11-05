@@ -17,7 +17,7 @@ History
 =======
 
 This program was originally written by Bryan Helmig and has since been developed by David Whitlock 
-although the business end of the program, the crossword algorithm, has largely been left intact (if it ain't broken, don't fix it).
+although the business end of the program, the crossword algorithm, has largely been left intact (if it ain't broken, don't fix it!).
 
 Usage
 =====
@@ -57,8 +57,8 @@ if you increase the grid size as well.
 Installation
 ============
 
-``git clone git@github.com:riverrun/genxword.git
-cd genxword && sudo python2 setup.py install``
+``git clone git@github.com:riverrun/genxword.git``
+``cd genxword && sudo python2 setup.py install``
 
 Then install the genxword bash script to a directory in your path (e.g., /usr/local/bin).
 
