@@ -3,4 +3,4 @@
 # Make sure that the path is correct.
 # It might be different on your system.
 
-exec python2 /usr/lib/python2.7/site-packages/genxword/gencrossword.py $@
+exec python2 /usr/lib/python2.7/site-packages/gencrossword/gencrossword.py $@
