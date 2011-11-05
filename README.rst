@@ -57,11 +57,13 @@ if you increase the grid size as well.
 Installation
 ============
 
-``git clone git@github.com:riverrun/genxword.git``
+To install the python libraries:
+    ``git clone git@github.com:riverrun/genxword.git``
+    ``cd genxword && sudo python2 setup.py install``
 
-``cd genxword && sudo python2 setup.py install``
-
-Then install the genxword bash script to a directory in your path (e.g., /usr/local/bin).
+To install the file that launches the crossword generator (assuming that /usr/local/bin exists and is in your PATH):
+    ``sudo cp genxword /usr/local/bin/``
+    ``sudo chmod 755 /usr/local/bin/genxword``
 
 Note about svg files
 ====================

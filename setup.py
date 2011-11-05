@@ -34,6 +34,7 @@ setup(
     packages = ['gencrossword'],
     author = 'David Whitlock Bryan Helmig',
     author_email = 'alovedalongthe@gmail.com',
+    url = 'https://github.com/riverrun/genxword',
     description = 'A crossword generator',
     long_description = read('README.txt'),
     license = 'GPLv3',
