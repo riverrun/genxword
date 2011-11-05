@@ -43,7 +43,7 @@ The -n option lets you choose how many words will be randomly selected from the 
 
 Example:
 
-``genxword -i word_list.txt -n 40``
+    ``genxword -i word_list.txt -n 40``
 
 This command will produce a crossword using 40 words randomly selected from the word_list.txt file, which can be several thousand words long.
 
@@ -59,10 +59,12 @@ Installation
 
 To install the python libraries:
     ``git clone git@github.com:riverrun/genxword.git``
+
     ``cd genxword && sudo python2 setup.py install``
 
 To install the file that launches the crossword generator (assuming that /usr/local/bin exists and is in your PATH):
     ``sudo cp genxword /usr/local/bin/``
+
     ``sudo chmod 755 /usr/local/bin/genxword``
 
 Note about svg files
