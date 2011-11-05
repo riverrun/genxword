@@ -58,6 +58,7 @@ Installation
 ============
 
 ``git clone git@github.com:riverrun/genxword.git``
+
 ``cd genxword && sudo python2 setup.py install``
 
 Then install the genxword bash script to a directory in your path (e.g., /usr/local/bin).
