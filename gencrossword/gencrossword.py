@@ -32,6 +32,12 @@ You might need to increase this time if you are creating a large crossword, but 
 if you increase the grid size as well.
 """
 
+parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
+parser.add_argument('-i', '--inputfile', type=argparse.FileType('r'), dest='inputfile', help='Name of file to be imported.')
+parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
+parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
+args = parser.parse_args()
+
 class Finishxword(object):
     def __init__(self):
         self.word_list = []
@@ -88,12 +94,14 @@ class Finishxword(object):
             print(len(a.current_word_list), 'out of', len(self.word_list))
             print(a.debug)
             h = raw_input('Are you happy with this solution? [Y/n] ')
-            if h.strip().lower() != 'n':
+            if h.strip() != 'n':
                 break
-            self.ncol += 2;self.nrow += 2
+            inc_gsize = raw_input('And increase the grid size? [Y/n] ')
+            if inc_gsize.strip() != 'n':
+                self.ncol += 2;self.nrow += 2
         xword_name = raw_input('Enter a name for your crossword: ')
         img_type = raw_input('Do you want to save the empty grid and key as png files, svg or both? [P/s/b] ')
-        if img_type == 'b':
+        if img_type.strip() == 'b':
             a.img_grid(xword_name + '_grid.png')
             a.img_grid(xword_name + '_key.png')
             a.img_grid(xword_name + '_grid.svg')
@@ -101,7 +109,7 @@ class Finishxword(object):
             print('The files ' + xword_name + '_grid.png, ' + xword_name + '_key.png, '
                     + xword_name + '_grid.svg, ' + xword_name + '_key.svg and ' 
                     + xword_name + '_clues.txt\nhave been saved to your current working directory.')
-        elif img_type == 's':
+        elif img_type.strip() == 's':
             a.img_grid(xword_name + '_grid.svg')
             a.img_grid(xword_name + '_key.svg')
             print('The files ' + xword_name + '_grid.svg, ' + xword_name + '_key.svg and ' 
@@ -113,14 +121,12 @@ class Finishxword(object):
                     + xword_name + '_clues.txt\nhave been saved to your current working directory.')
         a.clues_txt(xword_name + '_clues.txt')
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
-    parser.add_argument('-i', '--inputfile', type=argparse.FileType('r'), dest='inputfile', help='Name of file to be imported.')
-    parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
-    parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
-    args = parser.parse_args()
+def main():
     g = Finishxword()
     g.wlist()
     g.calctime()
     g.grid_size()
     g.gengrid()
+
+if __name__ == '__main__':
+    main()

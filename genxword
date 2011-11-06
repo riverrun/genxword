@@ -1,10 +1,7 @@
-#!/bin/bash
-# Script to launch the genxword crossword generator.
-# Make sure that the path is correct.
-# It might be different on your system.
+#!/usr/bin/python2
+# -*- coding: utf-8 -*-
 
-# For archlinux
-exec python2 /usr/lib/python2.7/site-packages/gencrossword/gencrossword.py $@
+from gencrossword import gencrossword
 
-# For ubuntu and debian
-#exec python2 /usr/lib/python2.7/dist-packages/gencrossword/gencrossword.py $@
+if __name__ == '__main__':
+    gencrossword.main()

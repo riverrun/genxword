@@ -29,7 +29,7 @@ instead of entering a word, to start calculating the crossword.
 The default grid size depends on how many words are used, but the user has the option to change this.
 
 Once the crossword has been calculated, the user has the option to have it recalculated. 
-Each time it is recalculated, the number of columns and the number of rows are both increased by two. 
+Each time it is recalculated, the number of columns and the number of rows can both be increased. 
 Finally, the user decides what format to save the image files in, and then these files 
 and a text file is saved in the user's current working directory.
 
@@ -65,7 +65,6 @@ To install the python libraries, run the following commands::
     git clone git://github.com/riverrun/genxword.git
     cd genxword && sudo python2 setup.py install
 
-Make a note of where **gencrossword.py** is installed and then check that this path is written correctly in the file **genxword**.
 To install **genxword** (assuming that /usr/local/bin exists and is in your PATH), run the following commands::
 
     sudo cp genxword /usr/local/bin/
