@@ -65,7 +65,7 @@ To install the python libraries, run the following commands::
     git clone git://github.com/riverrun/genxword.git
     cd genxword && sudo python2 setup.py install
 
-To install **genxword** (assuming that /usr/local/bin exists and is in your PATH), run the following commands::
+To install **genxword**, the script that will execute the program, (assuming that /usr/local/bin exists and is in your PATH), run the following commands::
 
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
