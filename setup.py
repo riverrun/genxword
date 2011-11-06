@@ -36,6 +36,6 @@ setup(
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',
     description = 'A crossword generator',
-    long_description = read('README.txt'),
+    long_description = read('README.rst'),
     license = 'GPLv3',
 )

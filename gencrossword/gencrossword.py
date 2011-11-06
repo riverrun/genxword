@@ -46,8 +46,7 @@ class Finishxword(object):
             self.word_list = random.sample(self.word_list, nword)
         else:
             self.word_list = []
-            print('Enter the words and clues for your crossword below.\n\
-When you have finished writing your words and clues, just press enter to start calculating the crossword.')
+            print('When you have finished writing the words and clues, just press enter to start calculating the crossword.')
             wcount = 1
             while 1:
                 x = raw_input('Enter word number ' + str(wcount) + ': ')
@@ -81,16 +80,17 @@ When you have finished writing your words and clues, just press enter to start c
                 pass
 
     def gengrid(self):
-        a = calcxword.Crossword(self.ncol, self.nrow, '-', 5000, self.word_list)
         while 1:
+            a = calcxword.Crossword(self.ncol, self.nrow, '-', 5000, self.word_list)
             print('Calculating your crossword...')
             a.compute_crossword(self.tcalc)
             print(a.solution())
             print(len(a.current_word_list), 'out of', len(self.word_list))
             print(a.debug)
             h = raw_input('Are you happy with this solution? [Y/n] ')
-            if h != 'n':
+            if h.strip().lower() != 'n':
                 break
+            self.ncol += 2;self.nrow += 2
         xword_name = raw_input('Enter a name for your crossword: ')
         img_type = raw_input('Do you want to save the empty grid and key as png files, svg or both? [P/s/b] ')
         if img_type == 'b':
