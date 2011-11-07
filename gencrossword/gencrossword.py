@@ -1,4 +1,3 @@
-#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
@@ -86,7 +85,6 @@ class Finishxword(object):
             a.compute_crossword(self.tcalc)
             print(a.solution())
             print(len(a.current_word_list), 'out of', len(self.word_list))
-            print(a.debug)
             h = raw_input('Are you happy with this solution? [Y/n] ')
             if h.strip() != 'n':
                 break

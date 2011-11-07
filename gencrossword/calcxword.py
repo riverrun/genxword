@@ -32,7 +32,6 @@ class Crossword(object):
         self.available_words = available_words
         self.randomize_word_list()
         self.current_word_list = []
-        self.debug = 0
         self.clear_grid()
  
     def clear_grid(self): # initialize grid and fill with empty characters
@@ -55,7 +54,6 @@ class Crossword(object):
  
         start_full = float(time.time())
         while (float(time.time()) - start_full) < time_permitted or count == 0:
-            self.debug += 1
             copy.current_word_list = []
             copy.clear_grid()
             copy.randomize_word_list()
@@ -138,7 +136,7 @@ class Crossword(object):
         return
  
     def check_fit_score(self, col, row, vertical, word):
-        """Return score (0 signifies no fit), 1 means a fit, 2+ means a cross. The more crosses the better."""
+        """Return score (0 means no fit, 1 means a fit, 2+ means a cross)."""
         if col < 1 or row < 1:
             return 0
  
