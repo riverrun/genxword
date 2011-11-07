@@ -58,18 +58,18 @@ if you increase the grid size as well.
 Installation
 ============
 
-This program has been tested with python2.7. It depends on py2cairo to produce the image files.
+This program has been tested with python2.7. It depends on py2cairo, which is already installed on most popular distros, to produce the image files.
 
-To install the python libraries, run the following commands (replace **python** with **python2** if you are using archlinux)::
+To install this program, run the following commands (replace **python** with **python2** if you are using archlinux)::
 
     git clone git://github.com/riverrun/genxword.git
-    cd genxword && sudo python setup.py install
-
-To install **genxword**, the script that will execute the program, (this example assumes that /usr/local/bin exists and is in your PATH), 
-run the following commands::
-
+    cd genxword
+    sudo python setup.py install
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
+
+Instead of using the **git clone** command, you could also download the tarball from the **Downloads** tab,
+unpack it and change to the *riverrun-genxword* directory, and then run the last three commands.
 
 Note about svg files
 ====================

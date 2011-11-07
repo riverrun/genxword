@@ -32,23 +32,17 @@ You might need to increase this time if you are creating a large crossword, but 
 if you increase the grid size as well.
 """
 
-parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
-parser.add_argument('-i', '--inputfile', type=argparse.FileType('r'), dest='inputfile', help='Name of file to be imported.')
-parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
-parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
-args = parser.parse_args()
-
 class Finishxword(object):
-    def __init__(self):
-        self.word_list = []
+    def __init__(self, args):
+        self.args = args
 
     def wlist(self):
-        if args.inputfile:
-            if args.nword:
-                nword = args.nword
+        if self.args.inputfile:
+            if self.args.nword:
+                nword = self.args.nword
             else:
                 nword = 50
-            self.word_list = [line.strip().split(' ', 1) for line in args.inputfile]
+            self.word_list = [line.strip().split(' ', 1) for line in self.args.inputfile]
             self.word_list = random.sample(self.word_list, nword)
         else:
             self.word_list = []
@@ -63,8 +57,8 @@ class Finishxword(object):
                 wcount += 1
 
     def calctime(self):
-        if args.time:
-            self.tcalc = args.time
+        if self.args.time:
+            self.tcalc = self.args.time
         else:
             self.tcalc = 2
 
@@ -122,7 +116,12 @@ class Finishxword(object):
         a.clues_txt(xword_name + '_clues.txt')
 
 def main():
-    g = Finishxword()
+    parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
+    parser.add_argument('-i', '--inputfile', type=argparse.FileType('r'), dest='inputfile', help='Name of file to be imported.')
+    parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
+    parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
+    args = parser.parse_args()
+    g = Finishxword(args)
     g.wlist()
     g.calctime()
     g.grid_size()
