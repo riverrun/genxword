@@ -58,6 +58,9 @@ if you increase the grid size as well.
 Installation
 ============
 
+Linux
+-----
+
 This program has been tested with python2.7. It depends on py2cairo, which is already installed on most popular distros, to produce the image files.
 
 To install this program, run the following commands (replace **python** with **python2** if you are using archlinux)::
