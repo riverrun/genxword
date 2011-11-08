@@ -66,8 +66,8 @@ This program has been tested with python2.7, and it depends on py2cairo, which i
 To install this program, first download the tarball from the **Downloads** or **Tags** tab, and run the following commands 
 (replace *python* with *python2* if you are using Arch Linux)::
 
-    tar xvzf *riverrun-genxword-some-number.gz*
-    cd *riverrun-genxword-some-number*
+    tar xvzf riverrun-genxword-some-number.gz
+    cd riverrun-genxword-some-number
     sudo python setup.py install
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
