@@ -63,16 +63,17 @@ Linux
 
 This program has been tested with python2.7, and it depends on py2cairo, which is already installed on most popular distros, to produce the image files.
 
-To install this program, run the following commands (replace **python** with **python2** if you are using Arch Linux)::
+To install this program, first download the tarball from the **Downloads** or **Tags** tab, and run the following commands 
+(replace *python* with *python2* if you are using Arch Linux)::
 
-    git clone git://github.com/riverrun/genxword.git
-    cd genxword
+    tar xvzf *riverrun-genxword-some-number.gz*
+    cd *riverrun-genxword-some-number*
     sudo python setup.py install
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
 
-Instead of using the **git clone** command, you could also download the tarball from the **Downloads** or **Tags** tab,
-unpack it (`tar xvzf *riverrun-genxword-some-number.gz*`), change to the *riverrun-genxword-some-number* directory, and then run the last three commands.
+If you are using a version of python older than 2.7, you will have to edit the first line of the *genxword* and *setup.py* files 
+before running the *python setup.py install* command.
 
 Note about svg files
 ====================
