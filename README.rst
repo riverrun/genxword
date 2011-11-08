@@ -71,8 +71,8 @@ To install this program, run the following commands (replace **python** with **p
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
 
-Instead of using the **git clone** command, you could also download the tarball from the **Downloads** tab,
-unpack it, change to the *riverrun-genxword* directory, and then run the last three commands.
+Instead of using the **git clone** command, you could also download the tarball from the **Downloads** or **Tags** tab,
+unpack it (`tar xvzf *riverrun-genxword-some-number.gz*`), change to the *riverrun-genxword-some-number* directory, and then run the last three commands.
 
 Note about svg files
 ====================

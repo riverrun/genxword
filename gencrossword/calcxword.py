@@ -41,7 +41,7 @@ class Crossword(object):
         try:
             temp_list = [Word(word.word, word.clue) if isinstance(word, Word) else Word(word[0], word[1]) for word in self.available_words]
         except:
-            temp_list = [Word(word[0]) for word in self.available_words]
+            temp_list = [Word(word[0], 'Write clue for ' + word[0]) for word in self.available_words]
         random.shuffle(temp_list) # randomize word list
         temp_list.sort(key=lambda i: len(i.word), reverse=True) # sort by length
         self.available_words = temp_list
