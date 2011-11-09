@@ -31,7 +31,7 @@ The default grid size depends on how many words are used, but the user has the o
 Once the crossword has been calculated, the user has the option to have it recalculated. 
 Each time it is recalculated, the number of columns and the number of rows can both be increased. 
 Finally, the user decides what format to save the image files in, and then these files 
-and a text file is saved in the user's current working directory.
+and a text file containing the word bank and the clues are saved in the user's current working directory.
 
 Using a text file
 -----------------
@@ -61,7 +61,8 @@ Installation
 Linux
 -----
 
-This program has been tested with python2.7, and it depends on py2cairo, which is already installed on most popular distros, to produce the image files.
+To run this program, you need to have python2.7 installed. It will not work with earlier versions of python. 
+It depends on py2cairo, which is already installed on most popular distros, to produce the image files.
 
 To install this program, first download the tarball from the **Downloads** or **Tags** tab, and run the following commands 
 (replace *python* with *python2* if you are using Arch Linux)::
@@ -71,9 +72,6 @@ To install this program, first download the tarball from the **Downloads** or **
     sudo python setup.py install
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
-
-If you are using a version of python older than 2.7, you will have to edit the first line of the *genxword* and *setup.py* files 
-before running the *python setup.py install* command.
 
 Note about svg files
 ====================

@@ -1,3 +1,4 @@
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
@@ -42,7 +43,8 @@ class Finishxword(object):
             else:
                 nword = 50
             self.word_list = [line.strip().split(' ', 1) for line in self.args.inputfile]
-            self.word_list = random.sample(self.word_list, nword)
+            if len(self.word_list) > nword:
+                self.word_list = random.sample(self.word_list, nword)
         else:
             self.word_list = []
             print('When you have finished writing the words and clues, just press enter to start calculating the crossword.')
