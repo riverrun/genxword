@@ -47,6 +47,7 @@ Example::
     genxword -i word_list.txt -n 40
 
 This command will produce a crossword using 40 words randomly selected from the word_list.txt file, which can be several thousand words long.
+If the number of words in the text file is less than the -n number, or less than 50, all the words will be used.
 
 Calculation time
 ----------------
