@@ -71,7 +71,6 @@ class Crossword(object):
         return
  
     def suggest_coord(self, word):
-        count = 0
         coordlist = []
         glc = -1
         for given_letter in word.word: # cycle through letters in word
@@ -86,12 +85,12 @@ class Crossword(object):
                         try: # suggest vertical placement 
                             if rowc - glc > 0: # make sure we're not suggesting a starting point off the grid
                                 if ((rowc - glc) + word.length - 1) <= self.rows: # make sure word doesn't go off the grid
-                                    coordlist.append([colc, rowc - glc, 1, colc + (rowc - glc), 0])
+                                    coordlist.append([colc, rowc - glc, 1, 0])
                         except: pass
                         try: # suggest horizontal placement 
                             if colc - glc > 0: # make sure we're not suggesting a starting point off the grid
                                 if ((colc - glc) + word.length - 1) <= self.cols: # make sure word doesn't go off the grid
-                                    coordlist.append([colc - glc, rowc, 0, rowc + (colc - glc), 0])
+                                    coordlist.append([colc - glc, rowc, 0, 0])
                         except: pass
         new_coordlist = self.sort_coordlist(coordlist, word)
         return new_coordlist
@@ -100,11 +99,11 @@ class Crossword(object):
         new_coordlist = []
         for coord in coordlist:
             col, row, vertical = coord[0], coord[1], coord[2]
-            coord[4] = self.check_fit_score(col, row, vertical, word) # checking scores
-            if coord[4]: # 0 scores are filtered
+            coord[3] = self.check_fit_score(col, row, vertical, word) # checking scores
+            if coord[3]: # 0 scores are filtered
                 new_coordlist.append(coord)
         random.shuffle(new_coordlist) # randomize coord list; why not?
-        new_coordlist.sort(key=lambda i: i[4], reverse=True) # put the best scores first
+        new_coordlist.sort(key=lambda i: i[3], reverse=True) # put the best scores first
         return new_coordlist
  
     def fit_and_add(self, word): # doesn't really check fit except for the first word; otherwise just adds if score is good
@@ -128,7 +127,7 @@ class Crossword(object):
                     col, row, vertical = coordlist[count][0], coordlist[count][1], coordlist[count][2]
                 except IndexError: return # no more coordinates, stop trying to fit
  
-                if coordlist[count][4]: # already filtered these out, but double check
+                if coordlist[count][3]: # already filtered these out, but double check
                     fit = True 
                     self.set_word(col, row, vertical, word, force=True)
  
