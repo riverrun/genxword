@@ -38,7 +38,7 @@ Using a text file
 
 The -i option lets you use a text file to create the word list. The text file can contain words and clues, or just single words. 
 If you are using a file with words and clues in it, each word should be separated from the clue by just a space, 
-and each word and clue, or word, should be on a separate line.
+and each word and clue, or word, should be on a separate line. Some example word list files are in the **examples** directory.
 
 The -n option lets you choose how many words will be randomly selected from the text file. The default is 50.
 
