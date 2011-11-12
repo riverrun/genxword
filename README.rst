@@ -52,7 +52,7 @@ If the number of words in the text file is less than the -n number, or less than
 Calculation time
 ----------------
 
-The -t option lets you change the time taken to calculate the crossword. The default is 2 seconds. 
+The -t option lets you change the maximum time taken to calculate the crossword. The default is 2 seconds. 
 You might need to increase this time if you are creating a large crossword, but it will only really help 
 if you increase the grid size as well.
 

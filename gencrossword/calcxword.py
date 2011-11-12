@@ -67,6 +67,8 @@ class Crossword(object):
             if len(copy.current_word_list) > len(self.current_word_list):
                 self.current_word_list = copy.current_word_list
                 self.grid = copy.grid
+            if len(self.current_word_list) == len(self.available_words):
+                break
             count += 1
         return
  
