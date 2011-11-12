@@ -30,14 +30,12 @@ class Crossword(object):
         self.empty = empty
         self.maxloops = maxloops
         self.available_words = available_words
-        self.randomize_word_list()
         self.current_word_list = []
-        self.clear_grid()
+        self.prep_grid_words()
  
-    def clear_grid(self): # initialize grid and fill with empty characters
+    def prep_grid_words(self):
+        """Initialize grid and word list."""
         self.grid = [[self.empty for j in range(self.cols)] for i in range(self.rows)]
- 
-    def randomize_word_list(self): # also resets words and sorts by length
         try:
             temp_list = [Word(word.word, word.clue) if isinstance(word, Word) else Word(word[0], word[1]) for word in self.available_words]
         except:
@@ -55,8 +53,7 @@ class Crossword(object):
         start_full = float(time.time())
         while (float(time.time()) - start_full) < time_permitted or count == 0:
             copy.current_word_list = []
-            copy.clear_grid()
-            copy.randomize_word_list()
+            copy.prep_grid_words()
             x = 0
             while x < spins: # spins; 2 seems to be plenty
                 for word in copy.available_words:
@@ -75,29 +72,25 @@ class Crossword(object):
     def suggest_coord(self, word):
         coordlist = []
         glc = -1
-        for given_letter in word.word: # cycle through letters in word
+        for letter in word.word:
             glc += 1
             rowc = 0
-            for row in self.grid: # cycle through rows
+            for row in self.grid:
                 rowc += 1
                 colc = 0
-                for cell in row: # cycle through  letters in rows
+                for cell in row:
                     colc += 1
-                    if given_letter == cell: # check match letter in word to letters in row
-                        try: # suggest vertical placement 
+                    if letter == cell: # check match letter in word to letters in row
+                        try: # vertical
                             if rowc - glc > 0: # make sure we're not suggesting a starting point off the grid
                                 if ((rowc - glc) + word.length - 1) <= self.rows: # make sure word doesn't go off the grid
                                     coordlist.append([colc, rowc - glc, 1, 0])
                         except: pass
-                        try: # suggest horizontal placement 
+                        try: # horizontal
                             if colc - glc > 0: # make sure we're not suggesting a starting point off the grid
                                 if ((colc - glc) + word.length - 1) <= self.cols: # make sure word doesn't go off the grid
                                     coordlist.append([colc - glc, rowc, 0, 0])
                         except: pass
-        new_coordlist = self.sort_coordlist(coordlist, word)
-        return new_coordlist
- 
-    def sort_coordlist(self, coordlist, word): # give each coordinate a score, then sort
         new_coordlist = []
         for coord in coordlist:
             col, row, vertical = coord[0], coord[1], coord[2]
