@@ -110,9 +110,17 @@ class Crossword(object):
  
             if len(self.current_word_list) == 0: # this is the first word: the seed
                 vertical = random.randrange(0, 2)
-                # completely random seed method
-                col = random.randrange(1, self.cols + 1)
-                row = random.randrange(1, self.rows + 1)
+                # Place the first word in the middle of the grid
+                if vertical:
+                    col = int(round((self.cols + 1) / 2, 0))
+                    row = int(round((self.rows + 1) / 2, 0)) - int(round((len(word.word) + 1) / 2, 0))
+                    if row + len(word.word) > self.rows:
+                        row = self.rows - len(word.word) + 1
+                else:
+                    col = int(round((self.cols + 1) / 2, 0)) - int(round((len(word.word) + 1) / 2, 0))
+                    row = int(round((self.rows + 1) / 2, 0))
+                    if col + len(word.word) > self.cols:
+                        col = self.cols - len(word.word) + 1
  
                 if self.check_fit_score(col, row, vertical, word): 
                     fit = True
