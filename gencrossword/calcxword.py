@@ -124,7 +124,7 @@ class Crossword(object):
  
                 if self.check_fit_score(col, row, vertical, word): 
                     fit = True
-                    self.set_word(col, row, vertical, word, force=True)
+                    self.set_word(col, row, vertical, word)
             else: # a subsequent words have scores calculated
                 try: 
                     col, row, vertical = coordlist[count][0], coordlist[count][1], coordlist[count][2]
@@ -132,7 +132,7 @@ class Crossword(object):
  
                 if coordlist[count][3]: # already filtered these out, but double check
                     fit = True 
-                    self.set_word(col, row, vertical, word, force=True)
+                    self.set_word(col, row, vertical, word)
  
             count += 1
         return
@@ -188,19 +188,18 @@ class Crossword(object):
  
         return score
  
-    def set_word(self, col, row, vertical, word, force=False): # also adds word to word list
-        if force:
-            word.col = col
-            word.row = row
-            word.vertical = vertical
-            self.current_word_list.append(word)
- 
-            for letter in word.word:
-                self.set_cell(col, row, letter)
-                if vertical:
-                    row += 1
-                else:
-                    col += 1
+    def set_word(self, col, row, vertical, word): # also adds word to word list
+        word.col = col
+        word.row = row
+        word.vertical = vertical
+        self.current_word_list.append(word)
+
+        for letter in word.word:
+            self.set_cell(col, row, letter)
+            if vertical:
+                row += 1
+            else:
+                col += 1
         return
  
     def set_cell(self, col, row, value):
