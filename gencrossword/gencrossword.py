@@ -69,7 +69,7 @@ class Finishxword(object):
         elif len(self.word_list) <= 100:
             self.ncol = self.nrow = int((round(((len(self.word_list) - 20) / 7.5), 0) * 2) + 17)
         else:
-            self.ncol, self.nrow = 40, 40
+            self.ncol, self.nrow = 41, 41
         gsize = str(self.ncol) + ', ' + str(self.nrow)
         grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
         if grid_size:

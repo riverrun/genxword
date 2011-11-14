@@ -145,7 +145,7 @@ class Crossword(object):
         count, score = 1, 1 # give score a standard value of 1, will override with 0 if collisions detected
         for letter in word.word:            
             try:
-                active_cell = self.get_cell(col, row)
+                active_cell = self.grid[row-1][col-1]
             except IndexError:
                 return 0
             if active_cell == self.empty or active_cell == letter:
@@ -195,22 +195,16 @@ class Crossword(object):
         self.current_word_list.append(word)
 
         for letter in word.word:
-            self.set_cell(col, row, letter)
+            self.grid[row-1][col-1] = letter
             if vertical:
                 row += 1
             else:
                 col += 1
         return
  
-    def set_cell(self, col, row, value):
-        self.grid[row-1][col-1] = value
- 
-    def get_cell(self, col, row):
-        return self.grid[row-1][col-1]
- 
     def check_if_cell_clear(self, col, row):
         try:
-            cell = self.get_cell(col, row)
+            cell = self.grid[row-1][col-1]
             if cell == self.empty: 
                 return True
         except IndexError:
