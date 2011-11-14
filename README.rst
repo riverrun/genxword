@@ -16,8 +16,7 @@ and the word bank and clues in a text file.
 History
 =======
 
-This program was originally written by Bryan Helmig and has since been developed by David Whitlock 
-although the business end of the program, the crossword algorithm, has largely been left intact (if it ain't broken, don't fix it!).
+This program was originally written by Bryan Helmig and has since been developed by David Whitlock. 
 
 Usage
 =====
