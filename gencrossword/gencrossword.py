@@ -19,7 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse, random, calcxword
+import argparse, random
+from . import calcxword
 
 usage_info = """Creates a crossword from a list of words and clues typed on the command line
 or from a text file. Outputs an empty grid and key in png and/or svg format, and the word bank and clues in a text file.
