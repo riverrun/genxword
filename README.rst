@@ -64,16 +64,18 @@ Linux
 To run this program, you need to have python2.7 installed. It will not work with earlier versions of python. 
 It depends on py2cairo, which is already installed on most popular distros, to produce the image files.
 
-To install this program, first download the tarball from the **Downloads** or **Tags** tab, and run the following commands 
-(replace *python* with *python2* if you are using Arch Linux)::
+To install this program, run the following commands (replace *python* with *python2* if you are using Arch Linux)::
 
-    tar xvzf riverrun-genxword-some-number.gz
-    cd riverrun-genxword-some-number
+    git clone git://github.com/riverrun/genxword.git
+    cd genxword
     sudo python setup.py install
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
 
+Alternatively, you can download a tarball from the **Downloads** tab, unpack it, change to the *riverrun-genxword-somenumber* 
+directory, and then run the last three commands.
+
 Note about svg files
 ====================
 
-The svg files are displayed correctly in Chromium and Firefox, but not in Libreoffice 3.4.3.
+The svg files are displayed correctly in Chromium and Firefox, but not in Libreoffice 3.4.4.
