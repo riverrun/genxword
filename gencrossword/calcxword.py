@@ -54,13 +54,8 @@ class Crossword(object):
         while (float(time.time()) - start_full) < time_permitted or count == 0:
             copy.current_word_list = []
             copy.prep_grid_words()
-            x = 0
-            while x < spins: # spins; 2 seems to be plenty
-                for word in copy.available_words:
-                    if word not in copy.current_word_list:
-                        copy.fit_and_add(word)
-                x += 1
-            # buffer the best crossword by comparing placed words
+            copy.first_word(copy.available_words[0])
+            [copy.add_words(word) for i in range(spins) for word in copy.available_words if word not in copy.current_word_list]
             if len(copy.current_word_list) > len(self.current_word_list):
                 self.current_word_list = copy.current_word_list
                 self.grid = copy.grid
@@ -70,6 +65,7 @@ class Crossword(object):
         return
  
     def suggest_coord(self, word):
+        """Return possible coordinates for each letter."""
         coordlist = []
         glc = -1
         for letter in word.word:
@@ -101,39 +97,35 @@ class Crossword(object):
         new_coordlist.sort(key=lambda i: i[3], reverse=True) # put the best scores first
         return new_coordlist
  
-    def fit_and_add(self, word): # doesn't really check fit except for the first word; otherwise just adds if score is good
+    def first_word(self, word):
+        """Place the first word in the middle of the grid."""
+        vertical = random.randrange(0, 2)
+        if vertical:
+            col = int(round((self.cols + 1) / 2, 0))
+            row = int(round((self.rows + 1) / 2, 0)) - int(round((len(word.word) + 1) / 2, 0))
+            if row + len(word.word) > self.rows:
+                row = self.rows - len(word.word) + 1
+        else:
+            col = int(round((self.cols + 1) / 2, 0)) - int(round((len(word.word) + 1) / 2, 0))
+            row = int(round((self.rows + 1) / 2, 0))
+            if col + len(word.word) > self.cols:
+                col = self.cols - len(word.word) + 1
+        self.set_word(col, row, vertical, word)
+
+    def add_words(self, word):
+        """Add the rest of the words to the grid."""
         fit = False
         count = 0
         coordlist = self.suggest_coord(word)
  
         while not fit and count < self.maxloops:
- 
-            if len(self.current_word_list) == 0: # this is the first word: the seed
-                vertical = random.randrange(0, 2)
-                # Place the first word in the middle of the grid
-                if vertical:
-                    col = int(round((self.cols + 1) / 2, 0))
-                    row = int(round((self.rows + 1) / 2, 0)) - int(round((len(word.word) + 1) / 2, 0))
-                    if row + len(word.word) > self.rows:
-                        row = self.rows - len(word.word) + 1
-                else:
-                    col = int(round((self.cols + 1) / 2, 0)) - int(round((len(word.word) + 1) / 2, 0))
-                    row = int(round((self.rows + 1) / 2, 0))
-                    if col + len(word.word) > self.cols:
-                        col = self.cols - len(word.word) + 1
- 
-                if self.check_fit_score(col, row, vertical, word): 
-                    fit = True
-                    self.set_word(col, row, vertical, word)
-            else: # a subsequent words have scores calculated
-                try: 
-                    col, row, vertical = coordlist[count][0], coordlist[count][1], coordlist[count][2]
-                except IndexError: return # no more coordinates, stop trying to fit
- 
-                if coordlist[count][3]: # already filtered these out, but double check
-                    fit = True 
-                    self.set_word(col, row, vertical, word)
- 
+            try: 
+                col, row, vertical = coordlist[count][0], coordlist[count][1], coordlist[count][2]
+            except IndexError: return # no more cordinates, stop trying to fit
+
+            if coordlist[count][3]: # already filtered these out, but double check
+                fit = True 
+                self.set_word(col, row, vertical, word) 
             count += 1
         return
  
