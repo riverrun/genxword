@@ -31,17 +31,16 @@ class Crossword(object):
         self.maxloops = maxloops
         self.available_words = available_words
         self.current_word_list = []
-        self.prep_grid_words()
+        self.prep_words()
  
-    def prep_grid_words(self):
-        """Initialize grid and word list."""
-        self.grid = [[self.empty for j in range(self.cols)] for i in range(self.rows)]
+    def prep_words(self):
+        """Prepare word list and sort them with the longest word first."""
         try:
             temp_list = [Word(word.word, word.clue) if isinstance(word, Word) else Word(word[0], word[1]) for word in self.available_words]
         except:
             temp_list = [Word(word[0], 'Write clue for ' + word[0]) for word in self.available_words]
-        random.shuffle(temp_list) # randomize word list
-        temp_list.sort(key=lambda i: len(i.word), reverse=True) # sort by length
+        random.shuffle(temp_list)
+        temp_list.sort(key=lambda i: len(i.word), reverse=True)
         self.available_words = temp_list
  
     def compute_crossword(self, time_permitted = 1.00, spins=2):
@@ -49,13 +48,15 @@ class Crossword(object):
  
         count = 0
         copy = Crossword(self.cols, self.rows, self.empty, self.maxloops, self.available_words)
+        copy.prep_words()
+        word_list = copy.available_words
  
         start_full = float(time.time())
         while (float(time.time()) - start_full) < time_permitted or count == 0:
             copy.current_word_list = []
-            copy.prep_grid_words()
-            copy.first_word(copy.available_words[0])
-            [copy.add_words(word) for i in range(spins) for word in copy.available_words if word not in copy.current_word_list]
+            copy.grid = [[copy.empty for j in range(copy.cols)] for i in range(copy.rows)]
+            copy.first_word(word_list[0])
+            [copy.add_words(word) for i in range(spins) for word in word_list if word not in copy.current_word_list]
             if len(copy.current_word_list) > len(self.current_word_list):
                 self.current_word_list = copy.current_word_list
                 self.grid = copy.grid
@@ -148,39 +149,39 @@ class Crossword(object):
                 score += 1
             if vertical:
                 if active_cell != letter: # don't check surroundings if cross point
-                    if not self.check_if_cell_clear(col+1, row): # check right cell
+                    if not self.check_cell_clear(col+1, row): # check right cell
                         return 0
-                    if not self.check_if_cell_clear(col-1, row): # check left cell
+                    if not self.check_cell_clear(col-1, row): # check left cell
                         return 0
                 if count == 1: # check top cell only on first letter
-                    if not self.check_if_cell_clear(col, row-1):
+                    if not self.check_cell_clear(col, row-1):
                         return 0
                 if count == len(word.word): # check bottom cell only on last letter
-                    if not self.check_if_cell_clear(col, row+1) and row != self.rows:
+                    if not self.check_cell_clear(col, row+1) and row != self.rows:
                         return 0
             else: # else horizontal
                 if active_cell != letter: # don't check surroundings if cross point
-                    if not self.check_if_cell_clear(col, row-1): # check top cell
+                    if not self.check_cell_clear(col, row-1): # check top cell
                         return 0
-                    if not self.check_if_cell_clear(col, row+1): # check bottom cell
+                    if not self.check_cell_clear(col, row+1): # check bottom cell
                         return 0
                 if count == 1: # check left cell only on first letter
-                    if not self.check_if_cell_clear(col-1, row):
+                    if not self.check_cell_clear(col-1, row):
                         return 0
                 if count == len(word.word): # check right cell only on last letter
-                    if not self.check_if_cell_clear(col+1, row) and col != self.cols:
+                    if not self.check_cell_clear(col+1, row) and col != self.cols:
                         return 0
  
-            if vertical: # progress to next letter and position
+            if vertical:
                 row += 1
-            else: # else horizontal
+            else:
                 col += 1
  
             count += 1
  
         return score
  
-    def set_word(self, col, row, vertical, word): # also adds word to word list
+    def set_word(self, col, row, vertical, word):
         word.col = col
         word.row = row
         word.vertical = vertical
@@ -194,7 +195,7 @@ class Crossword(object):
                 col += 1
         return
  
-    def check_if_cell_clear(self, col, row):
+    def check_cell_clear(self, col, row):
         try:
             cell = self.grid[row-1][col-1]
             if cell == self.empty: 
