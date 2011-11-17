@@ -24,11 +24,10 @@ import random, re, time, string, cairo
 from copy import copy as duplicate
  
 class Crossword(object):
-    def __init__(self, cols, rows, empty = '-', maxloops = 2000, available_words=[]):
+    def __init__(self, cols, rows, empty = '-', available_words=[]):
         self.cols = cols
         self.rows = rows
         self.empty = empty
-        self.maxloops = maxloops
         self.available_words = available_words
         self.current_word_list = []
         self.prep_grid_words()
@@ -48,7 +47,7 @@ class Crossword(object):
         time_permitted = float(time_permitted)
  
         count = 0
-        copy = Crossword(self.cols, self.rows, self.empty, self.maxloops, self.available_words)
+        copy = Crossword(self.cols, self.rows, self.empty, self.available_words)
  
         start_full = float(time.time())
         while (float(time.time()) - start_full) < time_permitted or count == 0:
@@ -67,26 +66,21 @@ class Crossword(object):
     def suggest_coord(self, word):
         """Return possible coordinates for each letter."""
         coordlist = []
-        glc = -1
-        for letter in word.word:
-            glc += 1
-            rowc = 0
-            for row in self.grid:
-                rowc += 1
-                colc = 0
-                for cell in row:
-                    colc += 1
-                    if letter == cell: # check match letter in word to letters in row
-                        try: # vertical
-                            if rowc - glc > 0: # make sure we're not suggesting a starting point off the grid
-                                if ((rowc - glc) + word.length - 1) <= self.rows: # make sure word doesn't go off the grid
-                                    coordlist.append([colc, rowc - glc, 1, 0])
-                        except: pass
-                        try: # horizontal
-                            if colc - glc > 0: # make sure we're not suggesting a starting point off the grid
-                                if ((colc - glc) + word.length - 1) <= self.cols: # make sure word doesn't go off the grid
-                                    coordlist.append([colc - glc, rowc, 0, 0])
-                        except: pass
+        for l_key, letter in enumerate(word.word): # cycle through letters in word
+            for row_key in range(self.rows):
+                if letter in self.grid[row_key]:
+                    for col_key, cell in enumerate(self.grid[row_key]):
+                        if letter == cell: # check match letter in word to letters in row
+                            try:
+                                if row_key - l_key >= 0: # make sure we're not suggesting a starting point off the grid
+                                    if ((row_key - l_key) + word.length) <= self.rows: # make sure word doesn't go off the grid
+                                        coordlist.append([col_key + 1, row_key - l_key + 1, 1, 0])
+                            except: pass
+                            try:
+                                if col_key - l_key >= 0: # make sure we're not suggesting a starting point off the grid
+                                    if ((col_key - l_key) + word.length) <= self.cols: # make sure word doesn't go off the grid
+                                        coordlist.append([col_key - l_key + 1, row_key + 1, 0, 0])
+                            except: pass
         new_coordlist = []
         for coord in coordlist:
             col, row, vertical = coord[0], coord[1], coord[2]
@@ -118,7 +112,7 @@ class Crossword(object):
         count = 0
         coordlist = self.suggest_coord(word)
  
-        while not fit and count < self.maxloops:
+        while not fit:
             try: 
                 col, row, vertical = coordlist[count][0], coordlist[count][1], coordlist[count][2]
             except IndexError: return # no more cordinates, stop trying to fit
@@ -148,27 +142,27 @@ class Crossword(object):
                 score += 1
             if vertical:
                 if active_cell != letter: # don't check surroundings if cross point
-                    if not self.check_if_cell_clear(col+1, row): # check right cell
+                    if not self.check_cell_empty(col+1, row): # check right cell
                         return 0
-                    if not self.check_if_cell_clear(col-1, row): # check left cell
+                    if not self.check_cell_empty(col-1, row): # check left cell
                         return 0
                 if count == 1: # check top cell only on first letter
-                    if not self.check_if_cell_clear(col, row-1):
+                    if not self.check_cell_empty(col, row-1):
                         return 0
                 if count == len(word.word): # check bottom cell only on last letter
-                    if not self.check_if_cell_clear(col, row+1) and row != self.rows:
+                    if not self.check_cell_empty(col, row+1) and row != self.rows:
                         return 0
             else: # else horizontal
                 if active_cell != letter: # don't check surroundings if cross point
-                    if not self.check_if_cell_clear(col, row-1): # check top cell
+                    if not self.check_cell_empty(col, row-1): # check top cell
                         return 0
-                    if not self.check_if_cell_clear(col, row+1): # check bottom cell
+                    if not self.check_cell_empty(col, row+1): # check bottom cell
                         return 0
                 if count == 1: # check left cell only on first letter
-                    if not self.check_if_cell_clear(col-1, row):
+                    if not self.check_cell_empty(col-1, row):
                         return 0
                 if count == len(word.word): # check right cell only on last letter
-                    if not self.check_if_cell_clear(col+1, row) and col != self.cols:
+                    if not self.check_cell_empty(col+1, row) and col != self.cols:
                         return 0
  
             if vertical: # progress to next letter and position
@@ -194,7 +188,7 @@ class Crossword(object):
                 col += 1
         return
  
-    def check_if_cell_clear(self, col, row):
+    def check_cell_empty(self, col, row):
         try:
             cell = self.grid[row-1][col-1]
             if cell == self.empty: 

@@ -81,7 +81,7 @@ class Finishxword(object):
 
     def gengrid(self):
         while 1:
-            a = calcxword.Crossword(self.ncol, self.nrow, '-', 5000, self.word_list)
+            a = calcxword.Crossword(self.ncol, self.nrow, '-', self.word_list)
             print('Calculating your crossword...')
             a.compute_crossword(self.tcalc)
             print(a.solution())
