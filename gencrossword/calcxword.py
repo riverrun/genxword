@@ -66,20 +66,20 @@ class Crossword(object):
     def suggest_coord(self, word):
         """Return possible coordinates for each letter."""
         coordlist = []
-        for l_key, letter in enumerate(word.word): # cycle through letters in word
-            for row_key in range(self.rows):
-                if letter in self.grid[row_key]:
-                    for col_key, cell in enumerate(self.grid[row_key]):
-                        if letter == cell: # check match letter in word to letters in row
+        for letc, letter in enumerate(word.word):
+            for rowc in range(self.rows):
+                if letter in self.grid[rowc]:
+                    for colc, cell in enumerate(self.grid[rowc]):
+                        if letter == cell:
                             try:
-                                if row_key - l_key >= 0: # make sure we're not suggesting a starting point off the grid
-                                    if ((row_key - l_key) + word.length) <= self.rows: # make sure word doesn't go off the grid
-                                        coordlist.append([col_key + 1, row_key - l_key + 1, 1, 0])
+                                if rowc - letc >= 0: # make sure we're not suggesting a starting point off the grid
+                                    if ((rowc - letc) + word.length) <= self.rows: # make sure word doesn't go off the grid
+                                        coordlist.append([colc, rowc - letc, 1, 0])
                             except: pass
                             try:
-                                if col_key - l_key >= 0: # make sure we're not suggesting a starting point off the grid
-                                    if ((col_key - l_key) + word.length) <= self.cols: # make sure word doesn't go off the grid
-                                        coordlist.append([col_key - l_key + 1, row_key + 1, 0, 0])
+                                if colc - letc >= 0:
+                                    if ((colc - letc) + word.length) <= self.cols:
+                                        coordlist.append([colc - letc, rowc, 0, 0])
                             except: pass
         new_coordlist = []
         for coord in coordlist:
@@ -87,23 +87,19 @@ class Crossword(object):
             coord[3] = self.check_fit_score(col, row, vertical, word) # checking scores
             if coord[3]: # 0 scores are filtered
                 new_coordlist.append(coord)
-        random.shuffle(new_coordlist) # randomize coord list; why not?
-        new_coordlist.sort(key=lambda i: i[3], reverse=True) # put the best scores first
+        random.shuffle(new_coordlist)
+        new_coordlist.sort(key=lambda i: i[3], reverse=True)
         return new_coordlist
  
     def first_word(self, word):
         """Place the first word in the middle of the grid."""
         vertical = random.randrange(0, 2)
         if vertical:
-            col = int(round((self.cols + 1) / 2, 0))
-            row = int(round((self.rows + 1) / 2, 0)) - int(round((len(word.word) + 1) / 2, 0))
-            if row + len(word.word) > self.rows:
-                row = self.rows - len(word.word) + 1
+            col = int(round((self.cols - 1) / 2, 0))
+            row = int(round((self.rows - 1) / 2, 0)) - int(round(((len(word.word)) - 1) / 2, 0))
         else:
-            col = int(round((self.cols + 1) / 2, 0)) - int(round((len(word.word) + 1) / 2, 0))
-            row = int(round((self.rows + 1) / 2, 0))
-            if col + len(word.word) > self.cols:
-                col = self.cols - len(word.word) + 1
+            col = int(round((self.cols - 1) / 2, 0)) - int(round(((len(word.word)) - 1) / 2, 0))
+            row = int(round((self.rows - 1) / 2, 0))
         self.set_word(col, row, vertical, word)
 
     def add_words(self, word):
@@ -125,13 +121,13 @@ class Crossword(object):
  
     def check_fit_score(self, col, row, vertical, word):
         """Return score (0 means no fit, 1 means a fit, 2+ means a cross)."""
-        if col < 1 or row < 1:
+        if col < 0 or row < 0:
             return 0
  
         count, score = 1, 1 # give score a standard value of 1, will override with 0 if collisions detected
         for letter in word.word:            
             try:
-                active_cell = self.grid[row-1][col-1]
+                active_cell = self.grid[row][col]
             except IndexError:
                 return 0
             if active_cell == self.empty or active_cell == letter:
@@ -150,7 +146,7 @@ class Crossword(object):
                     if not self.check_cell_empty(col, row-1):
                         return 0
                 if count == len(word.word): # check bottom cell only on last letter
-                    if not self.check_cell_empty(col, row+1) and row != self.rows:
+                    if not self.check_cell_empty(col, row+1) and row + 1 != self.rows:
                         return 0
             else: # else horizontal
                 if active_cell != letter: # don't check surroundings if cross point
@@ -162,7 +158,7 @@ class Crossword(object):
                     if not self.check_cell_empty(col-1, row):
                         return 0
                 if count == len(word.word): # check right cell only on last letter
-                    if not self.check_cell_empty(col+1, row) and col != self.cols:
+                    if not self.check_cell_empty(col+1, row) and col + 1 != self.cols:
                         return 0
  
             if vertical: # progress to next letter and position
@@ -175,13 +171,13 @@ class Crossword(object):
         return score
  
     def set_word(self, col, row, vertical, word): # also adds word to word list
-        word.col = col
-        word.row = row
+        word.col = col + 1
+        word.row = row + 1
         word.vertical = vertical
         self.current_word_list.append(word)
 
         for letter in word.word:
-            self.grid[row-1][col-1] = letter
+            self.grid[row][col] = letter
             if vertical:
                 row += 1
             else:
@@ -190,7 +186,7 @@ class Crossword(object):
  
     def check_cell_empty(self, col, row):
         try:
-            cell = self.grid[row-1][col-1]
+            cell = self.grid[row][col]
             if cell == self.empty: 
                 return True
         except IndexError:
