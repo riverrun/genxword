@@ -71,25 +71,19 @@ class Crossword(object):
                 if letter in self.grid[rowc]:
                     for colc, cell in enumerate(self.grid[rowc]):
                         if letter == cell:
-                            try:
-                                if rowc - letc >= 0: # make sure we're not suggesting a starting point off the grid
-                                    if ((rowc - letc) + word.length) <= self.rows: # make sure word doesn't go off the grid
-                                        coordlist.append([colc, rowc - letc, 1, 0])
-                            except: pass
-                            try:
-                                if colc - letc >= 0:
-                                    if ((colc - letc) + word.length) <= self.cols:
-                                        coordlist.append([colc - letc, rowc, 0, 0])
-                            except: pass
-        new_coordlist = []
-        for coord in coordlist:
-            col, row, vertical = coord[0], coord[1], coord[2]
-            coord[3] = self.check_fit_score(col, row, vertical, word) # checking scores
-            if coord[3]: # 0 scores are filtered
-                new_coordlist.append(coord)
-        random.shuffle(new_coordlist)
-        new_coordlist.sort(key=lambda i: i[3], reverse=True)
-        return new_coordlist
+                            if rowc - letc >= 0 and ((rowc - letc) + word.length) <= self.rows:
+                                col, row, vertical = (colc, rowc - letc, 1)
+                                score = self.check_fit_score(col, row, vertical, word)
+                                if score:
+                                    coordlist.append([colc, rowc - letc, 1, score])
+                            if colc - letc >= 0 and ((colc - letc) + word.length) <= self.cols:
+                                col, row, vertical = (colc - letc, rowc, 0)
+                                score = self.check_fit_score(col, row, vertical, word)
+                                if score:
+                                    coordlist.append([colc - letc, rowc, 0, score])
+        random.shuffle(coordlist)
+        coordlist.sort(key=lambda i: i[3], reverse=True)
+        return coordlist
  
     def first_word(self, word):
         """Place the first word in the middle of the grid."""
