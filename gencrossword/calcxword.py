@@ -130,31 +130,24 @@ class Crossword(object):
                 return 0
             if active_cell == letter:
                 score += 1
-            if vertical:
-                if active_cell != letter: # don't check surroundings if cross point
-                    if not self.check_cell_empty(col+1, row): # check right cell
-                        return 0
-                    if not self.check_cell_empty(col-1, row): # check left cell
-                        return 0
-                if count == 1: # check top cell only on first letter
-                    if not self.check_cell_empty(col, row-1):
-                        return 0
-                if count == len(word.word): # check bottom cell only on last letter
-                    if not self.check_cell_empty(col, row+1) and row + 1 != self.rows:
-                        return 0
-            else: # else horizontal
-                if active_cell != letter: # don't check surroundings if cross point
-                    if not self.check_cell_empty(col, row-1): # check top cell
-                        return 0
-                    if not self.check_cell_empty(col, row+1): # check bottom cell
-                        return 0
-                if count == 1: # check left cell only on first letter
-                    if not self.check_cell_empty(col-1, row):
-                        return 0
-                if count == len(word.word): # check right cell only on last letter
-                    if not self.check_cell_empty(col+1, row) and col + 1 != self.cols:
-                        return 0
  
+            if vertical:
+                if active_cell != letter:
+                    if not self.check_cell_empty(col+1, row) or not self.check_cell_empty(col-1, row):
+                        return 0
+                if count == 1 and not self.check_cell_empty(col, row-1):
+                    return 0
+                if count == len(word.word) and not self.check_cell_empty(col, row+1) and row + 1 != self.rows:
+                    return 0
+            else:
+                if active_cell != letter:
+                    if not self.check_cell_empty(col, row-1) or not self.check_cell_empty(col, row+1):
+                        return 0
+                if count == 1 and not self.check_cell_empty(col-1, row):
+                    return 0
+                if count == len(word.word) and not self.check_cell_empty(col+1, row) and col + 1 != self.cols:
+                    return 0
+
             if vertical: # progress to next letter and position
                 row += 1
             else: # else horizontal
@@ -164,7 +157,8 @@ class Crossword(object):
  
         return score
  
-    def set_word(self, col, row, vertical, word): # also adds word to word list
+    def set_word(self, col, row, vertical, word):
+        """Put words on the grid and add them to the word list."""
         word.col = col + 1
         word.row = row + 1
         word.vertical = vertical
