@@ -63,24 +63,22 @@ class Crossword(object):
             count += 1
         return
  
-    def suggest_coord(self, word):
+    def get_coords(self, word):
         """Return possible coordinates for each letter."""
         coordlist = []
-        for letc, letter in enumerate(word.word):
-            for rowc in range(self.rows):
-                if letter in self.grid[rowc]:
-                    for colc, cell in enumerate(self.grid[rowc]):
-                        if letter == cell:
-                            if rowc - letc >= 0 and ((rowc - letc) + word.length) <= self.rows:
-                                col, row, vertical = (colc, rowc - letc, 1)
-                                score = self.check_fit_score(col, row, vertical, word)
-                                if score:
-                                    coordlist.append([colc, rowc - letc, 1, score])
-                            if colc - letc >= 0 and ((colc - letc) + word.length) <= self.cols:
-                                col, row, vertical = (colc - letc, rowc, 0)
-                                score = self.check_fit_score(col, row, vertical, word)
-                                if score:
-                                    coordlist.append([colc - letc, rowc, 0, score])
+        temp_list =  [(l, r, self.grid[r].index(letter)) for l, letter in enumerate(word.word) for r in range(self.rows) if letter in self.grid[r]]
+        for coord in temp_list:
+            letc, rowc, colc = coord[0], coord[1], coord[2]
+            if rowc - letc >= 0 and ((rowc - letc) + word.length) <= self.rows:
+                col, row, vertical = (colc, rowc - letc, 1)
+                score = self.check_fit_score(col, row, vertical, word)
+                if score:
+                    coordlist.append([colc, rowc - letc, 1, score])
+            if colc - letc >= 0 and ((colc - letc) + word.length) <= self.cols:
+                col, row, vertical = (colc - letc, rowc, 0)
+                score = self.check_fit_score(col, row, vertical, word)
+                if score:
+                        coordlist.append([colc - letc, rowc, 0, score])
         random.shuffle(coordlist)
         coordlist.sort(key=lambda i: i[3], reverse=True)
         return coordlist
@@ -100,7 +98,7 @@ class Crossword(object):
         """Add the rest of the words to the grid."""
         fit = False
         count = 0
-        coordlist = self.suggest_coord(word)
+        coordlist = self.get_coords(word)
  
         while not fit:
             try: 
