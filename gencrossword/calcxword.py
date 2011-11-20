@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import random, re, time, string, cairo
+import random, time, string, cairo
 from copy import copy as duplicate
  
 class Crossword(object):
@@ -252,7 +252,7 @@ class Crossword(object):
         outStrA = '\nClues\nAcross\n'
         outStrD = 'Down\n'
         for word in self.current_word_list:
-            if word.down_across() == 'down':
+            if word.vertical:
                 outStrD += '{:d}. {}\n'.format(word.number, word.clue)
             else:
                 outStrA += '{:d}. {}\n'.format(word.number, word.clue)
@@ -266,20 +266,10 @@ class Crossword(object):
 
 class Word(object):
     def __init__(self, word=None, clue=None):
-        self.word = re.sub(r'\s', '', word.upper())
+        self.word = word.upper()
         self.clue = clue
         self.length = len(self.word)
-        # the below are set when placed on board
         self.row = None
         self.col = None
         self.vertical = None
         self.number = None
- 
-    def down_across(self):
-        if self.vertical: 
-            return 'down'
-        else: 
-            return 'across'
- 
-    def __repr__(self):
-        return self.word
