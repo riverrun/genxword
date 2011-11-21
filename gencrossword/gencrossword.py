@@ -28,7 +28,7 @@ The -i option lets you use a text file to create the word list. The text file ca
 If you are using a file with words and clues in it, each word should be separated from the clue by just a space, 
 and each word and clue, or word, should be on a separate line.
 The -n option lets you choose how many words will be randomly selected from the text file. The default is 50.
-The -t option lets you change the time taken to calculate the crossword. The default is 2 seconds.
+The -t option lets you change the time taken to calculate the crossword. The default is 1 seconds.
 You might need to increase this time if you are creating a large crossword, but it will only really help 
 if you increase the grid size as well.
 """
@@ -62,7 +62,7 @@ class Finishxword(object):
         if self.args.time:
             self.tcalc = self.args.time
         else:
-            self.tcalc = 2
+            self.tcalc = 1
 
     def grid_size(self):
         if len(self.word_list) <= 20:
