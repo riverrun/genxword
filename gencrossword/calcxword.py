@@ -21,7 +21,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random, time, string, cairo
-from copy import copy as duplicate
  
 class Crossword(object):
     def __init__(self, cols, rows, empty = '-', available_words=[]):
@@ -84,14 +83,14 @@ class Crossword(object):
         return coordlist
  
     def first_word(self, word):
-        """Place the first word in the middle of the grid."""
+        """Place the first word at a random position in the grid."""
         vertical = random.randrange(0, 2)
         if vertical:
-            col = int(round((self.cols - 1) / 2, 0))
-            row = int(round((self.rows - 1) / 2, 0)) - int(round(((len(word.word)) - 1) / 2, 0))
+            col = random.randrange(0, self.cols)
+            row = random.randrange(0, self.rows - word.length)
         else:
-            col = int(round((self.cols - 1) / 2, 0)) - int(round(((len(word.word)) - 1) / 2, 0))
-            row = int(round((self.rows - 1) / 2, 0))
+            col = random.randrange(0, self.cols - word.length)
+            row = random.randrange(0, self.rows)
         self.set_word(col, row, vertical, word)
 
     def add_words(self, word):
@@ -241,8 +240,26 @@ class Crossword(object):
             context.show_page()
             surface.finish()
 
+    def create_files(self, name, filetype):
+        if filetype == 'b':
+            self.img_grid(name + '_grid.png')
+            self.img_grid(name + '_key.png')
+            self.img_grid(name + '_grid.svg')
+            self.img_grid(name + '_key.svg')
+            img_files = name + '_grid.png, ' + name + '_key.png, ' + name + '_grid.svg, ' + name + '_key.svg and '
+        elif filetype == 's':
+            self.img_grid(name + '_grid.svg')
+            self.img_grid(name + '_key.svg')
+            img_files = name + '_grid.svg, ' + name + '_key.svg and '
+        else:
+            self.img_grid(name + '_grid.png')
+            self.img_grid(name + '_key.png')
+            img_files = name + '_grid.png, ' + name + '_key.png and '
+        self.clues_txt(name + '_clues.txt')
+        print('The files ' + img_files + name + '_clues.txt\nhave been saved to your current working directory.')
+
     def word_bank(self): 
-        temp_list = duplicate(self.current_word_list)
+        temp_list = list(self.current_word_list)
         random.shuffle(temp_list)
         return 'Word bank\n' + ''.join(['{}\n'.format(word.word) for word in temp_list])
  

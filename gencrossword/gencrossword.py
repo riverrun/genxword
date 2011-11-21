@@ -66,11 +66,11 @@ class Finishxword(object):
 
     def grid_size(self):
         if len(self.word_list) <= 20:
-            self.ncol, self.nrow = 17, 17
+            self.ncol = self.nrow = 17
         elif len(self.word_list) <= 100:
             self.ncol = self.nrow = int((round(((len(self.word_list) - 20) / 7.5), 0) * 2) + 17)
         else:
-            self.ncol, self.nrow = 41, 41
+            self.ncol = self.nrow = 41
         gsize = str(self.ncol) + ', ' + str(self.nrow)
         grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
         if grid_size:
@@ -94,25 +94,7 @@ class Finishxword(object):
                 self.ncol += 2;self.nrow += 2
         xword_name = raw_input('Enter a name for your crossword: ')
         img_type = raw_input('Do you want to save the empty grid and key as png files, svg or both? [P/s/b] ')
-        if img_type.strip() == 'b':
-            a.img_grid(xword_name + '_grid.png')
-            a.img_grid(xword_name + '_key.png')
-            a.img_grid(xword_name + '_grid.svg')
-            a.img_grid(xword_name + '_key.svg')
-            print('The files ' + xword_name + '_grid.png, ' + xword_name + '_key.png, '
-                    + xword_name + '_grid.svg, ' + xword_name + '_key.svg and ' 
-                    + xword_name + '_clues.txt\nhave been saved to your current working directory.')
-        elif img_type.strip() == 's':
-            a.img_grid(xword_name + '_grid.svg')
-            a.img_grid(xword_name + '_key.svg')
-            print('The files ' + xword_name + '_grid.svg, ' + xword_name + '_key.svg and ' 
-                    + xword_name + '_clues.txt\nhave been saved to your current working directory.')
-        else:
-            a.img_grid(xword_name + '_grid.png')
-            a.img_grid(xword_name + '_key.png')
-            print('The files ' + xword_name + '_grid.png, ' + xword_name + '_key.png and ' 
-                    + xword_name + '_clues.txt\nhave been saved to your current working directory.')
-        a.clues_txt(xword_name + '_clues.txt')
+        a.create_files(xword_name, img_type.strip())
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
