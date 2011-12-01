@@ -225,6 +225,15 @@ class Crossword(object):
                         context.set_source_rgb(0, 0, 0)
                         context.rectangle(5+(i*px), 5+(r*px), px, px)
                         context.stroke()
+                    else:
+                        if not self.check_cell_empty(i+1, r) and not self.check_cell_empty(i-1, r):
+                            if not self.check_cell_empty(i, r-1) and not self.check_cell_empty(i, r+1):
+                                if i + 1 != self.cols and r + 1 != self.rows:
+                                    context.set_line_width(1.5)
+                                    context.set_source_rgb(0, 0, 0)
+                                    context.move_to(5+px+(i*px), 5+(r*px))
+                                    context.line_to(5+(i*px), 5+px+(r*px))
+                                    context.stroke()
 
         self.order_number_words()
         for word in self.current_word_list:
