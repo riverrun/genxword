@@ -60,8 +60,8 @@ Installation
 Linux
 -----
 
-To run this program, you need to have python2.7 installed. It will not work with earlier versions of python. 
-It depends on py2cairo, which is already installed on most popular distros, to produce the image files.
+To run this program, you need to have **python2.7** or **python3** installed. It will not work with earlier versions of python. 
+It depends on py2cairo (or pycairo), which is already installed on most popular distros, to produce the image files.
 
 To install this program, run the following commands (replace *python* with *python2* if you are using Arch Linux)::
 
@@ -70,6 +70,8 @@ To install this program, run the following commands (replace *python* with *pyth
     sudo python setup.py install
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
+
+For use with **python3**, run the *py3-version.sh* script after changing to the *genxword* directory, and then run the last three commands.
 
 Alternatively, you can download a tarball from the **Downloads** tab, unpack it, change to the *riverrun-genxword-somenumber* 
 directory, and then run the last three commands.
