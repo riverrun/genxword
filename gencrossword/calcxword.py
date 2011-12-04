@@ -229,10 +229,14 @@ class Crossword(object):
                         if not self.check_cell_empty(i+1, r) and not self.check_cell_empty(i-1, r):
                             if not self.check_cell_empty(i, r-1) and not self.check_cell_empty(i, r+1):
                                 if i + 1 != self.cols and r + 1 != self.rows:
-                                    context.set_line_width(1.5)
+                                    context.set_line_width(0.5)
                                     context.set_source_rgb(0, 0, 0)
                                     context.move_to(5+px+(i*px), 5+(r*px))
                                     context.line_to(5+(i*px), 5+px+(r*px))
+                                    context.move_to(5+(px/2)+(i*px), 5+(r*px))
+                                    context.line_to(5+(i*px), 5+(px/2)+(r*px))
+                                    context.move_to(5+px+(i*px), 5+(px/2)+(r*px))
+                                    context.line_to(5+(px/2)+(i*px), 5+px+(r*px))
                                     context.stroke()
 
         self.order_number_words()
