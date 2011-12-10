@@ -228,7 +228,7 @@ class Crossword(object):
                     else:
                         if not self.check_cell_empty(i+1, r) and not self.check_cell_empty(i-1, r):
                             if not self.check_cell_empty(i, r-1) and not self.check_cell_empty(i, r+1):
-                                if i + 1 != self.cols and r + 1 != self.rows:
+                                if i and i + 1 != self.cols and r and r + 1 != self.rows:
                                     context.set_line_width(0.5)
                                     context.set_source_rgb(0, 0, 0)
                                     context.move_to(5+px+(i*px), 5+(r*px))
