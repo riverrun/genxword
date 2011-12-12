@@ -71,10 +71,11 @@ To install this program, run the following commands (replace *python* with *pyth
     sudo cp genxword /usr/local/bin/
     sudo chmod 755 /usr/local/bin/genxword
 
-For use with **python3**, run the *py3-version.sh* script after changing to the *genxword* directory, and then run the last three commands.
+For use with **python3**, run the *py3-version.sh* script after changing to the *genxword* directory, 
+replace *python* with *python3* in the third command, and then run the last two commands.
 
-Alternatively, you can download a tarball from the **Downloads** tab, unpack it, change to the *riverrun-genxword-somenumber* 
-directory, and then run the last three commands.
+Alternatively, for either version, you can download a tarball from the **Downloads** tab, unpack it, 
+change to the *riverrun-genxword-somenumber* directory, and then run the last three commands.
 
 Note about svg files
 ====================
