@@ -209,28 +209,18 @@ class Crossword(object):
             for i, c in enumerate(self.grid[r]):
                 if c != self.empty:
                     context.set_line_width(1.0)
-                    context.set_source_rgb(0, 0, 0)
+                    context.set_source_rgb(0.5, 0.5, 0.5)
                     context.rectangle(5+(i*px), 5+(r*px), px, px)
+                    context.stroke()
+                    context.set_line_width(1.0)
+                    context.set_source_rgb(0, 0, 0)
+                    context.rectangle(6+(i*px), 6+(r*px), px-2, px-2)
                     context.stroke()
                     if name.endswith('key.png') or name.endswith('key.svg'):
                         context.select_font_face('monospace')
                         context.set_font_size(14)
                         context.move_to(5+(i*px)+8, 5+(r*px)+20)
                         context.show_text(c)
-
-                else:
-                    if not self.check_cell_empty(i+1, r) and not self.check_cell_empty(i-1, r):
-                        if not self.check_cell_empty(i, r-1) and not self.check_cell_empty(i, r+1):
-                            if i and i + 1 != self.cols and r and r + 1 != self.rows:
-                                context.set_line_width(0.5)
-                                context.set_source_rgb(0, 0, 0)
-                                context.move_to(5+px+(i*px), 5+(r*px))
-                                context.line_to(5+(i*px), 5+px+(r*px))
-                                context.move_to(5+(px/2)+(i*px), 5+(r*px))
-                                context.line_to(5+(i*px), 5+(px/2)+(r*px))
-                                context.move_to(5+px+(i*px), 5+(px/2)+(r*px))
-                                context.line_to(5+(px/2)+(i*px), 5+px+(r*px))
-                                context.stroke()
 
         self.order_number_words()
         for word in self.current_word_list:
