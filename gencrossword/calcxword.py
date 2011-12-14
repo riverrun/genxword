@@ -195,7 +195,7 @@ class Crossword(object):
             icount += 1
 
     def img_grid(self, name):
-        px = 26
+        px = 30
         if name.endswith('png'):
             surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 10+(self.cols*px), 10+(self.rows*px))
         else:
@@ -219,7 +219,7 @@ class Crossword(object):
                     if name.endswith('key.png') or name.endswith('key.svg'):
                         context.select_font_face('monospace')
                         context.set_font_size(14)
-                        context.move_to(5+(i*px)+8, 5+(r*px)+20)
+                        context.move_to(5+(i*px)+10, 5+(r*px)+22)
                         context.show_text(c)
 
         self.order_number_words()
@@ -227,7 +227,7 @@ class Crossword(object):
             x, y = 5+((word.col-1)*px), 5+((word.row-1)*px)
             context.select_font_face('monospace')
             context.set_font_size(8)
-            context.move_to(x+2, y+9)
+            context.move_to(x+3, y+10)
             context.show_text(str(word.number))
 
         if name.endswith('png'):
