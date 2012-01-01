@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import random, time, string, cairo
+import random, time, string, cairo, textwrap
  
 class Crossword(object):
     def __init__(self, cols, rows, empty = '-', available_words=[]):
@@ -194,8 +194,34 @@ class Crossword(object):
                     count += 1
             icount += 1
 
-    def img_grid(self, name):
-        px = 30
+    def draw_img(self, name, context, px, xoffset, yoffset):
+        for r in range(self.rows):
+            for i, c in enumerate(self.grid[r]):
+                if c != self.empty:
+                    context.set_line_width(1.0)
+                    context.set_source_rgb(0.5, 0.5, 0.5)
+                    context.rectangle(xoffset+(i*px), yoffset+(r*px), px, px)
+                    context.stroke()
+                    context.set_line_width(1.0)
+                    context.set_source_rgb(0, 0, 0)
+                    context.rectangle(xoffset+1+(i*px), yoffset+1+(r*px), px-2, px-2)
+                    context.stroke()
+                    if '_key.' in name:
+                        context.select_font_face('monospace')
+                        context.set_font_size(14)
+                        context.move_to(xoffset+(i*px)+10, yoffset+(r*px)+22)
+                        context.show_text(c)
+
+        self.order_number_words()
+        for word in self.current_word_list:
+            x, y = xoffset+((word.col-1)*px), yoffset+((word.row-1)*px)
+            context.select_font_face('monospace')
+            context.set_font_size(8)
+            context.move_to(x+3, y+10)
+            context.show_text(str(word.number))
+
+    def create_img(self, name):
+        px = 28
         if name.endswith('png'):
             surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 10+(self.cols*px), 10+(self.rows*px))
         else:
@@ -204,52 +230,65 @@ class Crossword(object):
         context.set_source_rgb(1, 1, 1)
         context.rectangle(0, 0, 10+(self.cols*px), 10+(self.rows*px))
         context.fill()
-
-        for r in range(self.rows):
-            for i, c in enumerate(self.grid[r]):
-                if c != self.empty:
-                    context.set_line_width(1.0)
-                    context.set_source_rgb(0.5, 0.5, 0.5)
-                    context.rectangle(5+(i*px), 5+(r*px), px, px)
-                    context.stroke()
-                    context.set_line_width(1.0)
-                    context.set_source_rgb(0, 0, 0)
-                    context.rectangle(6+(i*px), 6+(r*px), px-2, px-2)
-                    context.stroke()
-                    if name.endswith('key.png') or name.endswith('key.svg'):
-                        context.select_font_face('monospace')
-                        context.set_font_size(14)
-                        context.move_to(5+(i*px)+10, 5+(r*px)+22)
-                        context.show_text(c)
-
-        self.order_number_words()
-        for word in self.current_word_list:
-            x, y = 5+((word.col-1)*px), 5+((word.row-1)*px)
-            context.select_font_face('monospace')
-            context.set_font_size(8)
-            context.move_to(x+3, y+10)
-            context.show_text(str(word.number))
-
+        self.draw_img(name, context, 28, 5, 5)
         if name.endswith('png'):
             surface.write_to_png(name)
         else:
             context.show_page()
             surface.finish()
 
+    def export_pdf(self, name):
+        px, xoffset, yoffset = 28, 40, 80
+        surface = cairo.PDFSurface(name, 595, 840)
+        context = cairo.Context(surface)
+        context.set_source_rgb(1, 1, 1)
+        context.rectangle(0, 0, 595, 840)
+        context.fill()
+        context.save()
+        sc_ratio = (float(595-(xoffset*2)))/(px*self.cols)
+        if self.cols <= 21:
+            sc_ratio, xoffset = 0.8, float((1.25*595-(px*self.cols))/2)
+        context.scale(sc_ratio, sc_ratio)
+        self.draw_img(name, context, 28, xoffset, 80)
+        context.restore()
+        context.set_source_rgb(0, 0, 0)
+        context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+        context.set_font_size(16)
+        context.move_to(round((595-len(name)*12)/2), yoffset/2)
+        context.show_text(name)
+        x, ay, dy = 40, yoffset+5+(self.rows*px*sc_ratio), yoffset+5+(self.rows*px*sc_ratio)
+        context.move_to(140, ay)
+        context.show_text('Across')
+        context.move_to(380, ay)
+        context.show_text('Down')
+        context.select_font_face('monospace')
+        context.set_font_size(10)
+        self.legend()
+        for line in self.outStrA.splitlines()[3:]:
+            context.move_to(x, ay+15)
+            context.show_text(line)
+            ay += 18
+        for line in self.outStrD.splitlines()[1:]:
+            context.move_to(x+260, dy+15)
+            context.show_text(line)
+            dy += 18
+        context.show_page()
+        surface.finish()
+
     def create_files(self, name, filetype):
         if filetype == 'b':
-            self.img_grid(name + '_grid.png')
-            self.img_grid(name + '_key.png')
-            self.img_grid(name + '_grid.svg')
-            self.img_grid(name + '_key.svg')
+            self.create_img(name + '_grid.png')
+            self.create_img(name + '_key.png')
+            self.create_img(name + '_grid.svg')
+            self.create_img(name + '_key.svg')
             img_files = name + '_grid.png, ' + name + '_key.png, ' + name + '_grid.svg, ' + name + '_key.svg and '
         elif filetype == 's':
-            self.img_grid(name + '_grid.svg')
-            self.img_grid(name + '_key.svg')
+            self.create_img(name + '_grid.svg')
+            self.create_img(name + '_key.svg')
             img_files = name + '_grid.svg, ' + name + '_key.svg and '
         else:
-            self.img_grid(name + '_grid.png')
-            self.img_grid(name + '_key.png')
+            self.create_img(name + '_grid.png')
+            self.create_img(name + '_key.png')
             img_files = name + '_grid.png, ' + name + '_key.png and '
         self.clues_txt(name + '_clues.txt')
         print('The files ' + img_files + name + '_clues.txt\nhave been saved to your current working directory.')
@@ -260,14 +299,13 @@ class Crossword(object):
         return 'Word bank\n' + ''.join(['{}\n'.format(word.word) for word in temp_list])
  
     def legend(self):
-        outStrA = '\nClues\nAcross\n'
-        outStrD = 'Down\n'
+        self.outStrA, self.outStrD = '\nClues\nAcross\n', 'Down\n'
         for word in self.current_word_list:
             if word.vertical:
-                outStrD += '{:d}. {}\n'.format(word.number, word.clue)
+                self.outStrD += textwrap.fill('{:d}. {}'.format(word.number, word.clue), 40) + '\n'
             else:
-                outStrA += '{:d}. {}\n'.format(word.number, word.clue)
-        return outStrA + outStrD
+                self.outStrA += textwrap.fill('{:d}. {}'.format(word.number, word.clue), 40) + '\n'
+        return self.outStrA + self.outStrD
  
     def clues_txt(self, name):
         clues_file = open(name, 'w')
