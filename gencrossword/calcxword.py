@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import random, time, string, cairo, textwrap
+import random, time, string, cairo
  
 class Crossword(object):
     def __init__(self, cols, rows, empty = '-', available_words=[]):
@@ -253,25 +253,35 @@ class Crossword(object):
         context.restore()
         context.set_source_rgb(0, 0, 0)
         context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-        context.set_font_size(16)
-        context.move_to(round((595-len(name)*12)/2), yoffset/2)
+        context.set_font_size(18)
+        context.move_to(round((595-len(name)*10)/2), yoffset/2)
         context.show_text(name)
-        x, ay, dy = 40, yoffset+5+(self.rows*px*sc_ratio), yoffset+5+(self.rows*px*sc_ratio)
-        context.move_to(140, ay)
+        x, y = 40, yoffset+5+(self.rows*px*sc_ratio)
+        context.move_to(x, y)
+        context.set_font_size(14)
         context.show_text('Across')
-        context.move_to(380, ay)
-        context.show_text('Down')
         context.select_font_face('monospace')
         context.set_font_size(10)
-        self.legend()
-        for line in self.outStrA.splitlines()[3:]:
-            context.move_to(x, ay+15)
+        clues = self.wrap(self.legend())
+        for line in clues.splitlines()[3:]:
+            if y >= 800:
+                context.show_page()
+                y = yoffset/2
+            if line.strip() == 'Down':
+                if self.cols > 17 and y > 700:
+                    context.show_page()
+                    y = yoffset/2
+                context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+                context.set_font_size(14)
+                context.move_to(x, y+15)
+                context.show_text(line)
+                y += 16
+                context.select_font_face('monospace')
+                context.set_font_size(10)
+                continue
+            context.move_to(x, y+15)
             context.show_text(line)
-            ay += 18
-        for line in self.outStrD.splitlines()[1:]:
-            context.move_to(x+260, dy+15)
-            context.show_text(line)
-            dy += 18
+            y += 16
         context.show_page()
         surface.finish()
 
@@ -293,19 +303,36 @@ class Crossword(object):
         self.clues_txt(name + '_clues.txt')
         print('The files ' + img_files + name + '_clues.txt\nhave been saved to your current working directory.')
 
+    def wrap(self, text, width=80):
+        lines = []
+        for paragraph in text.split('\n'):
+            line = []
+            len_line = 0
+            for word in paragraph.split():
+                len_word = len(word)
+                if len_line + len_word <= width:
+                    line.append(word)
+                    len_line += len_word + 1
+                else:
+                    lines.append(' '.join(line))
+                    line = [word]
+                    len_line = len_word + 1
+            lines.append(' '.join(line))
+        return '\n'.join(lines)
+
     def word_bank(self): 
         temp_list = list(self.current_word_list)
         random.shuffle(temp_list)
         return 'Word bank\n' + ''.join(['{}\n'.format(word.word) for word in temp_list])
  
     def legend(self):
-        self.outStrA, self.outStrD = '\nClues\nAcross\n', 'Down\n'
+        outStrA, outStrD = '\nClues\nAcross\n', 'Down\n'
         for word in self.current_word_list:
             if word.vertical:
-                self.outStrD += textwrap.fill('{:d}. {}'.format(word.number, word.clue), 40) + '\n'
+                outStrD += '{:d}. {}\n'.format(word.number, word.clue)
             else:
-                self.outStrA += textwrap.fill('{:d}. {}'.format(word.number, word.clue), 40) + '\n'
-        return self.outStrA + self.outStrD
+                outStrA += '{:d}. {}\n'.format(word.number, word.clue)
+        return outStrA + outStrD
  
     def clues_txt(self, name):
         clues_file = open(name, 'w')
