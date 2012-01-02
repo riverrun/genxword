@@ -91,11 +91,7 @@ class Finishxword(object):
             inc_gsize = raw_input('And increase the grid size? [Y/n] ')
             if inc_gsize.strip() != 'n':
                 self.ncol += 2;self.nrow += 2
-        xword_name = raw_input('Enter a name for your crossword: ')
-        img_type = raw_input('Do you want to save the empty grid and key as png files, svg or both? [P/s/b] ')
-        a.create_files(xword_name, img_type.strip())
-        a.export_pdf(xword_name + '_grid.pdf')
-        a.export_pdf(xword_name + '_key.pdf')
+        a.create_files()
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)

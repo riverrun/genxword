@@ -237,8 +237,9 @@ class Crossword(object):
             context.show_page()
             surface.finish()
 
-    def export_pdf(self, name):
+    def export_pdf(self, xwname, filetype):
         px, xoffset, yoffset = 28, 40, 80
+        name = xwname + filetype
         surface = cairo.PDFSurface(name, 595, 840)
         context = cairo.Context(surface)
         context.set_source_rgb(1, 1, 1)
@@ -254,8 +255,8 @@ class Crossword(object):
         context.set_source_rgb(0, 0, 0)
         context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
         context.set_font_size(18)
-        context.move_to(round((595-len(name)*10)/2), yoffset/2)
-        context.show_text(name)
+        context.move_to(round((595-len(xwname)*10)/2), yoffset/2)
+        context.show_text(xwname)
         x, y = 40, yoffset+5+(self.rows*px*sc_ratio)
         context.move_to(x, y)
         context.set_font_size(14)
@@ -285,14 +286,20 @@ class Crossword(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, filetype):
-        if filetype == 'b':
+    def create_files(self):
+        name = raw_input('Enter a name for your crossword: ')
+        pdf_option = raw_input('Do you want to save the grid and clues to a pdf file? [Y/n] ')
+        if pdf_option.strip() != 'n':
+            self.export_pdf(name, '_grid.pdf')
+            self.export_pdf(name, '_key.pdf')
+        img_type = raw_input('Do you want to save the empty grid and key as png files, svg or both? [P/s/b] ')
+        if img_type == 'b':
             self.create_img(name + '_grid.png')
             self.create_img(name + '_key.png')
             self.create_img(name + '_grid.svg')
             self.create_img(name + '_key.svg')
             img_files = name + '_grid.png, ' + name + '_key.png, ' + name + '_grid.svg, ' + name + '_key.svg and '
-        elif filetype == 's':
+        elif img_type == 's':
             self.create_img(name + '_grid.svg')
             self.create_img(name + '_key.svg')
             img_files = name + '_grid.svg, ' + name + '_key.svg and '
