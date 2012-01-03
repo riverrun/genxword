@@ -37,25 +37,13 @@ class Finishxword(object):
         self.args = args
 
     def wlist(self):
-        if self.args.inputfile:
-            if self.args.nword:
-                nword = self.args.nword
-            else:
-                nword = 50
-            self.word_list = [line.strip().split(' ', 1) for line in self.args.inputfile]
-            if len(self.word_list) > nword:
-                self.word_list = random.sample(self.word_list, nword)
+        if self.args.nword:
+            nword = self.args.nword
         else:
-            self.word_list = []
-            print('When you have finished writing the words and clues, just press enter to start calculating the crossword.')
-            wcount = 1
-            while 1:
-                x = raw_input('Enter word number ' + str(wcount) + ': ')
-                if x == '':
-                    break
-                y = raw_input('Enter clue number ' + str(wcount) + ': ')
-                self.word_list.append([x, y])
-                wcount += 1
+            nword = 50
+        self.word_list = [line.strip().split(' ', 1) for line in self.args.infile]
+        if len(self.word_list) > nword:
+            self.word_list = random.sample(self.word_list, nword)
 
     def calctime(self):
         if self.args.time:
@@ -95,7 +83,7 @@ class Finishxword(object):
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
-    parser.add_argument('-i', '--inputfile', type=argparse.FileType('r'), dest='inputfile', help='Name of file to be imported.')
+    parser.add_argument('infile', type=argparse.FileType('r'), help='Name of file to be imported.')
     parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
     parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
     args = parser.parse_args()

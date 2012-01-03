@@ -237,27 +237,27 @@ class Crossword(object):
             context.show_page()
             surface.finish()
 
-    def export_pdf(self, xwname, filetype):
-        px, xoffset, yoffset = 28, 40, 80
+    def export_pdf(self, xwname, filetype, width=595, height=842):
+        px, xoffset, yoffset = 28, 36, 72
         name = xwname + filetype
-        surface = cairo.PDFSurface(name, 595, 840)
+        surface = cairo.PDFSurface(name, width, height)
         context = cairo.Context(surface)
         context.set_source_rgb(1, 1, 1)
-        context.rectangle(0, 0, 595, 840)
+        context.rectangle(0, 0, width, height)
         context.fill()
         context.save()
-        sc_ratio = (float(595-(xoffset*2)))/(px*self.cols)
+        sc_ratio = (float(width-(xoffset*2)))/(px*self.cols)
         if self.cols <= 21:
-            sc_ratio, xoffset = 0.8, float((1.25*595-(px*self.cols))/2)
+            sc_ratio, xoffset = 0.8, float((1.25*width-(px*self.cols))/2)
         context.scale(sc_ratio, sc_ratio)
         self.draw_img(name, context, 28, xoffset, 80)
         context.restore()
         context.set_source_rgb(0, 0, 0)
         context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
         context.set_font_size(18)
-        context.move_to(round((595-len(xwname)*10)/2), yoffset/2)
+        context.move_to(round((width-len(xwname)*10)/2), yoffset/2)
         context.show_text(xwname)
-        x, y = 40, yoffset+5+(self.rows*px*sc_ratio)
+        x, y = 36, yoffset+5+(self.rows*px*sc_ratio)
         context.move_to(x, y)
         context.set_font_size(14)
         context.show_text('Across')
@@ -265,7 +265,7 @@ class Crossword(object):
         context.set_font_size(10)
         clues = self.wrap(self.legend())
         for line in clues.splitlines()[3:]:
-            if y >= 800:
+            if y >= height-(yoffset/2)-15:
                 context.show_page()
                 y = yoffset/2
             if line.strip() == 'Down':
