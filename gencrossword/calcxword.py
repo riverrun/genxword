@@ -289,13 +289,17 @@ class Crossword(object):
     def create_files(self):
         name = raw_input('Enter a name for your crossword: ')
         menu = 'The following options are available. You can select more than one option if you like.\
-                \n\t1. Export the grid and clues to a pdf file.\n\t2. Save the empty grid and key as png files.\
-                \n\t3. Save the empty grid and key as svg files.\n'
+                \n\t1. Export the grid and clues to a pdf file (the default is A4. Type "1l" to save it in letter size).\
+                \n\t2. Save the empty grid and key as png files.\n\t3. Save the empty grid and key as svg files.\n'
         save_options = raw_input(menu)
         img_files = ''
         if '1' in save_options:
-            self.export_pdf(name, '_grid.pdf')
-            self.export_pdf(name, '_key.pdf')
+            if 'l' in save_options:
+                self.export_pdf(name, '_grid.pdf', 612, 792)
+                self.export_pdf(name, '_key.pdf', 612, 792)
+            else:
+                self.export_pdf(name, '_grid.pdf')
+                self.export_pdf(name, '_key.pdf')
             img_files += name + '_grid.pdf ' + name + '_key.pdf '
         if '2' in save_options:
             self.create_img(name + '_grid.png')

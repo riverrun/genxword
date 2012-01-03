@@ -22,9 +22,9 @@
 import argparse, random
 from . import calcxword
 
-usage_info = """Creates a crossword from a list of words and clues typed on the command line
-or from a text file. Outputs an empty grid and key in png and/or svg format, and the word bank and clues in a text file.
-The -i option lets you use a text file to create the word list. The text file can contain words and clues, or just single words.
+usage_info = """Creates a crossword from a list of words and clues from a text file. You can save the crossword, with clues, as a 
+pdf file, or you can save the empty grid and key in png and/or svg format, together with the word bank and clues in a text file.
+You need to write the name of the text file you will use to create the word list. The text file can contain words and clues, or just single words.
 If you are using a file with words and clues in it, each word should be separated from the clue by just a space, 
 and each word and clue, or word, should be on a separate line.
 The -n option lets you choose how many words will be randomly selected from the text file. The default is 50.
