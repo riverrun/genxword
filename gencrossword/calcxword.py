@@ -5,7 +5,7 @@
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs an empty grid and key in png/svg format and a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011 David Whitlock
+# Copyright (C) 2011-2012 David Whitlock
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -305,7 +305,7 @@ class Crossword(object):
             self.create_img(name + '_grid.png')
             self.create_img(name + '_key.png')
             self.clues_txt(name + '_clues.txt')
-            img_files += name + '_grid.png ' + name + '_key.png ' + name + '_clues.txt'
+            img_files += name + '_grid.png ' + name + '_key.png ' + name + '_clues.txt '
         if '3' in save_options:
             self.create_img(name + '_grid.svg')
             self.create_img(name + '_key.svg')
