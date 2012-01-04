@@ -22,14 +22,10 @@
 import argparse, random
 from . import calcxword
 
-usage_info = """Creates a crossword from a list of words and clues from a text file. You can save the crossword, with clues, as a 
-pdf file, or you can save the empty grid and key in png and/or svg format, together with the word bank and clues in a text file.
-You need to write the name of the text file you will use to create the word list. The text file can contain words and clues, or just single words.
+usage_info = """The word list file contains the words and clues, or just words, that you want in your crossword. 
 If you are using a file with words and clues in it, each word should be separated from the clue by just a space, 
-and each word and clue, or word, should be on a separate line.
-The -n option lets you choose how many words will be randomly selected from the text file. The default is 50.
-The -t option lets you change the maximum time taken to calculate the crossword. The default is 1 second.
-Increasing this time will not make much difference, but the option is there if you want it.
+and each word and clue, or word, should be on a separate line. The crossword grid and key can be saved in pdf, 
+png and/or svg format, and the word bank and clues are saved in a text file.
 """
 
 class Finishxword(object):
@@ -83,7 +79,7 @@ class Finishxword(object):
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
-    parser.add_argument('infile', type=argparse.FileType('r'), help='Name of file to be imported.')
+    parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file. Required argument.')
     parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
     parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
     args = parser.parse_args()
