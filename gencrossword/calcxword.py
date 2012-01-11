@@ -44,12 +44,10 @@ class Crossword(object):
  
     def compute_crossword(self, time_permitted = 1.00, spins=2):
         time_permitted = float(time_permitted)
- 
-        count = 0
         copy = Crossword(self.cols, self.rows, self.empty, self.available_words)
  
         start_full = float(time.time())
-        while (float(time.time()) - start_full) < time_permitted or count == 0:
+        while (float(time.time()) - start_full) < time_permitted:
             copy.current_word_list = []
             copy.prep_grid_words()
             copy.first_word(copy.available_words[0])
@@ -59,7 +57,6 @@ class Crossword(object):
                 self.grid = copy.grid
             if len(self.current_word_list) == len(self.available_words):
                 break
-            count += 1
         return
  
     def get_coords(self, word):

@@ -32,7 +32,7 @@ setup(
     name = 'genxword',
     version = '0.2.0',
     packages = ['gencrossword'],
-    author = 'David Whitlock Bryan Helmig',
+    author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',
     description = 'A crossword generator',
