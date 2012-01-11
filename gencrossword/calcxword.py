@@ -207,18 +207,21 @@ class Crossword(object):
                     context.rectangle(xoffset+1+(i*px), yoffset+1+(r*px), px-2, px-2)
                     context.stroke()
                     if '_key.' in name:
-                        context.select_font_face('monospace')
-                        context.set_font_size(14)
-                        context.move_to(xoffset+(i*px)+10, yoffset+(r*px)+22)
-                        context.show_text(c)
+                        self.draw_letters(c, context, xoffset+(i*px)+10, yoffset+(r*px)+22, 14)
 
         self.order_number_words()
         for word in self.current_word_list:
             x, y = xoffset+((word.col-1)*px), yoffset+((word.row-1)*px)
+            self.draw_letters(str(word.number), context, x+3, y+10, 8)
+
+    def draw_letters(self, text, context, xval, yval, fontsize, bold=False):
+        if bold:
+            context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
+        else:
             context.select_font_face('monospace')
-            context.set_font_size(8)
-            context.move_to(x+3, y+10)
-            context.show_text(str(word.number))
+        context.set_font_size(fontsize)
+        context.move_to(xval, yval)
+        context.show_text(text)
 
     def create_img(self, name):
         px = 28
@@ -253,16 +256,9 @@ class Crossword(object):
         self.draw_img(name, context, 28, xoffset, 80)
         context.restore()
         context.set_source_rgb(0, 0, 0)
-        context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-        context.set_font_size(18)
-        context.move_to(round((width-len(xwname)*10)/2), yoffset/2)
-        context.show_text(xwname)
+        self.draw_letters(xwname, context, round((width-len(xwname)*10)/2), yoffset/2, 18, bold=True)
         x, y = 36, yoffset+5+(self.rows*px*sc_ratio)
-        context.move_to(x, y)
-        context.set_font_size(14)
-        context.show_text('Across')
-        context.select_font_face('monospace')
-        context.set_font_size(10)
+        self.draw_letters('Across', context, x, y, 14, bold=True)
         clues = self.wrap(self.legend())
         for line in clues.splitlines()[3:]:
             if y >= height-(yoffset/2)-15:
@@ -272,16 +268,10 @@ class Crossword(object):
                 if self.cols > 17 and y > 700:
                     context.show_page()
                     y = yoffset/2
-                context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-                context.set_font_size(14)
-                context.move_to(x, y+15)
-                context.show_text(line)
+                self.draw_letters('Down', context, x, y+15, 14, bold=True)
                 y += 16
-                context.select_font_face('monospace')
-                context.set_font_size(10)
                 continue
-            context.move_to(x, y+15)
-            context.show_text(line)
+            self.draw_letters(line, context, x, y+15, 10)
             y += 16
         context.show_page()
         surface.finish()
