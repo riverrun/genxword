@@ -273,12 +273,7 @@ class Crossword(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_options=''):
-        if not save_options:
-            menu = 'The following options are available. You can select more than one option if you like.\
-                    \n\tp. Export the grid and clues to a pdf file (the default is A4. Type "pl" to save it in letter size).\
-                    \n\tn. Save the empty grid and key as png files.\n\ts. Save the empty grid and key as svg files.\n'
-            save_options = raw_input(menu)
+    def create_files(self, name, save_options):
         img_files = ''
         if 'p' in save_options:
             if 'l' in save_options:

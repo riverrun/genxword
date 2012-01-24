@@ -54,13 +54,14 @@ class Finishxword(object):
             self.ncol = self.nrow = int((round(((len(self.word_list) - 20) / 7.5), 0) * 2) + 19)
         else:
             self.ncol = self.nrow = 43
-        gsize = str(self.ncol) + ', ' + str(self.nrow)
-        grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
-        if grid_size:
-            try:
-                self.ncol, self.nrow = int(grid_size.split(',')[0]), int(grid_size.split(',')[1])
-            except:
-                pass
+        if not self.args.auto:
+            gsize = str(self.ncol) + ', ' + str(self.nrow)
+            grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
+            if grid_size:
+                try:
+                    self.ncol, self.nrow = int(grid_size.split(',')[0]), int(grid_size.split(',')[1])
+                except:
+                    pass
 
     def gengrid(self):
         while 1:
@@ -69,25 +70,28 @@ class Finishxword(object):
             a.compute_crossword(self.tcalc)
             print(a.solution())
             print(len(a.current_word_list), 'out of', len(self.word_list))
-            h = raw_input('Are you happy with this solution? [Y/n] ')
-            if h.strip() != 'n':
+            if self.args.auto:
                 break
-            inc_gsize = raw_input('And increase the grid size? [Y/n] ')
-            if inc_gsize.strip() != 'n':
-                self.ncol += 2;self.nrow += 2
-        name = raw_input('Enter a name for your crossword: ')
-        save_options = ''
-        if self.args.savefile:
-            save_options = self.args.savefile
-        a.create_files(name, save_options)
+            else:
+                h = raw_input('Are you happy with this solution? [Y/n] ')
+                if h.strip() != 'n':
+                    break
+                inc_gsize = raw_input('And increase the grid size? [Y/n] ')
+                if inc_gsize.strip() != 'n':
+                    self.ncol += 2;self.nrow += 2
+        if self.args.output:
+            name = self.args.output
+        else:
+            name = raw_input('Enter a name for your crossword: ')
+        a.create_files(name, self.args.savefile)
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file. Required argument.')
-    #parser.add_argument('savefile', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and / or svg (s).')
+    parser.add_argument('savefile', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and / or svg (s).')
+    parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
     parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
     parser.add_argument('-o', '--output', dest='output', help='Name of crossword.')
-    parser.add_argument('-s', '--savefile', dest='savefile', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and / or svg (s).')
     parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
     args = parser.parse_args()
     g = Finishxword(args)
