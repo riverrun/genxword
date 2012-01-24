@@ -273,14 +273,14 @@ class Crossword(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self):
-        name = raw_input('Enter a name for your crossword: ')
-        menu = 'The following options are available. You can select more than one option if you like.\
-                \n\t1. Export the grid and clues to a pdf file (the default is A4. Type "1l" to save it in letter size).\
-                \n\t2. Save the empty grid and key as png files.\n\t3. Save the empty grid and key as svg files.\n'
-        save_options = raw_input(menu)
+    def create_files(self, name, save_options=''):
+        if not save_options:
+            menu = 'The following options are available. You can select more than one option if you like.\
+                    \n\tp. Export the grid and clues to a pdf file (the default is A4. Type "pl" to save it in letter size).\
+                    \n\tn. Save the empty grid and key as png files.\n\ts. Save the empty grid and key as svg files.\n'
+            save_options = raw_input(menu)
         img_files = ''
-        if '1' in save_options:
+        if 'p' in save_options:
             if 'l' in save_options:
                 self.export_pdf(name, '_grid.pdf', 612, 792)
                 self.export_pdf(name, '_key.pdf', 612, 792)
@@ -288,16 +288,17 @@ class Crossword(object):
                 self.export_pdf(name, '_grid.pdf')
                 self.export_pdf(name, '_key.pdf')
             img_files += name + '_grid.pdf ' + name + '_key.pdf '
-        if '2' in save_options:
+        if 'n' in save_options:
             self.create_img(name + '_grid.png')
             self.create_img(name + '_key.png')
-            self.clues_txt(name + '_clues.txt')
-            img_files += name + '_grid.png ' + name + '_key.png ' + name + '_clues.txt '
-        if '3' in save_options:
+            img_files += name + '_grid.png ' + name + '_key.png '
+        if 's' in save_options:
             self.create_img(name + '_grid.svg')
             self.create_img(name + '_key.svg')
+            img_files += name + '_grid.svg ' + name + '_key.svg '
+        if 'n' in save_options or 's' in save_options:
             self.clues_txt(name + '_clues.txt')
-            img_files += name + '_grid.svg ' + name + '_key.svg ' + name + '_clues.txt'
+            img_files += name + '_clues.txt'
         print('The following files have been saved to your current working directory:\n' + img_files)
 
     def wrap(self, text, width=80):

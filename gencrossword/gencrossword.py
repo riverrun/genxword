@@ -75,12 +75,19 @@ class Finishxword(object):
             inc_gsize = raw_input('And increase the grid size? [Y/n] ')
             if inc_gsize.strip() != 'n':
                 self.ncol += 2;self.nrow += 2
-        a.create_files()
+        name = raw_input('Enter a name for your crossword: ')
+        save_options = ''
+        if self.args.savefile:
+            save_options = self.args.savefile
+        a.create_files(name, save_options)
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file. Required argument.')
+    #parser.add_argument('savefile', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and / or svg (s).')
     parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
+    parser.add_argument('-o', '--output', dest='output', help='Name of crossword.')
+    parser.add_argument('-s', '--savefile', dest='savefile', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and / or svg (s).')
     parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
     args = parser.parse_args()
     g = Finishxword(args)
