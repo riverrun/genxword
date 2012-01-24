@@ -81,6 +81,8 @@ class Finishxword(object):
                     self.ncol += 2;self.nrow += 2
         if self.args.output:
             name = self.args.output
+        elif self.args.auto:
+            name = 'Gumby'
         else:
             name = raw_input('Enter a name for your crossword: ')
         a.create_files(name, self.args.savefile)
