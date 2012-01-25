@@ -37,7 +37,7 @@ class Finishxword(object):
             nword = self.args.nword
         else:
             nword = 50
-        self.word_list = [line.strip().split(' ', 1) for line in self.args.infile]
+        self.word_list = [line.strip().split(' ', 1) for line in self.args.infile if line.strip()]
         if len(self.word_list) > nword:
             self.word_list = random.sample(self.word_list, nword)
 
@@ -79,21 +79,18 @@ class Finishxword(object):
                 inc_gsize = raw_input('And increase the grid size? [Y/n] ')
                 if inc_gsize.strip() != 'n':
                     self.ncol += 2;self.nrow += 2
-        if self.args.output:
-            name = self.args.output
-        elif self.args.auto:
-            name = 'Gumby'
-        else:
+        name = self.args.output
+        if not self.args.auto and name == 'Gumby':
             name = raw_input('Enter a name for your crossword: ')
-        a.create_files(name, self.args.savefile)
+        a.create_files(name, self.args.saveopts)
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file. Required argument.')
-    parser.add_argument('savefile', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and / or svg (s).')
+    parser.add_argument('saveopts', nargs='*', default='n', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and / or svg (s).')
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
     parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
-    parser.add_argument('-o', '--output', dest='output', help='Name of crossword.')
+    parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
     parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
     args = parser.parse_args()
     g = Finishxword(args)
