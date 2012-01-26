@@ -20,19 +20,31 @@ This program was originally written by Bryan Helmig and has since been developed
 Usage
 =====
 
-Genxword needs to be called with the name of the text file you will use to create the word list. 
-The text file can contain words and clues, or just single words. If you are using a file with words and clues in it, 
-each word should be separated from the clue by just a space, and each word and clue, or word, 
-should be on a separate line. Some example word list files are in the **examples** directory.
+Genxword needs to be called with the name of the text file you will use to create the word list 
+and the type of file that you want saved. The text file can contain words and clues, or just single words. 
+If you are using a file with words and clues in it, each word should be separated from the clue by just a space, 
+and each word and clue, or word, should be on a separate line. Some example word list files are in the **examples** directory.
+The crossword can be saved as a pdf file, with clues, or as png/svg files, together with a text file 
+containing the word bank and clues. All files are saved in the user's current working directory.
+
+Example::
+
+    genxword word_list.txt ps
+
+This command will produce a crossword using words from the word_list.txt file and save the grid, with clues, 
+as an A4-sized pdf file (p), the grid as an svg file (s), and a text file containing the word bank and clues.
 
 The -n option lets you choose how many words will be randomly selected from the text file. The default is 50.
 
 Example::
 
-    genxword word_list.txt -n 40
+    genxword -n 40 word_list.txt n
 
 This command will produce a crossword using 40 words randomly selected from the word_list.txt file, which can be several thousand words long.
-If the number of words in the text file is less than the -n number, or less than 50, all the words will be used.
+If the number of words in the text file is less than the -n number, or less than 50, all the words will be used. 
+This crossword will saved as a png file (n), which is the default, together with a text file containing the word bank and clues.
+
+The -o option allows you to choose a name for the crossword on the command line.
 
 There is also a -t option, which lets you change the maximum time taken to calculate the crossword. The default is 1 second. 
 Increasing this time will not make much difference, but the option is there if you want it.
@@ -41,8 +53,8 @@ The default grid size depends on how many words are used, but the user has the o
 
 Once the crossword has been calculated, the user has the option to have it recalculated. 
 Each time it is recalculated, the number of columns and the number of rows can both be increased. 
-Finally, the user decides whether to export the crossword, with clues, to a pdf file, or to save the image files as png / svg files, 
-together with a text file containing the word bank and clues. All files are saved in the user's current working directory.
+
+There is also the -a option, which allows you to run genxword non-interactively.
 
 Installation
 ============

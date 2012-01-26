@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
-# Crossword generator that outputs an empty grid and key in png/svg format and a text file containing the words and clues.
+# Crossword generator that outputs the grid and clues as a pdf file and/or
+# the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
 # Copyright (C) 2011-2012 David Whitlock
 #
@@ -87,7 +88,7 @@ class Finishxword(object):
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file. Required argument.')
-    parser.add_argument('saveopts', nargs='*', default='n', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and / or svg (s).')
+    parser.add_argument('saveopts', nargs='*', default='n', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and/or svg (s).')
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
     parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')

@@ -3,7 +3,8 @@
 """Calculate the crossword and export image and text files."""
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
-# Crossword generator that outputs an empty grid and key in png/svg format and a text file containing the words and clues.
+# Crossword generator that outputs the grid and clues as a pdf file and/or
+# the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
 # Copyright (C) 2011-2012 David Whitlock
 #
