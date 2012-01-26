@@ -1,11 +1,11 @@
 .\" Manpage for genxword.
-.TH genxword 8 "25/01/2012" "0.2.1" "genxword man page"
+.TH genxword 6 "26/01/2012" "0.2.1" "genxword man page"
 .SH NAME
 genxword \- a crossword generator
 .SH SYNOPSIS
 genxword [\-a] [\-n] [\-o] [\-t] infile saveopts
 .SH DESCRIPTION
-genxword is a crossword generator written in python. It reads words and clues,
+genxword is a crossword generator written in Python. It reads words and clues,
 or just words, from a text file. The crossword that is generated can be saved,
 with the clues, as a pdf file, and/or it can be saved in png/svg format,
 together with a text file containing the word bank and clues.
@@ -24,21 +24,21 @@ the image files as png (n), which is the default, and/or svg (s) files and
 the word bank and clues as a text file.
 .SH OPTIONS
 .TP
-\-h
-Print basic information about how to use the program.
-.TP
-\-a
+\-a, \-\-auto
 Run genxword non-interactively. Use this option if you want to run the program via a script.
 This option, however, gives you less control over the output.
 .TP
-\-n
+\-n, \-\-number
 The number of words to be used from the word list. The default is 50.
 .TP
-\-o
+\-o, \-\-output
 The name of the crossword. You can also choose the name while running the program.
 .TP
-\-t
+\-t, \-\-time
 The time used to calculate the crossword. The default is 1 second.
+.TP
+\-h, \-\-help
+Print basic information about how to use the program.
 .SH EXAMPLES
 .TP
 Create a crossword using the word_list.txt file and save it as an A4-sized pdf.
@@ -52,7 +52,7 @@ Create a crossword called "Monty" using non-interactive mode with words from the
 and save it as a letter-sized pdf file.
 .B genxword \-a \-o Monty word_list.txt pl
 .SH SEE ALSO
-genxword address
+https://github.com/riverrun/genxword
 .SH BUGS
 No known bugs.
 .SH AUTHOR
