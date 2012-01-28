@@ -33,7 +33,9 @@ The default grid size depends on how many words are used, but the user has the o
 Once the crossword has been calculated, the user has the option to have it recalculated. 
 Each time it is recalculated, the number of columns and the number of rows can both be increased. 
 
-For further options, please consult the man page.
+There are also options to specify the number of words used in the crossword and 
+the amount of time used to calculate it. In addition, the program can be run non-interactively. 
+For further information, please consult the man page.
 
 Installation
 ============
