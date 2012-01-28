@@ -277,13 +277,13 @@ class Crossword(object):
     def create_files(self, name, save_options):
         img_files = ''
         if 'p' in save_options:
-            if 'l' in save_options:
-                self.export_pdf(name, '_grid.pdf', 612, 792)
-                self.export_pdf(name, '_key.pdf', 612, 792)
-            else:
-                self.export_pdf(name, '_grid.pdf')
-                self.export_pdf(name, '_key.pdf')
+            self.export_pdf(name, '_grid.pdf')
+            self.export_pdf(name, '_key.pdf')
             img_files += name + '_grid.pdf ' + name + '_key.pdf '
+        if 'l' in save_options:
+            self.export_pdf(name, 'l_grid.pdf', 612, 792)
+            self.export_pdf(name, 'l_key.pdf', 612, 792)
+            img_files += name + 'l_grid.pdf ' + name + 'l_key.pdf '
         if 'n' in save_options:
             self.create_img(name + '_grid.png')
             self.create_img(name + '_key.png')

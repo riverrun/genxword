@@ -24,9 +24,7 @@ import argparse, random
 from . import calcxword
 
 usage_info = """The word list file contains the words and clues, or just words, that you want in your crossword. 
-If you are using a file with words and clues in it, each word should be separated from the clue by just a space, 
-and each word and clue, or word, should be on a separate line. The crossword grid and key can be saved in pdf, 
-png and/or svg format, and the word bank and clues are saved in a text file.
+For further information on how to format the word list file and about the other options, please consult the man page.
 """
 
 class Finishxword(object):
@@ -34,19 +32,9 @@ class Finishxword(object):
         self.args = args
 
     def wlist(self):
-        if self.args.nword:
-            nword = self.args.nword
-        else:
-            nword = 50
         self.word_list = [line.strip().split(' ', 1) for line in self.args.infile if line.strip()]
-        if len(self.word_list) > nword:
-            self.word_list = random.sample(self.word_list, nword)
-
-    def calctime(self):
-        if self.args.time:
-            self.tcalc = self.args.time
-        else:
-            self.tcalc = 1
+        if len(self.word_list) > self.args.nword:
+            self.word_list = random.sample(self.word_list, self.args.nword)
 
     def grid_size(self):
         if len(self.word_list) <= 20:
@@ -68,7 +56,7 @@ class Finishxword(object):
         while 1:
             a = calcxword.Crossword(self.ncol, self.nrow, '-', self.word_list)
             print('Calculating your crossword...')
-            a.compute_crossword(self.tcalc)
+            a.compute_crossword(self.args.time)
             print(a.solution())
             print(len(a.current_word_list), 'out of', len(self.word_list))
             if self.args.auto:
@@ -88,16 +76,14 @@ class Finishxword(object):
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file. Required argument.')
-    parser.add_argument('saveopts', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and/or svg (s).')
-    #parser.add_argument('saveopts', nargs='*', default='n', help='Save as A4 pdf (p), letter-size pdf (pl), png (n) and/or svg (s).')
+    parser.add_argument('saveopts', help='Save as A4 pdf (p), letter-size pdf (l), png (n) and/or svg (s).')
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
-    parser.add_argument('-n', '--number', dest='nword', type=int, help='Number of words to be used.')
+    parser.add_argument('-n', '--number', dest='nword', type=int, default=50, help='Number of words to be used.')
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
-    parser.add_argument('-t', '--time', dest='time', type=int, help='Time used to calculate the crossword.')
+    parser.add_argument('-t', '--time', dest='time', type=int, default=1, help='Time used to calculate the crossword.')
     args = parser.parse_args()
     g = Finishxword(args)
     g.wlist()
-    g.calctime()
     g.grid_size()
     g.gengrid()
 

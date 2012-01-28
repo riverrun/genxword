@@ -33,15 +33,7 @@ The default grid size depends on how many words are used, but the user has the o
 Once the crossword has been calculated, the user has the option to have it recalculated. 
 Each time it is recalculated, the number of columns and the number of rows can both be increased. 
 
-Options
--------
-
--a, --auto  Run genxword non-interactively. Use this option if you want to run the program via a script.
--n, --number The number of words to be used from the word list. The default is 50.
--o, --output The name of the crossword. You can also choose the name while running the program.
--t, --time The time used to calculate the crossword. The default is 1 second.
--h, --help Print basic information about how to use the program.
-
+For further options, please refer to the man page.
 
 Installation
 ============
