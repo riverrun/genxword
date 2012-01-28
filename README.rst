@@ -33,7 +33,7 @@ The default grid size depends on how many words are used, but the user has the o
 Once the crossword has been calculated, the user has the option to have it recalculated. 
 Each time it is recalculated, the number of columns and the number of rows can both be increased. 
 
-For further options, please refer to the man page.
+For further options, please consult the man page.
 
 Installation
 ============
@@ -57,6 +57,12 @@ replace *python* with *python3* in the third command, and then run the last two 
 
 Alternatively, for either version, you can download a tarball from the **Downloads** tab, unpack it, 
 change to the *riverrun-genxword-somenumber* directory, and then run the last three commands.
+
+To install the man page, run the following commands (replace genxword.6 with genxword-py3.6 for use with **python3**)::
+
+    cd man
+    gzip genxword.6
+    sudo cp genxword.6.gz /usr/share/man/man6/
 
 Authors
 =======

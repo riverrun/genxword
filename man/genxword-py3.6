@@ -1,0 +1,59 @@
+.\" Manpage for genxword-py3.
+.TH genxword-py3 6 "26/01/2012" "0.2.1" "genxword-py3 man page"
+.SH NAME
+genxword-py3 \- a crossword generator
+.SH SYNOPSIS
+genxword-py3 [\-a] [\-n] [\-o] [\-t] infile saveopts
+.SH DESCRIPTION
+genxword-py3 is a crossword generator written in Python. It reads words and clues,
+or just words, from a text file. The crossword that is generated can be saved,
+with the clues, as a pdf file, and/or it can be saved in png/svg format,
+together with a text file containing the word bank and clues.
+.PP
+The infile is a text file containing words and clues, or just words.
+Each word, or word and clue, should be on a separate line, and there should 
+be a space between the word and clue. In the following example, the word is 'excalibur'
+and the clue is 'The sword that a moistened bint lobbed at Arthur':
+.TP
+.PP
+excalibur The sword that a moistened bint lobbed at Arthur.
+.PP
+Saveopts refers to the file format that you want the crossword saved as.
+You can save it as an A4-sized pdf (p), letter-sized pdf (l), or you can save 
+the image files as png (n) and/or svg (s) files. If you choose to save the files in 
+png/svg format, the word bank and clues will be saved in a text file.
+.SH OPTIONS
+.TP
+\-a, \-\-auto
+Run genxword-py3 non-interactively. Use this option if you want to run the program via a script.
+This option, however, gives you less control over the output.
+.TP
+\-n, \-\-number
+The number of words to be used from the word list. The default is 50.
+.TP
+\-o, \-\-output
+The name of the crossword. You can also choose the name while running the program.
+.TP
+\-t, \-\-time
+The time used to calculate the crossword. The default is 1 second.
+.TP
+\-h, \-\-help
+Print basic information about how to use the program.
+.SH EXAMPLES
+.TP
+Create a crossword using the word_list.txt file and save it as an A4-sized pdf.
+.B genxword-py3 word_list.txt p
+.TP
+Create a crossword using 40 words from the word_list.txt file and save the grid and key in \
+png and svg format, together with a text file containing the word bank and clues.
+.B genxword-py3 \-n 40 word_list.txt ns
+.TP
+Create a crossword called "Monty" using non-interactive mode with words from the word_list.txt file \
+and save it as a letter-sized pdf file.
+.B genxword-py3 \-a \-o Monty word_list.txt l
+.SH SEE ALSO
+https://github.com/riverrun/genxword-py3
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+This program was originally written by Bryan Helmig and has since been developed by David Whitlock (alovedalongthe@gmail.com)
