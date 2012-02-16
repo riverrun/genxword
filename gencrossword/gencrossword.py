@@ -60,7 +60,10 @@ class Finishxword(object):
             print(a.solution())
             print(len(a.current_word_list), 'out of', len(self.word_list))
             if self.args.auto:
-                break
+                if float(len(a.current_word_list))/len(self.word_list) < 0.9:
+                    self.ncol += 2;self.nrow += 2
+                else:
+                    break
             else:
                 h = raw_input('Are you happy with this solution? [Y/n] ')
                 if h.strip() != 'n':
