@@ -5,8 +5,8 @@ genxword-py3 \- a crossword generator
 .SH SYNOPSIS
 genxword-py3 [\-a] [\-n] [\-o] [\-t] infile saveopts
 .SH DESCRIPTION
-genxword-py3 is a crossword generator written in Python. It reads words and clues,
-or just words, from a text file. The crossword that is generated can be saved,
+genxword-py3 is the Python3 version of genxword - a crossword generator written in Python.
+It reads words and clues, or just words, from a text file. The crossword that is generated can be saved,
 with the clues, as a pdf file, and/or it can be saved in png/svg format,
 together with a text file containing the word bank and clues.
 .PP
@@ -26,7 +26,8 @@ png/svg format, the word bank and clues will be saved in a text file.
 .TP
 \-a, \-\-auto
 Run genxword-py3 non-interactively. Use this option if you want to run the program via a script.
-This option, however, gives you less control over the output.
+If you use this option, the grid will be made larger and the crossword recalculated
+until the crossword uses 90% or more of the words.
 .TP
 \-n, \-\-number
 The number of words to be used from the word list. The default is 50.

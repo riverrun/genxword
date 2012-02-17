@@ -247,9 +247,9 @@ class Crossword(object):
         context.rectangle(0, 0, width, height)
         context.fill()
         context.save()
-        sc_ratio = (float(width-(xoffset*2)))/(px*self.cols)
+        sc_ratio = float(width-(xoffset*2))/(px*self.cols)
         if self.cols <= 21:
-            sc_ratio, xoffset = 0.8, float((1.25*width-(px*self.cols))/2)
+            sc_ratio, xoffset = 0.8, float(1.25*width-(px*self.cols))/2
         context.scale(sc_ratio, sc_ratio)
         self.draw_img(name, context, 28, xoffset, 80)
         context.restore()
