@@ -9,8 +9,9 @@ A crossword generator
 Description
 ===========
 
-Creates a crossword from a list of words and clues from a text file. There is an option to save the crossword, with clues, as a 
-pdf file, or you can save the empty grid and key in png and/or svg format, together with the word bank and clues in a text file.
+Creates a crossword from a list of words and clues from a text file. There is an option to save the 
+crossword, with clues, as a pdf file, or you can save the empty grid and key in png and/or svg format, 
+together with the word bank and clues in a text file.
 
 Usage
 =====
@@ -46,14 +47,14 @@ Linux
 To run this program, you need to have **python2.7** or **python3** installed. It will not work with earlier versions of python. 
 It depends on py2cairo (or pycairo), which is already installed on most popular distros, to produce the image files.
 
-To install this program, run the following commands::
+To install this program, run the following commands (the **install** script needs to be run as root or with sudo)::
 
     git clone git://github.com/riverrun/genxword.git
     cd genxword
-    ./install_genxword
+    ./install_genxword.sh
 
 Alternatively, you can download a tarball from the **Tags** or **Downloads** tab, unpack it, 
-change to the *riverrun-genxword-somenumber* directory, and then run the *./install_genxword* command.
+change to the *riverrun-genxword-somenumber* directory, and then run the *./install_genxword.sh* command.
 
 Authors
 =======
