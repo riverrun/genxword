@@ -12,7 +12,7 @@ if [[ -n $REPLY ]]; then
     python3 setup.py install
     APP_NAME=genxword-py3
 else
-    python setup.py install
+    python2.7 setup.py install
     APP_NAME=genxword
 fi
 echo "Installing the $APP_NAME program"
@@ -21,5 +21,5 @@ chmod 755 /usr/bin/$APP_NAME
 
 cd man
 echo "Installing the man page for $APP_NAME"
-gzip $APP_NAME.6
-mv $APP_NAME.6.gz /usr/share/man/man6/
+cp $APP_NAME.6 /usr/share/man/man6/
+gzip /usr/share/man/man6/$APP_NAME.6
