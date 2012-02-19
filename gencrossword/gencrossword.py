@@ -1,4 +1,3 @@
-#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
@@ -20,12 +19,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse, random
+import argparse, random, sys
 from . import calcxword
 
 usage_info = """The word list file contains the words and clues, or just words, that you want in your crossword. 
 For further information on how to format the word list file and about the other options, please consult the man page.
 """
+
+if sys.version[0] == '3':
+    raw_input = input
 
 class Finishxword(object):
     def __init__(self, args):
@@ -89,6 +91,3 @@ def main():
     g.wlist()
     g.grid_size()
     g.gengrid()
-
-if __name__ == '__main__':
-    main()

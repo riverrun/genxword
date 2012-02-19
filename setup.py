@@ -1,4 +1,3 @@
-#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
@@ -31,7 +30,7 @@ def read(fname):
 
 setup(
     name = 'genxword',
-    version = '0.2.1',
+    version = '0.2.2',
     packages = ['gencrossword'],
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',

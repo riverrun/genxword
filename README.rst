@@ -44,8 +44,9 @@ Installation
 Linux
 -----
 
-To run this program, you need to have **python2.7** or **python3** installed. It will not work with earlier versions of python. 
-It depends on py2cairo (or pycairo), which is already installed on most popular distros, to produce the image files.
+To run this program, you need to have **Python 2.7** or **Python 3** installed. 
+It will not work with earlier versions of Python. It depends on Py2cairo (or Pycairo), 
+which is already installed on most popular distros, to produce the image files.
 
 To install this program, run the following commands (the **install** script needs to be run as root or with sudo)::
 
@@ -54,7 +55,7 @@ To install this program, run the following commands (the **install** script need
     ./install_genxword.sh
 
 Alternatively, you can download a tarball from the **Tags** or **Downloads** tab, unpack it, 
-change to the *riverrun-genxword-somenumber* directory, and then run the *./install_genxword.sh* command.
+change to the *riverrun-genxword-somenumber* directory, and then run the **install** script.
 
 Authors
 =======
