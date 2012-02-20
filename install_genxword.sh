@@ -1,13 +1,11 @@
 #!/bin/bash
+# Script to install genxword, which depends on Python (2.7 or 3) and Pycairo.
 
 set -e
 ERROR_MESSAGE="$(tput bold)$(tput setaf 1)An error occurred. \
 Please read the output above to see what the problem is.$(tput sgr0)"
 MAN_DIR=/usr/share/man/man6
 
-echo -e "$(tput setaf 6)You are about to install genxword, which depends on Python (2.7 or 3) \
-and Pycairo.\nThis script does not check for dependencies. That's your job :)\n$(tput sgr0)"
-sleep 2
 echo -e "Just press Enter to use the Python 2.7 version.\n\
 To use the Python 3 version, press any key and then Enter."
 read PYVERSION
