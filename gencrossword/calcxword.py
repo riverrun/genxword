@@ -274,25 +274,25 @@ class Crossword(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_options):
+    def create_files(self, name, save_format):
         img_files = ''
-        if 'p' in save_options:
+        if 'p' in save_format:
             self.export_pdf(name, '_grid.pdf')
             self.export_pdf(name, '_key.pdf')
             img_files += name + '_grid.pdf ' + name + '_key.pdf '
-        if 'l' in save_options:
+        if 'l' in save_format:
             self.export_pdf(name, 'l_grid.pdf', 612, 792)
             self.export_pdf(name, 'l_key.pdf', 612, 792)
             img_files += name + 'l_grid.pdf ' + name + 'l_key.pdf '
-        if 'n' in save_options:
+        if 'n' in save_format:
             self.create_img(name + '_grid.png')
             self.create_img(name + '_key.png')
             img_files += name + '_grid.png ' + name + '_key.png '
-        if 's' in save_options:
+        if 's' in save_format:
             self.create_img(name + '_grid.svg')
             self.create_img(name + '_key.svg')
             img_files += name + '_grid.svg ' + name + '_key.svg '
-        if 'n' in save_options or 's' in save_options:
+        if 'n' in save_format or 's' in save_format:
             self.clues_txt(name + '_clues.txt')
             img_files += name + '_clues.txt'
         print('The following files have been saved to your current working directory:\n' + img_files)
