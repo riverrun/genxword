@@ -1,7 +1,6 @@
 #!/bin/sh
 # Script to install genxword, which depends on Python (2.7 or 3) and Pycairo.
 
-set -e
 ERROR_MESSAGE="$(tput bold)$(tput setaf 1)An error occurred. \
 Please read the output above to see what the problem is.$(tput sgr0)\n"
 MAN_DIR=/usr/share/man/man6
