@@ -1,5 +1,5 @@
 .\" Manpage for genxword.
-.TH genxword 6 "19/02/2012" "0.2.2" "genxword man page"
+.TH genxword 6 "02/03/2012" "0.2.3" "genxword man page"
 .SH NAME
 genxword \- a crossword generator
 .SH SYNOPSIS
@@ -27,13 +27,15 @@ png/svg format, the word bank and clues will be saved in a text file.
 \-a, \-\-auto
 Run genxword non-interactively. Use this option if you want to run the program via a script.
 If you use this option, the grid will be made larger and the crossword recalculated
-until the crossword uses 90% or more of the words.
+until the crossword uses 90% or more of the words supplied.
 .TP
 \-n, \-\-number
-The number of words to be used from the word list. The default is 50.
+The number of words to be used from the word list file, which can contain thousands 
+of words. The default number is 50.
 .TP
 \-o, \-\-output
 The name of the crossword. You can also choose the name while running the program.
+If you save the crossword as a pdf file, this name will be used as the title of the crossword.
 .TP
 \-t, \-\-time
 The time used to calculate the crossword. The default is 1 second.
