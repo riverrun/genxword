@@ -30,7 +30,7 @@ def read(fname):
 
 setup(
     name = 'genxword',
-    version = '0.2.3',
+    version = '0.2.4',
     packages = ['gencrossword'],
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
