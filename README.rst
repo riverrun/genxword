@@ -9,7 +9,8 @@ A crossword generator
 Description
 ===========
 
-Creates a crossword from a list of words and clues from a text file. There is an option to save the 
+Genxword is a crossword generator written in Python. It runs from the command line, and it creates 
+a crossword from a list of words and clues in a text file. There is an option to save the 
 crossword, with clues, as a pdf file, or you can save the empty grid and key in png and/or svg format, 
 together with the word bank and clues in a text file.
 
