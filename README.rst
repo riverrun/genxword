@@ -16,17 +16,7 @@ together with the word bank and clues in a text file.
 Usage
 =====
 
-Genxword needs to be called with the name of the text file you will use to create the word list 
-and the type of file that you want saved.
-
-The text file can contain words and clues, or just single words. Each word should be separated 
-from the clue by just a space, and each word and clue, or word, should be on a separate line. 
-Some example word list files are in the **examples** directory.
-
-The crossword can be saved as a pdf file, with clues, or as png/svg files, together with a text file 
-containing the word bank and clues. All files are saved in the user's current working directory.
-
-Please read the wiki for more information.
+Please read the wiki for information about how to use genxword.
 
 Installation
 ============
