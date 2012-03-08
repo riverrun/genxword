@@ -35,8 +35,12 @@ To install this program, run the following commands (the **install** script need
     cd genxword
     ./install_genxword.sh
 
-Alternatively, you can download a tarball from the **Tags** or **Downloads** tab, unpack it, 
-change to the *riverrun-genxword-somenumber* directory, and then run the **install** script.
+Alternatively, go to the **Tags** or **Downloads** tab, download the **tar.gz** version, 
+and run the following commands (again, the **install** script needs to be run as root or with sudo)::
+
+    tar xvzf riverrun-genxword-xxxx.tar.gz
+    cd riverrun-genxword-xxxx
+    ./install_genxword.sh
 
 Authors
 =======
