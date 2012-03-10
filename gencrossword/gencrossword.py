@@ -81,7 +81,7 @@ class Finishxword(object):
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file.')
-    parser.add_argument('saveformat', help='Save as A4 pdf (p), letter-size pdf (l), png (n) and/or svg (s).')
+    parser.add_argument('saveformat', help='Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s).')
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
     parser.add_argument('-n', '--number', dest='nword', type=int, default=50, help='Number of words to be used.')
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
