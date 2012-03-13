@@ -15,8 +15,6 @@ else
     python3 setup.py install || { printf "$ERROR_MESSAGE"; exit 1; }
     APP_NAME=genxword-py3
 fi
-printf "Installing the $APP_NAME program\n"
-cp $APP_NAME /usr/bin/ && chmod 755 /usr/bin/$APP_NAME || { printf "$ERROR_MESSAGE"; exit 1; }
 
 cd man
 printf "Installing the man page for $APP_NAME\n"

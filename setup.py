@@ -19,8 +19,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
+import os, sys
 from distutils.core import setup
+
+if sys.version[0] == '3':
+    scripts = ['bin/genxword-py3']
+else:
+    scripts = ['bin/genxword']
 
 def read(fname):
     try:
@@ -32,6 +37,7 @@ setup(
     name = 'genxword',
     version = '0.2.4',
     packages = ['gencrossword'],
+    scripts = scripts,
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',

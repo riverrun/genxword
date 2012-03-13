@@ -33,14 +33,14 @@ To install this program, run the following commands (the **install** script need
 
     git clone git://github.com/riverrun/genxword.git
     cd genxword
-    ./install_genxword.sh
+    sudo ./install_genxword.sh
 
 Alternatively, go to the **Tags** or **Downloads** tab, download the **tar.gz** version, 
 and run the following commands (again, the **install** script needs to be run as root or with sudo)::
 
     tar xvzf riverrun-genxword-xxxx.tar.gz
     cd riverrun-genxword-xxxx
-    ./install_genxword.sh
+    sudo ./install_genxword.sh
 
 Authors
 =======
