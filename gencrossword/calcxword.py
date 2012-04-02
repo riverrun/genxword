@@ -329,10 +329,9 @@ class Crossword(object):
         return outStrA + outStrD
  
     def clues_txt(self, name):
-        clues_file = open(name, 'w')
-        clues_file.write(self.word_bank())
-        clues_file.write(self.legend())
-        clues_file.close()
+        with open(name, 'w') as clues_file:
+            clues_file.write(self.word_bank())
+            clues_file.write(self.legend())
 
 class Word(object):
     def __init__(self, word=None, clue=None):
