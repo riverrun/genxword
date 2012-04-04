@@ -20,7 +20,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import argparse, random, sys
-from . import calcxword
+from . import calculate
 
 usage_info = """The word list file contains the words and clues, or just words, that you want in your crossword. 
 For further information on how to format the word list file and about the other options, please consult the man page.
@@ -29,7 +29,7 @@ For further information on how to format the word list file and about the other 
 if sys.version[0] == '3':
     raw_input = input
 
-class Finishxword(object):
+class Genxword(object):
     def __init__(self, args):
         self.args = args
 
@@ -56,7 +56,7 @@ class Finishxword(object):
 
     def gengrid(self):
         while 1:
-            a = calcxword.Crossword(self.ncol, self.nrow, '-', self.word_list)
+            a = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
             print('Calculating your crossword...')
             a.compute_crossword(self.args.time)
             print(a.solution())
@@ -87,7 +87,7 @@ def main():
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
     parser.add_argument('-t', '--time', dest='time', type=int, default=1, help='Time used to calculate the crossword.')
     args = parser.parse_args()
-    g = Finishxword(args)
+    g = Genxword(args)
     g.wlist()
     g.grid_size()
     g.gengrid()

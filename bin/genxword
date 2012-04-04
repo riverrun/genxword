@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
-from gencrossword import gencrossword
+from genxword import control
 
 if __name__ == '__main__':
-    gencrossword.main()
+    control.main()

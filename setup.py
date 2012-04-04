@@ -35,8 +35,8 @@ def read(fname):
 
 setup(
     name = 'genxword',
-    version = '0.2.4',
-    packages = ['gencrossword'],
+    version = '0.2.5',
+    packages = ['genxword'],
     scripts = scripts,
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
