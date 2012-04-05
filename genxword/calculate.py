@@ -177,7 +177,8 @@ class Crossword(object):
         return False
  
     def solution(self):
-        return '\n'.join([''.join(['{} '.format(c) for c in self.grid[r]]) for r in range(self.rows)])
+        answer = '\n'.join([''.join(['{} '.format(c) for c in self.grid[r]]) for r in range(self.rows)])
+        return answer + '\n' + str(len(self.current_word_list)) + ' out of ' + str(len(self.available_words))
  
     def order_number_words(self): # orders words and applies numbering system to them
         self.current_word_list.sort(key=lambda i: (i.col))

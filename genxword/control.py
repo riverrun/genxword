@@ -30,22 +30,22 @@ if sys.version[0] == '3':
     raw_input = input
 
 class Genxword(object):
-    def __init__(self, args):
-        self.args = args
+    def __init__(self, auto=False):
+        self.auto = auto
 
-    def wlist(self):
-        self.word_list = [line.strip().split(' ', 1) for line in self.args.infile if line.strip()]
-        if len(self.word_list) > self.args.nword:
-            self.word_list = random.sample(self.word_list, self.args.nword)
+    def wlist(self, infile, nwords=50):
+        self.word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
+        if len(self.word_list) > nwords:
+            self.word_list = random.sample(self.word_list, nwords)
 
-    def grid_size(self):
+    def grid_size(self, gtkmode=False):
         if len(self.word_list) <= 20:
             self.ncol = self.nrow = 17
         elif len(self.word_list) <= 100:
             self.ncol = self.nrow = int((round(((len(self.word_list) - 20) / 7.5), 0) * 2) + 19)
         else:
             self.ncol = self.nrow = 43
-        if not self.args.auto:
+        if not gtkmode and not self.auto:
             gsize = str(self.ncol) + ', ' + str(self.nrow)
             grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
             if grid_size:
@@ -54,18 +54,19 @@ class Genxword(object):
                 except:
                     pass
 
-    def gengrid(self):
+    def gengrid(self, saveformat, name, gtkmode=False):
         while 1:
-            a = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
+            calc = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
             print('Calculating your crossword...')
-            a.compute_crossword(self.args.time)
-            print(a.solution())
-            print(len(a.current_word_list), 'out of', len(self.word_list))
-            if self.args.auto:
-                if float(len(a.current_word_list))/len(self.word_list) < 0.9:
+            calc.compute_crossword()
+            print(calc.solution())
+            if self.auto:
+                if float(len(calc.current_word_list))/len(self.word_list) < 0.9:
                     self.ncol += 2;self.nrow += 2
                 else:
                     break
+            elif gtkmode:
+                break
             else:
                 h = raw_input('Are you happy with this solution? [Y/n] ')
                 if h.strip() != 'n':
@@ -73,21 +74,19 @@ class Genxword(object):
                 inc_gsize = raw_input('And increase the grid size? [Y/n] ')
                 if inc_gsize.strip() != 'n':
                     self.ncol += 2;self.nrow += 2
-        name = self.args.output
-        if not self.args.auto and name == 'Gumby':
+        if not gtkmode and not self.auto and name == 'Gumby':
             name = raw_input('Enter a name for your crossword: ')
-        a.create_files(name, self.args.saveformat)
+        calc.create_files(name, saveformat)
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file.')
     parser.add_argument('saveformat', help='Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s).')
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
-    parser.add_argument('-n', '--number', dest='nword', type=int, default=50, help='Number of words to be used.')
+    parser.add_argument('-n', '--number', dest='nwords', type=int, default=50, help='Number of words to be used.')
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
-    parser.add_argument('-t', '--time', dest='time', type=int, default=1, help='Time used to calculate the crossword.')
     args = parser.parse_args()
-    g = Genxword(args)
-    g.wlist()
-    g.grid_size()
-    g.gengrid()
+    gen = Genxword(args.auto)
+    gen.wlist(args.infile, args.nwords)
+    gen.grid_size()
+    gen.gengrid(args.saveformat, args.output)

@@ -1,12 +1,12 @@
 #!/usr/bin/python2.7
 
-import os, random
+import os
 from gi.repository import Gtk, Pango
-from gencrossword import calcxword
+from genxword import control
 
 help_text = """Help, I need somebody!"""
 
-class GXinterface(Gtk.Window):
+class Genxinterface(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self, title='genxword-gtk')
@@ -25,7 +25,7 @@ class GXinterface(Gtk.Window):
         scrolledwindow = Gtk.ScrolledWindow()
         scrolledwindow.set_hexpand(True)
         scrolledwindow.set_vexpand(True)
-        self.grid.attach(scrolledwindow, 0, 1, 6, 1)
+        self.grid.attach(scrolledwindow, 0, 1, 7, 1)
 
         self.textview = Gtk.TextView()
         fontdesc = Pango.FontDescription('monospace')
@@ -35,28 +35,34 @@ class GXinterface(Gtk.Window):
         scrolledwindow.add(self.textview)
 
     def check_buttons(self):
-        label = Gtk.Label('Save options')
-        self.grid.attach(label, 0, 2, 1, 1)
+        label_name = Gtk.Label('Name')
+        self.grid.attach(label_name, 0, 2, 1, 1)
+
+        enter_name = Gtk.Entry()
+        self.grid.attach(enter_name, 1, 2, 1, 1)
+
+        label_save = Gtk.Label('Save as')
+        self.grid.attach(label_save, 2, 2, 1, 1)
 
         save_A4pdf = Gtk.CheckButton('A4 pdf')
         save_A4pdf.set_active(False)
         save_A4pdf.connect('toggled', self.save_A4pdf_toggled)
-        self.grid.attach(save_A4pdf, 1, 2, 1, 1)
+        self.grid.attach(save_A4pdf, 3, 2, 1, 1)
 
         save_letterpdf = Gtk.CheckButton('letter pdf')
         save_letterpdf.set_active(False)
         save_letterpdf.connect('toggled', self.save_letterpdf_toggled)
-        self.grid.attach(save_letterpdf, 2, 2, 1, 1)
+        self.grid.attach(save_letterpdf, 4, 2, 1, 1)
 
         save_png = Gtk.CheckButton('png')
         save_png.set_active(False)
         save_png.connect('toggled', self.save_png_toggled)
-        self.grid.attach(save_png, 3, 2, 1, 1)
+        self.grid.attach(save_png, 5, 2, 1, 1)
 
         save_svg = Gtk.CheckButton('svg')
         save_svg.set_active(False)
         save_svg.connect('toggled', self.save_svg_toggled)
-        self.grid.attach(save_svg, 4, 2, 1, 1)
+        self.grid.attach(save_svg, 6, 2, 1, 1)
 
     def save_A4pdf_toggled(self, widget):
         if widget.get_active():
@@ -87,17 +93,21 @@ class GXinterface(Gtk.Window):
         button_calc.connect('clicked', self.calc_xword)
         self.grid.attach(button_calc, 2, 0, 1, 1)
 
+        button_recalc = Gtk.Button('_Recalculate', use_underline=True)
+        button_recalc.connect('clicked', self.recalc_xword)
+        self.grid.attach(button_recalc, 3, 0, 1, 1)
+
         button_save = Gtk.Button(stock=Gtk.STOCK_SAVE)
         button_save.connect('clicked', self.save_xword)
-        self.grid.attach(button_save, 3, 0, 1, 1)
+        self.grid.attach(button_save, 4, 0, 1, 1)
 
         button_help = Gtk.Button(stock=Gtk.STOCK_HELP)
         button_help.connect('clicked', self.help_page)
-        self.grid.attach(button_help, 4, 0, 1, 1)
+        self.grid.attach(button_help, 5, 0, 1, 1)
 
         button_quit = Gtk.Button(stock=Gtk.STOCK_QUIT)
         button_quit.connect('clicked', Gtk.main_quit)
-        self.grid.attach(button_quit, 5, 0, 1, 1)
+        self.grid.attach(button_quit, 6, 0, 1, 1)
 
     def new_wlist(self, button):
         self.textview.set_editable(True)
@@ -127,19 +137,27 @@ class GXinterface(Gtk.Window):
         rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
         with open('/tmp/genxwordlist', 'w') as wlist_file:
             wlist_file.write(rawtext)
+        # add dialog to ask for name and remind user to set save preferences
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
-        self.wlist()
-        self.grid_size()
-        self.gengrid()
+        with open('/tmp/genxwordlist') as infile:
+            gen = control.Genxword(infile, self.saveformat, 'Gumby')
+            gen.wlist()
+        gen.grid_size(True)
+        gen.gengrid(True) # maybe use local gengrid
+
+    def recalc_xword(self, button):
+        pass
+
+    def dialog_warning(self):
+        pass
 
     def gengrid(self):
-        a = calcxword.Crossword(self.ncol, self.nrow, '-', self.word_list)
-        a.compute_crossword()
-        self.textbuffer.set_text(a.solution())
-        self.textbuffer.insert_at_cursor('\n' + str(len(a.current_word_list)) + ' out of ' + str(len(self.word_list)))
+        calc = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
+        calc.compute_crossword()
+        self.textbuffer.set_text(calc.solution())
         os.chdir('/tmp')
-        a.create_files('Gumby', self.saveformat)
+        calc.create_files('Gumby', self.saveformat)
 
     def save_xword(self, button):
         dialog = Gtk.FileChooserDialog('Please choose a folder', self,
@@ -160,20 +178,6 @@ class GXinterface(Gtk.Window):
         self.textview.set_cursor_visible(False)
         self.textbuffer.set_text(help_text)
 
-    def wlist(self):
-        with open('/tmp/genxwordlist') as infile:
-            self.word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
-        if len(self.word_list) > 50:
-            self.word_list = random.sample(self.word_list, 50)
-
-    def grid_size(self):
-        if len(self.word_list) <= 20:
-            self.ncol = self.nrow = 17
-        elif len(self.word_list) <= 100:
-            self.ncol = self.nrow = int((round(((len(self.word_list) - 20) / 7.5), 0) * 2) + 19)
-        else:
-            self.ncol = self.nrow = 43
-
     def add_filters(self, dialog):
         filter_text = Gtk.FileFilter()
         filter_text.set_name('Text files')
@@ -185,7 +189,7 @@ class GXinterface(Gtk.Window):
         filter_any.add_pattern('*')
         dialog.add_filter(filter_any)
 
-win = GXinterface()
+win = Genxinterface()
 win.connect('delete-event', Gtk.main_quit)
 win.show_all()
 Gtk.main()
