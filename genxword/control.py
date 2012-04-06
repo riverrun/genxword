@@ -54,19 +54,20 @@ class Genxword(object):
                 except:
                     pass
 
-    def gengrid(self, saveformat, name, gtkmode=False):
+    def calcgrid(self):
+        self.calc = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
+        print('Calculating your crossword...')
+        self.calc.compute_crossword()
+        return self.calc.solution()
+
+    def gengrid(self):
         while 1:
-            calc = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
-            print('Calculating your crossword...')
-            calc.compute_crossword()
-            print(calc.solution())
+            print(self.calcgrid())
             if self.auto:
-                if float(len(calc.current_word_list))/len(self.word_list) < 0.9:
+                if float(len(self.calc.current_word_list))/len(self.word_list) < 0.9:
                     self.ncol += 2;self.nrow += 2
                 else:
                     break
-            elif gtkmode:
-                break
             else:
                 h = raw_input('Are you happy with this solution? [Y/n] ')
                 if h.strip() != 'n':
@@ -74,9 +75,9 @@ class Genxword(object):
                 inc_gsize = raw_input('And increase the grid size? [Y/n] ')
                 if inc_gsize.strip() != 'n':
                     self.ncol += 2;self.nrow += 2
-        if not gtkmode and not self.auto and name == 'Gumby':
-            name = raw_input('Enter a name for your crossword: ')
-        calc.create_files(name, saveformat)
+
+    def savefiles(self, saveformat, name):
+        self.calc.create_files(name, saveformat)
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
@@ -89,4 +90,5 @@ def main():
     gen = Genxword(args.auto)
     gen.wlist(args.infile, args.nwords)
     gen.grid_size()
-    gen.gengrid(args.saveformat, args.output)
+    gen.gengrid()
+    gen.savefiles(args.saveformat, args.output)

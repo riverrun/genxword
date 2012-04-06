@@ -1,0 +1,7 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+
+from genxword import gui
+
+if __name__ == '__main__':
+    gui.main()
