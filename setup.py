@@ -25,7 +25,7 @@ from distutils.core import setup
 if sys.version[0] == '3':
     scripts = ['bin/genxword-py3']
 else:
-    scripts = ['bin/genxword']
+    scripts = ['bin/genxword', 'bin/genxword-gtk']
 
 def read(fname):
     try:

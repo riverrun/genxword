@@ -21,7 +21,7 @@
 
 import os
 from gi.repository import Gtk, Pango
-from genxword import control
+from . import control
 
 help_text = """Help, I need somebody!"""
 
@@ -102,17 +102,21 @@ class Genxinterface(Gtk.Window):
         button_calc.connect('clicked', self.calc_xword)
         self.grid.attach(button_calc, 2, 0, 1, 1)
 
+        button_incgsize = Gtk.Button('_Inc grid size', use_underline=True)
+        button_incgsize.connect('clicked', self.incgsize)
+        self.grid.attach(button_incgsize, 3, 0, 1, 1)
+
         button_save = Gtk.Button(stock=Gtk.STOCK_SAVE)
         button_save.connect('clicked', self.save_xword)
-        self.grid.attach(button_save, 3, 0, 1, 1)
+        self.grid.attach(button_save, 4, 0, 1, 1)
 
         button_help = Gtk.Button(stock=Gtk.STOCK_HELP)
         button_help.connect('clicked', self.help_page)
-        self.grid.attach(button_help, 4, 0, 1, 1)
+        self.grid.attach(button_help, 5, 0, 1, 1)
 
         button_quit = Gtk.Button(stock=Gtk.STOCK_QUIT)
         button_quit.connect('clicked', Gtk.main_quit)
-        self.grid.attach(button_quit, 5, 0, 1, 1)
+        self.grid.attach(button_quit, 6, 0, 1, 1)
 
     def new_wlist(self, button):
         self.textview.set_editable(True)
@@ -139,7 +143,8 @@ class Genxinterface(Gtk.Window):
 
     def calc_xword(self, button):
         save_recalc = '\nIf you want to save this crossword, press the Save button.\n' \
-        + 'If you want to recalculate the crossword, press the Calculate button.'
+        + 'If you want to recalculate the crossword, press the Calculate button.\n' \
+        + 'To increase the grid size and then recalculate the crossword, press the Inc grid size button.'
         buff = self.textview.get_buffer() # find better way of saving wordlist
         rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
         if save_recalc in rawtext:
@@ -156,6 +161,13 @@ class Genxinterface(Gtk.Window):
             self.gen.grid_size(True)
             self.textbuffer.set_text(self.gen.calcgrid())
             self.textbuffer.insert_at_cursor(save_recalc)
+
+    def incgsize(self, button):
+        save_recalc = '\nIf you want to save this crossword, press the Save button.\n' \
+        + 'If you want to recalculate the crossword, press the Calculate button.\n' \
+        + 'To increase the grid size and then recalculate the crossword, press the Inc grid size button.'
+        self.textbuffer.set_text(self.gen.calcgrid(True))
+        self.textbuffer.insert_at_cursor(save_recalc)
 
     def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()
