@@ -58,12 +58,12 @@ class Genxword(object):
         if incgsize:
             self.ncol += 2;self.nrow += 2
         self.calc = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
-        print('Calculating your crossword...')
         self.calc.compute_crossword()
         return self.calc.solution()
 
     def gengrid(self):
         while 1:
+            print('Calculating your crossword...')
             print(self.calcgrid())
             if self.auto:
                 if float(len(self.calc.current_word_list))/len(self.word_list) < 0.9:
@@ -78,8 +78,8 @@ class Genxword(object):
                 if inc_gsize.strip() != 'n':
                     self.ncol += 2;self.nrow += 2
 
-    def savefiles(self, saveformat, name):
-        self.calc.create_files(name, saveformat)
+    def savefiles(self, saveformat, name, gtkmode=False):
+        self.calc.create_files(name, saveformat, gtkmode)
 
 def main():
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)

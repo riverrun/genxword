@@ -275,7 +275,7 @@ class Crossword(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_format):
+    def create_files(self, name, save_format, gtkmode=False):
         img_files = ''
         if 'p' in save_format:
             self.export_pdf(name, '_grid.pdf')
@@ -296,7 +296,8 @@ class Crossword(object):
         if 'n' in save_format or 's' in save_format:
             self.clues_txt(name + '_clues.txt')
             img_files += name + '_clues.txt'
-        print('The following files have been saved to your current working directory:\n' + img_files)
+        if not gtkmode:
+            print('The following files have been saved to your current working directory:\n' + img_files)
 
     def wrap(self, text, width=80):
         lines = []

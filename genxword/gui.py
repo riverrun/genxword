@@ -19,11 +19,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
+import os, tempfile
 from gi.repository import Gtk, Pango
 from . import control
 
 help_text = """Help, I need somebody!"""
+
+save_recalc = """\nIf you want to save this crossword, press the Save button.
+If you want to recalculate the crossword, press the Calculate button.
+To increase the grid size and then recalculate the crossword, press the Inc grid size button.
+"""
 
 class Genxinterface(Gtk.Window):
 
@@ -32,6 +37,7 @@ class Genxinterface(Gtk.Window):
 
         self.set_default_size(-1, 350)
         self.saveformat = ''
+        self.wordlist = tempfile.mkstemp()
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -119,9 +125,14 @@ class Genxinterface(Gtk.Window):
         self.grid.attach(button_quit, 6, 0, 1, 1)
 
     def new_wlist(self, button):
+        try:
+            with open(self.wordlist) as infile:
+                data = infile.read()
+        except:
+            data = ''
         self.textview.set_editable(True)
         self.textview.set_cursor_visible(True)
-        self.textbuffer.set_text('')
+        self.textbuffer.set_text(data)
 
     def open_wlist(self, button):
         dialog = Gtk.FileChooserDialog('Please choose a file', self,
@@ -136,36 +147,30 @@ class Genxinterface(Gtk.Window):
             with open(dialog.get_filename()) as infile:
                 data = infile.read()
             self.textbuffer.set_text(data)
-        elif response == Gtk.ResponseType.CANCEL:
-            print 'Cancel clicked'
-
         dialog.destroy()
 
     def calc_xword(self, button):
-        save_recalc = '\nIf you want to save this crossword, press the Save button.\n' \
-        + 'If you want to recalculate the crossword, press the Calculate button.\n' \
-        + 'To increase the grid size and then recalculate the crossword, press the Inc grid size button.'
-        buff = self.textview.get_buffer() # find better way of saving wordlist
+        buff = self.textview.get_buffer()
         rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
         if save_recalc in rawtext:
             self.textbuffer.set_text(self.gen.calcgrid())
             self.textbuffer.insert_at_cursor(save_recalc)
         else:
-            with open('/tmp/genxwordlist', 'w') as wlist_file:
+            fd, wordlist = tempfile.mkstemp()
+            with open(wordlist, 'w') as wlist_file:
+            #with open(self.wordlist, 'w') as wlist_file:
                 wlist_file.write(rawtext)
             self.textview.set_editable(False)
             self.textview.set_cursor_visible(False)
             self.gen = control.Genxword()
-            with open('/tmp/genxwordlist') as infile:
+            with open(wordlist) as infile:
+            #with open(self.wordlist) as infile:
                 self.gen.wlist(infile)
             self.gen.grid_size(True)
             self.textbuffer.set_text(self.gen.calcgrid())
             self.textbuffer.insert_at_cursor(save_recalc)
 
     def incgsize(self, button):
-        save_recalc = '\nIf you want to save this crossword, press the Save button.\n' \
-        + 'If you want to recalculate the crossword, press the Calculate button.\n' \
-        + 'To increase the grid size and then recalculate the crossword, press the Inc grid size button.'
         self.textbuffer.set_text(self.gen.calcgrid(True))
         self.textbuffer.insert_at_cursor(save_recalc)
 
@@ -180,11 +185,9 @@ class Genxinterface(Gtk.Window):
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
                 os.chdir(dialog.get_filename())
-            elif response == Gtk.ResponseType.CANCEL:
-                print 'Cancel clicked'
-
             dialog.destroy()
-            self.gen.savefiles(self.saveformat, self.xwordname)
+
+            self.gen.savefiles(self.saveformat, self.xwordname, True)
             saved_message = 'Your crossword files have been saved in ' + os.getcwd()
             self.textbuffer.set_text(saved_message)
             self.enter_name.set_text('')
@@ -193,6 +196,11 @@ class Genxinterface(Gtk.Window):
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')
 
     def help_page(self, button):
+        buff = self.textview.get_buffer()
+        rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
+        if save_recalc not in rawtext:
+            with open(self.wordlist, 'w') as wlist_file:
+                wlist_file.write(rawtext)
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
         self.textbuffer.set_text(help_text)
