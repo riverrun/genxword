@@ -37,7 +37,6 @@ class Genxinterface(Gtk.Window):
 
         self.set_default_size(-1, 350)
         self.saveformat = ''
-        self.wordlist = tempfile.mkstemp()
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -125,14 +124,9 @@ class Genxinterface(Gtk.Window):
         self.grid.attach(button_quit, 6, 0, 1, 1)
 
     def new_wlist(self, button):
-        try:
-            with open(self.wordlist) as infile:
-                data = infile.read()
-        except:
-            data = ''
         self.textview.set_editable(True)
         self.textview.set_cursor_visible(True)
-        self.textbuffer.set_text(data)
+        self.textbuffer.set_text('')
 
     def open_wlist(self, button):
         dialog = Gtk.FileChooserDialog('Please choose a file', self,
@@ -158,17 +152,17 @@ class Genxinterface(Gtk.Window):
         else:
             fd, wordlist = tempfile.mkstemp()
             with open(wordlist, 'w') as wlist_file:
-            #with open(self.wordlist, 'w') as wlist_file:
                 wlist_file.write(rawtext)
             self.textview.set_editable(False)
             self.textview.set_cursor_visible(False)
             self.gen = control.Genxword()
             with open(wordlist) as infile:
-            #with open(self.wordlist) as infile:
                 self.gen.wlist(infile)
             self.gen.grid_size(True)
             self.textbuffer.set_text(self.gen.calcgrid())
             self.textbuffer.insert_at_cursor(save_recalc)
+            os.close(fd)
+            os.remove(wordlist)
 
     def incgsize(self, button):
         self.textbuffer.set_text(self.gen.calcgrid(True))
@@ -196,11 +190,6 @@ class Genxinterface(Gtk.Window):
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')
 
     def help_page(self, button):
-        buff = self.textview.get_buffer()
-        rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
-        if save_recalc not in rawtext:
-            with open(self.wordlist, 'w') as wlist_file:
-                wlist_file.write(rawtext)
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
         self.textbuffer.set_text(help_text)
