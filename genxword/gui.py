@@ -23,7 +23,7 @@ import os, tempfile
 from gi.repository import Gtk, Pango
 from . import control
 
-help_text = """genxword-gtk\n
+help_text = """genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) 
 versions of the grid and clues, or png / svg versions of the crossword grid, 
 together with a text file containing the words and clues.\n
@@ -40,9 +40,9 @@ deirdre Mrs. Pewtey's beautiful first name.\n
 As you can see, each word needs to be on a separate line, and there should be 
 a space between each word and its clue. The clue is everything after the first space.\n
 Open - open word list
-The Open button lets you open, and edit, a word list. The word list can be 
-thousands of words long. If you use a large word list, the crossword will be 
-created with 50 words randomly selected from it.\n
+The Open button lets you open, and edit, a word list, which needs to be formatted 
+as written above. The word list can be thousands of words long. If you use a large word list, 
+the crossword will be created with 50 words randomly selected from it.\n
 Calculate - create the crossword
 Click on Calculate to create the crossword. If you click on it a second time, 
 the crossword will be recalculated.\n
@@ -85,10 +85,12 @@ class Genxinterface(Gtk.Window):
 
         self.textview = Gtk.TextView()
         self.textview.set_border_width(6)
-        fontdesc = Pango.FontDescription('monospace')
+        fontdesc = Pango.FontDescription('serif')
         self.textview.modify_font(fontdesc)
         self.textbuffer = self.textview.get_buffer()
-        self.tag_bold = self.textbuffer.create_tag('bold', weight=Pango.Weight.BOLD)
+        self.tag_title = self.textbuffer.create_tag('title', font='sans bold 12')
+        self.tag_subtitle = self.textbuffer.create_tag('subtitle', font='sans bold')
+        self.tag_mono = self.textbuffer.create_tag('mono', font='monospace')
         self.help_message()
         scrolledwindow.add(self.textview)
 
@@ -193,6 +195,7 @@ class Genxinterface(Gtk.Window):
         rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
         if save_recalc in rawtext:
             self.textbuffer.set_text(self.gen.calcgrid())
+            self.add_tag(self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
         else:
             fd, wordlist = tempfile.mkstemp()
@@ -205,12 +208,14 @@ class Genxinterface(Gtk.Window):
                 self.gen.wlist(infile)
             self.gen.grid_size(True)
             self.textbuffer.set_text(self.gen.calcgrid())
+            self.add_tag(self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
             os.close(fd)
             os.remove(wordlist)
 
     def incgsize(self, button):
         self.textbuffer.set_text(self.gen.calcgrid(True))
+        self.add_tag(self.tag_mono, 0, -1)
         self.textbuffer.insert_at_cursor(save_recalc)
 
     def save_xword(self, button):
@@ -237,20 +242,20 @@ class Genxinterface(Gtk.Window):
     def help_page(self, button):
         self.help_message()
 
-    def help_message(self): # break this up into a few functions - less code
+    def help_message(self):
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
         self.textbuffer.set_text(help_text)
-        self.add_tag(self.tag_bold, 1)
-        self.add_tag(self.tag_bold, 7)
-        self.add_tag(self.tag_bold, 24)
-        self.add_tag(self.tag_bold, 29)
-        self.add_tag(self.tag_bold, 33)
-        self.add_tag(self.tag_bold, 37)
+        self.add_tag(self.tag_title, 0, 1)
+        self.add_tag(self.tag_subtitle, 5, 6)
+        self.add_tag(self.tag_subtitle, 22, 23)
+        self.add_tag(self.tag_subtitle, 27, 28)
+        self.add_tag(self.tag_subtitle, 31, 32)
+        self.add_tag(self.tag_subtitle, 35, 36)
 
-    def add_tag(self, tag_name, linenr):
-        start = self.textbuffer.get_iter_at_line(linenr-1)
-        end = self.textbuffer.get_iter_at_line(linenr)
+    def add_tag(self, tag_name, startline, endline):
+        start = self.textbuffer.get_iter_at_line(startline)
+        end = self.textbuffer.get_iter_at_line(endline)
         self.textbuffer.apply_tag(tag_name, start, end)
 
 def main():
