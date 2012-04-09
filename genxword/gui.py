@@ -24,35 +24,36 @@ from gi.repository import Gtk, Pango
 from . import control
 
 help_text = """genxword-gtk
-Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) 
-versions of the grid and clues, or png / svg versions of the crossword grid, 
-together with a text file containing the words and clues.\n
-New - create a new word list
-If you click on the New button, the screen will be cleared and you will be able 
-to create a new word list. The word list can be just a list of words, like this:\n
+Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
+or png / svg versions of the crossword grid, together with a text file containing the words and clues.\n
+New word list
+If you click on the New button, the screen will be cleared and you will be able to create a new word list. \
+The word list can be just a list of words, like this:\n
 history
 spam
 vikings\n
 or it can be a list or words and clues, like this:\n
 excalibur A sword that a moistened bint lobbed at Arthur.
-socrates The scorer of the first goal in the philosophers' football match.
-deirdre Mrs. Pewtey's beautiful first name.\n
-As you can see, each word needs to be on a separate line, and there should be 
-a space between each word and its clue. The clue is everything after the first space.\n
-Open - open word list
-The Open button lets you open, and edit, a word list, which needs to be formatted 
-as written above. The word list can be thousands of words long. If you use a large word list, 
-the crossword will be created with 50 words randomly selected from it.\n
+duck An animal that weighs the same as a witch.
+coconut A fruit that possibly migrates.\n
+As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. \
+The clue is everything after the first space.\n
+Open word list
+The Open button lets you open, and edit, a word list, which needs to be formatted as written above. \
+The word list can be thousands of words long. If you use a large word list, the crossword will be created \
+with a set amount of words randomly selected from it. The default number of words is 50.\n
 Calculate - create the crossword
-Click on Calculate to create the crossword. If you click on it a second time, 
-the crossword will be recalculated.\n
+Click on Calculate to create the crossword. If you click on it a second time, the crossword will be recalculated.\n
 Inc grid size - increase the grid size and recalculate
-This button gives you the option of increasing the grid size before 
-recalculating the crossword.\n
+This button gives you the option of increasing the grid size before recalculating the crossword.\n
 Save - save the crossword
-This button lets you choose where you save the crossword.
+This button lets you choose where you save the crossword files.\n
+Further options
+In the entry box below, you can set the number of words used from the word list. This is also where you write the \
+name of the crossword once it has been calculated.\nYou can save the crossword in pdf, png and / or svg format. \
+Just toggle the appropriate buttons below.\nThe last button lets you make the grid size slightly smaller, which \
+will make the crossword more dense, but will probably use fewer words.
 """
-
 save_recalc = """\nIf you want to save this crossword, press the Save button.
 If you want to recalculate the crossword, press the Calculate button.
 To increase the grid size and then recalculate the crossword, 
@@ -66,6 +67,8 @@ class Genxinterface(Gtk.Window):
 
         self.set_default_size(-1, 500)
         self.saveformat = ''
+        self.nwords = 50
+        self.lowgsize = False
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -95,34 +98,39 @@ class Genxinterface(Gtk.Window):
         scrolledwindow.add(self.textview)
 
     def check_buttons(self):
-        label_name = Gtk.Label('Name')
-        self.grid.attach(label_name, 0, 2, 1, 1)
-
         self.enter_name = Gtk.Entry()
-        self.grid.attach(self.enter_name, 1, 2, 1, 1)
+        self.enter_name.set_text('Number of words')
+        self.enter_name.set_icon_from_stock(Gtk.EntryIconPosition.SECONDARY, Gtk.STOCK_CLEAR)
+        self.enter_name.connect('icon-press', self.entry_cleared)
+        self.grid.attach(self.enter_name, 0, 2, 2, 1)
 
-        label_save = Gtk.Label('Save as')
-        self.grid.attach(label_save, 2, 2, 1, 1)
-
-        save_A4pdf = Gtk.CheckButton('A4 _pdf', use_underline=True)
+        save_A4pdf = Gtk.CheckButton('_A4 pdf', use_underline=True)
         save_A4pdf.set_active(False)
         save_A4pdf.connect('toggled', self.save_options, 'p')
-        self.grid.attach(save_A4pdf, 3, 2, 1, 1)
+        self.grid.attach(save_A4pdf, 2, 2, 1, 1)
 
         save_letterpdf = Gtk.CheckButton('_letter pdf', use_underline=True)
         save_letterpdf.set_active(False)
         save_letterpdf.connect('toggled', self.save_options, 'l')
-        self.grid.attach(save_letterpdf, 4, 2, 1, 1)
+        self.grid.attach(save_letterpdf, 3, 2, 1, 1)
 
         save_png = Gtk.CheckButton('pn_g', use_underline=True)
         save_png.set_active(False)
         save_png.connect('toggled', self.save_options, 'n')
-        self.grid.attach(save_png, 5, 2, 1, 1)
+        self.grid.attach(save_png, 4, 2, 1, 1)
 
         save_svg = Gtk.CheckButton('s_vg', use_underline=True)
         save_svg.set_active(False)
         save_svg.connect('toggled', self.save_options, 's')
-        self.grid.attach(save_svg, 6, 2, 1, 1)
+        self.grid.attach(save_svg, 5, 2, 1, 1)
+
+        small_gridsize = Gtk.CheckButton('Smaller grid', use_underline=True)
+        small_gridsize.set_active(False)
+        small_gridsize.connect('toggled', self.change_gridsize)
+        self.grid.attach(small_gridsize, 6, 2, 1, 1)
+
+    def entry_cleared(self, entry, position, event):
+        self.enter_name.set_text('')
 
     def save_options(self, button, name):
         if button.get_active():
@@ -130,12 +138,16 @@ class Genxinterface(Gtk.Window):
         else:
             self.saveformat = self.saveformat.replace(name, '')
 
+    def change_gridsize(self, button):
+        if button.get_active():
+            self.lowgsize = True
+
     def tool_buttons(self):
-        button_new = Gtk.Button(stock=Gtk.STOCK_NEW)
+        button_new = Gtk.Button('_New word list', use_underline=True)
         button_new.connect('clicked', self.new_wlist)
         self.grid.attach(button_new, 0, 0, 1, 1)
 
-        button_open = Gtk.Button(stock=Gtk.STOCK_OPEN)
+        button_open = Gtk.Button('_Open word list', use_underline=True)
         button_open.connect('clicked', self.open_wlist)
         self.grid.attach(button_open, 1, 0, 1, 1)
 
@@ -147,21 +159,22 @@ class Genxinterface(Gtk.Window):
         button_incgsize.connect('clicked', self.incgsize)
         self.grid.attach(button_incgsize, 3, 0, 1, 1)
 
-        button_save = Gtk.Button(stock=Gtk.STOCK_SAVE)
+        button_save = Gtk.Button('_Save', use_underline=True)
         button_save.connect('clicked', self.save_xword)
         self.grid.attach(button_save, 4, 0, 1, 1)
 
-        button_help = Gtk.Button(stock=Gtk.STOCK_HELP)
+        button_help = Gtk.Button('_Help', use_underline=True)
         button_help.connect('clicked', self.help_page)
         self.grid.attach(button_help, 5, 0, 1, 1)
 
-        button_quit = Gtk.Button(stock=Gtk.STOCK_QUIT)
+        button_quit = Gtk.Button('_Quit', use_underline=True)
         button_quit.connect('clicked', Gtk.main_quit)
         self.grid.attach(button_quit, 6, 0, 1, 1)
 
     def new_wlist(self, button):
         self.textview.set_editable(True)
         self.textview.set_cursor_visible(True)
+        self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
         self.textbuffer.set_text('')
 
     def open_wlist(self, button):
@@ -176,6 +189,9 @@ class Genxinterface(Gtk.Window):
         if response == Gtk.ResponseType.OK:
             with open(dialog.get_filename()) as infile:
                 data = infile.read()
+            self.textview.set_editable(True)
+            self.textview.set_cursor_visible(True)
+            self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
             self.textbuffer.set_text(data)
         dialog.destroy()
 
@@ -191,6 +207,7 @@ class Genxinterface(Gtk.Window):
         dialog.add_filter(filter_any)
 
     def calc_xword(self, button):
+        self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
         buff = self.textview.get_buffer()
         rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
         if save_recalc in rawtext:
@@ -205,15 +222,17 @@ class Genxinterface(Gtk.Window):
             self.textview.set_cursor_visible(False)
             self.gen = control.Genxword()
             with open(wordlist) as infile:
-                self.gen.wlist(infile)
+                self.gen.wlist(infile, self.nwords)
             self.gen.grid_size(True)
             self.textbuffer.set_text(self.gen.calcgrid())
             self.add_tag(self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
             os.close(fd)
             os.remove(wordlist)
+        self.enter_name.set_text('Name of crossword')
 
     def incgsize(self, button):
+        self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
         self.textbuffer.set_text(self.gen.calcgrid(True))
         self.add_tag(self.tag_mono, 0, -1)
         self.textbuffer.insert_at_cursor(save_recalc)
@@ -245,13 +264,15 @@ class Genxinterface(Gtk.Window):
     def help_message(self):
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
+        self.textview.set_wrap_mode(Gtk.WrapMode.WORD)
         self.textbuffer.set_text(help_text)
         self.add_tag(self.tag_title, 0, 1)
-        self.add_tag(self.tag_subtitle, 5, 6)
-        self.add_tag(self.tag_subtitle, 22, 23)
+        self.add_tag(self.tag_subtitle, 3, 4)
+        self.add_tag(self.tag_subtitle, 18, 19)
+        self.add_tag(self.tag_subtitle, 21, 22)
+        self.add_tag(self.tag_subtitle, 24, 25)
         self.add_tag(self.tag_subtitle, 27, 28)
-        self.add_tag(self.tag_subtitle, 31, 32)
-        self.add_tag(self.tag_subtitle, 35, 36)
+        self.add_tag(self.tag_subtitle, 30, 31)
 
     def add_tag(self, tag_name, startline, endline):
         start = self.textbuffer.get_iter_at_line(startline)
