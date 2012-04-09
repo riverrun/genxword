@@ -23,11 +23,40 @@ import os, tempfile
 from gi.repository import Gtk, Pango
 from . import control
 
-help_text = """Help, I need somebody!"""
+help_text = """genxword-gtk\n
+Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) 
+versions of the grid and clues, or png / svg versions of the crossword grid, 
+together with a text file containing the words and clues.\n
+New - create a new word list
+If you click on the New button, the screen will be cleared and you will be able 
+to create a new word list. The word list can be just a list of words, like this:\n
+history
+spam
+vikings\n
+or it can be a list or words and clues, like this:\n
+excalibur A sword that a moistened bint lobbed at Arthur.
+socrates The scorer of the first goal in the philosophers' football match.
+deirdre Mrs. Pewtey's beautiful first name.\n
+As you can see, each word needs to be on a separate line, and there should be 
+a space between each word and its clue. The clue is everything after the first space.\n
+Open - open word list
+The Open button lets you open, and edit, a word list. The word list can be 
+thousands of words long. If you use a large word list, the crossword will be 
+created with 50 words randomly selected from it.\n
+Calculate - create the crossword
+Click on Calculate to create the crossword. If you click on it a second time, 
+the crossword will be recalculated.\n
+Inc grid size - increase the grid size and recalculate
+This button gives you the option of increasing the grid size before 
+recalculating the crossword.\n
+Save - save the crossword
+This button lets you choose where you save the crossword.
+"""
 
 save_recalc = """\nIf you want to save this crossword, press the Save button.
 If you want to recalculate the crossword, press the Calculate button.
-To increase the grid size and then recalculate the crossword, press the Inc grid size button.
+To increase the grid size and then recalculate the crossword, 
+press the Inc grid size button.
 """
 
 class Genxinterface(Gtk.Window):
@@ -35,11 +64,14 @@ class Genxinterface(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title='genxword-gtk')
 
-        self.set_default_size(-1, 350)
+        self.set_default_size(-1, 500)
         self.saveformat = ''
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
+        self.grid.set_border_width(6)
+        self.grid.set_row_spacing(6)
+        self.grid.set_column_spacing(12)
 
         self.textview_win()
         self.check_buttons()
@@ -52,10 +84,12 @@ class Genxinterface(Gtk.Window):
         self.grid.attach(scrolledwindow, 0, 1, 7, 1)
 
         self.textview = Gtk.TextView()
+        self.textview.set_border_width(6)
         fontdesc = Pango.FontDescription('monospace')
         self.textview.modify_font(fontdesc)
         self.textbuffer = self.textview.get_buffer()
-        self.textbuffer.set_text(help_text)
+        self.tag_bold = self.textbuffer.create_tag('bold', weight=Pango.Weight.BOLD)
+        self.help_message()
         scrolledwindow.add(self.textview)
 
     def check_buttons(self):
@@ -68,22 +102,22 @@ class Genxinterface(Gtk.Window):
         label_save = Gtk.Label('Save as')
         self.grid.attach(label_save, 2, 2, 1, 1)
 
-        save_A4pdf = Gtk.CheckButton('A4 pdf')
+        save_A4pdf = Gtk.CheckButton('A4 _pdf', use_underline=True)
         save_A4pdf.set_active(False)
         save_A4pdf.connect('toggled', self.save_options, 'p')
         self.grid.attach(save_A4pdf, 3, 2, 1, 1)
 
-        save_letterpdf = Gtk.CheckButton('letter pdf')
+        save_letterpdf = Gtk.CheckButton('_letter pdf', use_underline=True)
         save_letterpdf.set_active(False)
         save_letterpdf.connect('toggled', self.save_options, 'l')
         self.grid.attach(save_letterpdf, 4, 2, 1, 1)
 
-        save_png = Gtk.CheckButton('png')
+        save_png = Gtk.CheckButton('pn_g', use_underline=True)
         save_png.set_active(False)
         save_png.connect('toggled', self.save_options, 'n')
         self.grid.attach(save_png, 5, 2, 1, 1)
 
-        save_svg = Gtk.CheckButton('svg')
+        save_svg = Gtk.CheckButton('s_vg', use_underline=True)
         save_svg.set_active(False)
         save_svg.connect('toggled', self.save_options, 's')
         self.grid.attach(save_svg, 6, 2, 1, 1)
@@ -143,6 +177,17 @@ class Genxinterface(Gtk.Window):
             self.textbuffer.set_text(data)
         dialog.destroy()
 
+    def add_filters(self, dialog):
+        filter_text = Gtk.FileFilter()
+        filter_text.set_name('Text files')
+        filter_text.add_mime_type('text/plain')
+        dialog.add_filter(filter_text)
+
+        filter_any = Gtk.FileFilter()
+        filter_any.set_name('Any files')
+        filter_any.add_pattern('*')
+        dialog.add_filter(filter_any)
+
     def calc_xword(self, button):
         buff = self.textview.get_buffer()
         rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
@@ -190,20 +235,23 @@ class Genxinterface(Gtk.Window):
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')
 
     def help_page(self, button):
+        self.help_message()
+
+    def help_message(self): # break this up into a few functions - less code
         self.textview.set_editable(False)
         self.textview.set_cursor_visible(False)
         self.textbuffer.set_text(help_text)
+        self.add_tag(self.tag_bold, 1)
+        self.add_tag(self.tag_bold, 7)
+        self.add_tag(self.tag_bold, 24)
+        self.add_tag(self.tag_bold, 29)
+        self.add_tag(self.tag_bold, 33)
+        self.add_tag(self.tag_bold, 37)
 
-    def add_filters(self, dialog):
-        filter_text = Gtk.FileFilter()
-        filter_text.set_name('Text files')
-        filter_text.add_mime_type('text/plain')
-        dialog.add_filter(filter_text)
-
-        filter_any = Gtk.FileFilter()
-        filter_any.set_name('Any files')
-        filter_any.add_pattern('*')
-        dialog.add_filter(filter_any)
+    def add_tag(self, tag_name, linenr):
+        start = self.textbuffer.get_iter_at_line(linenr-1)
+        end = self.textbuffer.get_iter_at_line(linenr)
+        self.textbuffer.apply_tag(tag_name, start, end)
 
 def main():
     win = Genxinterface()
