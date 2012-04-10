@@ -26,7 +26,7 @@ from . import control
 help_text = """genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
 or png / svg versions of the crossword grid, together with a text file containing the words and clues.\n
-New word list
+New - create a new word list
 If you click on the New button, the screen will be cleared and you will be able to create a new word list. \
 The word list can be just a list of words, like this:\n
 history
@@ -38,7 +38,7 @@ duck An animal that weighs the same as a witch.
 coconut A fruit that possibly migrates.\n
 As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. \
 The clue is everything after the first space.\n
-Open word list
+Open - open a word list
 The Open button lets you open, and edit, a word list, which needs to be formatted as written above. \
 The word list can be thousands of words long. If you use a large word list, the crossword will be created \
 with a set amount of words randomly selected from it. The default number of words is 50.\n
@@ -49,10 +49,8 @@ This button gives you the option of increasing the grid size before recalculatin
 Save - save the crossword
 This button lets you choose where you save the crossword files.\n
 Further options
-In the entry box below, you can set the number of words used from the word list. This is also where you write the \
-name of the crossword once it has been calculated.\nYou can save the crossword in pdf, png and / or svg format. \
-Just toggle the appropriate buttons below.\nThe last button lets you make the grid size slightly smaller, which \
-will make the crossword more dense, but will probably use fewer words.
+In the entry box below, you can write the name of the crossword.\nYou can save the crossword in pdf, png \
+and / or svg format. Just toggle the appropriate buttons below.
 """
 save_recalc = """\nIf you want to save this crossword, press the Save button.
 If you want to recalculate the crossword, press the Calculate button.
@@ -68,7 +66,7 @@ class Genxinterface(Gtk.Window):
         self.set_default_size(-1, 500)
         self.saveformat = ''
         self.nwords = 50
-        self.lowgsize = False
+        self.more_options = False
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -99,7 +97,7 @@ class Genxinterface(Gtk.Window):
 
     def check_buttons(self):
         self.enter_name = Gtk.Entry()
-        self.enter_name.set_text('Number of words')
+        self.enter_name.set_text('Name of crossword')
         self.enter_name.set_icon_from_stock(Gtk.EntryIconPosition.SECONDARY, Gtk.STOCK_CLEAR)
         self.enter_name.connect('icon-press', self.entry_cleared)
         self.grid.attach(self.enter_name, 0, 2, 2, 1)
@@ -124,13 +122,14 @@ class Genxinterface(Gtk.Window):
         save_svg.connect('toggled', self.save_options, 's')
         self.grid.attach(save_svg, 5, 2, 1, 1)
 
-        small_gridsize = Gtk.CheckButton('Smaller grid', use_underline=True)
-        small_gridsize.set_active(False)
-        small_gridsize.connect('toggled', self.change_gridsize)
-        self.grid.attach(small_gridsize, 6, 2, 1, 1)
+        options = Gtk.CheckButton('Options', use_underline=True)
+        options.set_active(False)
+        options.connect('toggled', self.extra_options)
+        self.grid.attach(options, 6, 2, 1, 1)
 
     def entry_cleared(self, entry, position, event):
         self.enter_name.set_text('')
+        self.enter_name.grab_focus()
 
     def save_options(self, button, name):
         if button.get_active():
@@ -138,38 +137,47 @@ class Genxinterface(Gtk.Window):
         else:
             self.saveformat = self.saveformat.replace(name, '')
 
-    def change_gridsize(self, button):
+    def extra_options(self, button):
         if button.get_active():
-            self.lowgsize = True
+            self.more_options = True
+        else:
+            self.more_options = False
 
     def tool_buttons(self):
-        button_new = Gtk.Button('_New word list', use_underline=True)
+        button_new = Gtk.Button(stock=Gtk.STOCK_NEW)
         button_new.connect('clicked', self.new_wlist)
         self.grid.attach(button_new, 0, 0, 1, 1)
 
-        button_open = Gtk.Button('_Open word list', use_underline=True)
+        button_open = Gtk.Button(stock=Gtk.STOCK_OPEN)
         button_open.connect('clicked', self.open_wlist)
         self.grid.attach(button_open, 1, 0, 1, 1)
 
-        button_calc = Gtk.Button('_Calculate', use_underline=True)
+        button_calc = Gtk.Button(stock=Gtk.STOCK_EXECUTE)
+        self.button_name(button_calc, '_Calculate')
         button_calc.connect('clicked', self.calc_xword)
         self.grid.attach(button_calc, 2, 0, 1, 1)
 
-        button_incgsize = Gtk.Button('_Inc grid size', use_underline=True)
+        button_incgsize = Gtk.Button(stock=Gtk.STOCK_REDO)
+        self.button_name(button_incgsize, '_Inc size')
         button_incgsize.connect('clicked', self.incgsize)
         self.grid.attach(button_incgsize, 3, 0, 1, 1)
 
-        button_save = Gtk.Button('_Save', use_underline=True)
+        button_save = Gtk.Button(stock=Gtk.STOCK_SAVE)
         button_save.connect('clicked', self.save_xword)
         self.grid.attach(button_save, 4, 0, 1, 1)
 
-        button_help = Gtk.Button('_Help', use_underline=True)
+        button_help = Gtk.Button(stock=Gtk.STOCK_HELP)
         button_help.connect('clicked', self.help_page)
         self.grid.attach(button_help, 5, 0, 1, 1)
 
-        button_quit = Gtk.Button('_Quit', use_underline=True)
+        button_quit = Gtk.Button(stock=Gtk.STOCK_QUIT)
         button_quit.connect('clicked', Gtk.main_quit)
         self.grid.attach(button_quit, 6, 0, 1, 1)
+
+    def button_name(self, name, display):
+        label = name.get_children()[0]
+        label = label.get_children()[0].get_children()[1]
+        label = label.set_label(display)
 
     def new_wlist(self, button):
         self.textview.set_editable(True)
@@ -229,7 +237,6 @@ class Genxinterface(Gtk.Window):
             self.textbuffer.insert_at_cursor(save_recalc)
             os.close(fd)
             os.remove(wordlist)
-        self.enter_name.set_text('Name of crossword')
 
     def incgsize(self, button):
         self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
@@ -239,7 +246,7 @@ class Genxinterface(Gtk.Window):
 
     def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()
-        if self.saveformat and self.xwordname:
+        if self.saveformat and self.xwordname != 'Name of crossword':
             dialog = Gtk.FileChooserDialog('Please choose a folder', self,
                 Gtk.FileChooserAction.SELECT_FOLDER,
                 (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
@@ -253,7 +260,7 @@ class Genxinterface(Gtk.Window):
             self.gen.savefiles(self.saveformat, self.xwordname, True)
             saved_message = 'Your crossword files have been saved in ' + os.getcwd()
             self.textbuffer.set_text(saved_message)
-            self.enter_name.set_text('')
+            self.enter_name.set_text('Name of crossword')
         else:
             self.textbuffer.set_text('Please fill in the name of the crossword and how you want it saved.')
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')

@@ -54,11 +54,9 @@ class Genxword(object):
                 except:
                     pass
 
-    def calcgrid(self, incgsize=False, lowgsize=False):
+    def calcgrid(self, incgsize=False):
         if incgsize:
             self.ncol += 2;self.nrow += 2
-        if lowgsize:
-            self.ncol -= 2;self.nrow -= 2
         self.calc = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
         self.calc.compute_crossword()
         return self.calc.solution()
