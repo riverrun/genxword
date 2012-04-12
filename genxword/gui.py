@@ -65,8 +65,6 @@ class Genxinterface(Gtk.Window):
 
         self.set_default_size(-1, 500)
         self.saveformat = ''
-        self.nwords = 50
-        self.more_options = False
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -122,11 +120,6 @@ class Genxinterface(Gtk.Window):
         save_svg.connect('toggled', self.save_options, 's')
         self.grid.attach(save_svg, 5, 2, 1, 1)
 
-        options = Gtk.CheckButton('Options', use_underline=True)
-        options.set_active(False)
-        options.connect('toggled', self.extra_options)
-        self.grid.attach(options, 6, 2, 1, 1)
-
     def entry_cleared(self, entry, position, event):
         self.enter_name.set_text('')
         self.enter_name.grab_focus()
@@ -136,12 +129,6 @@ class Genxinterface(Gtk.Window):
             self.saveformat += name
         else:
             self.saveformat = self.saveformat.replace(name, '')
-
-    def extra_options(self, button):
-        if button.get_active():
-            self.more_options = True
-        else:
-            self.more_options = False
 
     def tool_buttons(self):
         button_new = Gtk.Button(stock=Gtk.STOCK_NEW)
@@ -153,7 +140,7 @@ class Genxinterface(Gtk.Window):
         self.grid.attach(button_open, 1, 0, 1, 1)
 
         button_calc = Gtk.Button(stock=Gtk.STOCK_EXECUTE)
-        self.button_name(button_calc, '_Calculate')
+        self.button_name(button_calc, '_Create')
         button_calc.connect('clicked', self.calc_xword)
         self.grid.attach(button_calc, 2, 0, 1, 1)
 
@@ -230,7 +217,7 @@ class Genxinterface(Gtk.Window):
             self.textview.set_cursor_visible(False)
             self.gen = control.Genxword()
             with open(wordlist) as infile:
-                self.gen.wlist(infile, self.nwords)
+                self.gen.wlist(infile)
             self.gen.grid_size(True)
             self.textbuffer.set_text(self.gen.calcgrid())
             self.add_tag(self.tag_mono, 0, -1)
