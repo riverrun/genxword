@@ -23,7 +23,7 @@ import os, sys
 from distutils.core import setup
 
 if sys.version[0] == '3':
-    scripts = ['bin/genxword-py3']
+    scripts = ['bin/genxword3']
 else:
     scripts = ['bin/genxword', 'bin/genxword-gtk']
 
