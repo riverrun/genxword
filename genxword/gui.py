@@ -58,29 +58,139 @@ To increase the grid size and then recalculate the crossword,
 press the Inc grid size button.
 """
 
+ui_info = """
+<ui>
+  <menubar name='MenuBar'>
+    <menu action='FileMenu'>
+      <menuitem action='New'/>
+      <menuitem action='Open'/>
+      <separator/>
+      <menuitem action='Quit'/>
+    </menu>
+    <menu action='CrosswordMenu'>
+      <menuitem action='Create'/>
+      <menuitem action='Incgsize'/>
+      <menuitem action='Save'/>
+    </menu>
+    <menu action='SaveOptsMenu'>
+      <menuitem action='SaveA4'/>
+      <menuitem action='Saveletter'/>
+      <menuitem action='Savepng'/>
+      <menuitem action='Savesvg'/>
+    </menu>
+    <menu action='HelpMenu'>
+      <menuitem action='Help'/>
+    </menu>
+  </menubar>
+  <toolbar name='ToolBar'>
+    <toolitem action='New'/>
+    <toolitem action='Open'/>
+    <separator action='Sep1'/>
+    <toolitem action='Create'/>
+    <toolitem action='Incgsize'/>
+    <separator action='Sep2'/>
+    <toolitem action='Save'/>
+    <separator action='Sep3'/>
+    <toolitem action='Help'/>
+  </toolbar>
+</ui>
+"""
+
 class Genxinterface(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self, title='genxword-gtk')
 
-        self.set_default_size(-1, 500)
+        self.set_default_size(650, 450)
+        #self.set_default_size(-1, 500)
         self.saveformat = ''
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
         self.grid.set_border_width(6)
         self.grid.set_row_spacing(6)
-        self.grid.set_column_spacing(12)
+        self.grid.set_column_spacing(6)
+
+        action_group = Gtk.ActionGroup('main_actions')
+        self.add_main_actions(action_group)
+        self.add_opts_actions(action_group)
+        uimanager = self.create_ui_manager()
+        uimanager.insert_action_group(action_group)
+        menubar = uimanager.get_widget('/MenuBar')
+        self.grid.attach(menubar, 0, 0, 6, 1)
+        toolbar = uimanager.get_widget('/ToolBar')
+        self.grid.attach(toolbar, 0, 1, 6, 1)
 
         self.textview_win()
-        self.check_buttons()
-        self.tool_buttons()
+        self.bottom_row()
+
+    def add_main_actions(self, action_group):
+        action_filemenu = Gtk.Action('FileMenu', '_Word list', None, None)
+        action_group.add_action(action_filemenu)
+
+        action_xwordmenu = Gtk.Action('CrosswordMenu', '_Crossword', None, None)
+        action_group.add_action(action_xwordmenu)
+
+        action_helpmenu = Gtk.Action('HelpMenu', '_Help', None, None)
+        action_group.add_action(action_helpmenu)
+
+        action_new = Gtk.Action('New', 'New word list', 'Create a new word list', Gtk.STOCK_NEW)
+        action_new.connect('activate', self.new_wlist)
+        action_group.add_action_with_accel(action_new, None)
+
+        action_open = Gtk.Action('Open', 'Open a word list', 'Open an existing word list', Gtk.STOCK_OPEN)
+        action_open.connect('activate', self.open_wlist)
+        action_group.add_action_with_accel(action_open, None)
+
+        action_create = Gtk.Action('Create', 'Create the crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
+        action_create.connect('activate', self.calc_xword)
+        action_group.add_action_with_accel(action_create, '<control>C')
+
+        action_incgsize = Gtk.Action('Incgsize', 'Increase the grid size',
+            'Increase the grid size and recalculate the crossword', Gtk.STOCK_REDO)
+        action_incgsize.connect('activate', self.incgsize)
+        action_group.add_action_with_accel(action_incgsize, '<control>R')
+
+        action_save = Gtk.Action('Save', 'Save', 'Save the crossword', Gtk.STOCK_SAVE)
+        action_save.connect('activate', self.save_xword)
+        action_group.add_action_with_accel(action_save, None)
+
+        action_help = Gtk.Action('Help', 'Help', 'Help page', Gtk.STOCK_HELP)
+        action_help.connect('activate', self.help_page)
+        action_group.add_action_with_accel(action_help, None)
+
+        action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
+        action_quit.connect('activate', self.quit_app)
+        action_group.add_action_with_accel(action_quit, None)
+
+    def add_opts_actions(self, action_group):
+        action_optsmenu = Gtk.Action('SaveOptsMenu', '_Save options', None, None)
+        action_group.add_action(action_optsmenu)
+        save_A4 = Gtk.ToggleAction('SaveA4', 'Save as A4 pdf', None, None)
+        save_A4.connect('toggled', self.save_options, 'p')
+        action_group.add_action(save_A4)
+        save_letter = Gtk.ToggleAction('Saveletter', 'Save as letter pdf', None, None)
+        save_letter.connect('toggled', self.save_options, 'l')
+        action_group.add_action(save_letter)
+        save_png = Gtk.ToggleAction('Savepng', 'Save as png', None, None)
+        save_png.connect('toggled', self.save_options, 'n')
+        action_group.add_action(save_png)
+        save_svg = Gtk.ToggleAction('Savesvg', 'Save as svg', None, None)
+        save_svg.connect('toggled', self.save_options, 's')
+        action_group.add_action(save_svg)
+
+    def create_ui_manager(self):
+        uimanager = Gtk.UIManager()
+        uimanager.add_ui_from_string(ui_info)
+        accelgroup = uimanager.get_accel_group()
+        self.add_accel_group(accelgroup)
+        return uimanager
 
     def textview_win(self):
         scrolledwindow = Gtk.ScrolledWindow()
         scrolledwindow.set_hexpand(True)
         scrolledwindow.set_vexpand(True)
-        self.grid.attach(scrolledwindow, 0, 1, 7, 1)
+        self.grid.attach(scrolledwindow, 0, 2, 6, 1)
 
         self.textview = Gtk.TextView()
         self.textview.set_border_width(6)
@@ -93,32 +203,22 @@ class Genxinterface(Gtk.Window):
         self.help_message()
         scrolledwindow.add(self.textview)
 
-    def check_buttons(self):
+    def bottom_row(self):
         self.enter_name = Gtk.Entry()
         self.enter_name.set_text('Name of crossword')
+        self.enter_name.set_tooltip_text('Choose the name of your crossword')
         self.enter_name.set_icon_from_stock(Gtk.EntryIconPosition.SECONDARY, Gtk.STOCK_CLEAR)
         self.enter_name.connect('icon-press', self.entry_cleared)
-        self.grid.attach(self.enter_name, 0, 2, 2, 1)
+        self.grid.attach(self.enter_name, 0, 3, 2, 1)
 
-        save_A4pdf = Gtk.CheckButton('_A4 pdf', use_underline=True)
-        save_A4pdf.set_active(False)
-        save_A4pdf.connect('toggled', self.save_options, 'p')
-        self.grid.attach(save_A4pdf, 2, 2, 1, 1)
+        nwords_label = Gtk.Label('Number of words')
+        self.grid.attach(nwords_label, 2, 3, 1, 1)
 
-        save_letterpdf = Gtk.CheckButton('_letter pdf', use_underline=True)
-        save_letterpdf.set_active(False)
-        save_letterpdf.connect('toggled', self.save_options, 'l')
-        self.grid.attach(save_letterpdf, 3, 2, 1, 1)
-
-        save_png = Gtk.CheckButton('pn_g', use_underline=True)
-        save_png.set_active(False)
-        save_png.connect('toggled', self.save_options, 'n')
-        self.grid.attach(save_png, 4, 2, 1, 1)
-
-        save_svg = Gtk.CheckButton('s_vg', use_underline=True)
-        save_svg.set_active(False)
-        save_svg.connect('toggled', self.save_options, 's')
-        self.grid.attach(save_svg, 5, 2, 1, 1)
+        adjustment = Gtk.Adjustment(50, 10, 500, 5, 10, 0)
+        self.choose_nwords = Gtk.SpinButton()
+        self.choose_nwords.set_adjustment(adjustment)
+        self.choose_nwords.set_tooltip_text('Choose the number of words you want to use')
+        self.grid.attach(self.choose_nwords, 3, 3, 1, 1)
 
     def entry_cleared(self, entry, position, event):
         self.enter_name.set_text('')
@@ -129,42 +229,6 @@ class Genxinterface(Gtk.Window):
             self.saveformat += name
         else:
             self.saveformat = self.saveformat.replace(name, '')
-
-    def tool_buttons(self):
-        button_new = Gtk.Button(stock=Gtk.STOCK_NEW)
-        button_new.connect('clicked', self.new_wlist)
-        self.grid.attach(button_new, 0, 0, 1, 1)
-
-        button_open = Gtk.Button(stock=Gtk.STOCK_OPEN)
-        button_open.connect('clicked', self.open_wlist)
-        self.grid.attach(button_open, 1, 0, 1, 1)
-
-        button_calc = Gtk.Button(stock=Gtk.STOCK_EXECUTE)
-        self.button_name(button_calc, '_Create')
-        button_calc.connect('clicked', self.calc_xword)
-        self.grid.attach(button_calc, 2, 0, 1, 1)
-
-        button_incgsize = Gtk.Button(stock=Gtk.STOCK_REDO)
-        self.button_name(button_incgsize, '_Inc size')
-        button_incgsize.connect('clicked', self.incgsize)
-        self.grid.attach(button_incgsize, 3, 0, 1, 1)
-
-        button_save = Gtk.Button(stock=Gtk.STOCK_SAVE)
-        button_save.connect('clicked', self.save_xword)
-        self.grid.attach(button_save, 4, 0, 1, 1)
-
-        button_help = Gtk.Button(stock=Gtk.STOCK_HELP)
-        button_help.connect('clicked', self.help_page)
-        self.grid.attach(button_help, 5, 0, 1, 1)
-
-        button_quit = Gtk.Button(stock=Gtk.STOCK_QUIT)
-        button_quit.connect('clicked', Gtk.main_quit)
-        self.grid.attach(button_quit, 6, 0, 1, 1)
-
-    def button_name(self, name, display):
-        label = name.get_children()[0]
-        label = label.get_children()[0].get_children()[1]
-        label = label.set_label(display)
 
     def new_wlist(self, button):
         self.textview.set_editable(True)
@@ -215,9 +279,10 @@ class Genxinterface(Gtk.Window):
                 wlist_file.write(rawtext)
             self.textview.set_editable(False)
             self.textview.set_cursor_visible(False)
+            nwords = self.choose_nwords.get_value_as_int()
             self.gen = control.Genxword()
             with open(wordlist) as infile:
-                self.gen.wlist(infile)
+                self.gen.wlist(infile, nwords)
             self.gen.grid_size(True)
             self.textbuffer.set_text(self.gen.calcgrid())
             self.add_tag(self.tag_mono, 0, -1)
@@ -272,6 +337,9 @@ class Genxinterface(Gtk.Window):
         start = self.textbuffer.get_iter_at_line(startline)
         end = self.textbuffer.get_iter_at_line(endline)
         self.textbuffer.apply_tag(tag_name, start, end)
+
+    def quit_app(self, widget):
+        Gtk.main_quit()
 
 def main():
     win = Genxinterface()
