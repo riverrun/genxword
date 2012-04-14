@@ -71,6 +71,8 @@ ui_info = """
       <menuitem action='Create'/>
       <menuitem action='Incgsize'/>
       <menuitem action='Save'/>
+      <separator/>
+      <menuitem action='EditGsize'/>
     </menu>
     <menu action='SaveOptsMenu'>
       <menuitem action='SaveA4'/>
@@ -102,8 +104,8 @@ class Genxinterface(Gtk.Window):
         Gtk.Window.__init__(self, title='genxword-gtk')
 
         self.set_default_size(650, 450)
-        #self.set_default_size(-1, 500)
         self.saveformat = ''
+        self.gsize = False
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -138,20 +140,20 @@ class Genxinterface(Gtk.Window):
         action_new.connect('activate', self.new_wlist)
         action_group.add_action_with_accel(action_new, None)
 
-        action_open = Gtk.Action('Open', 'Open a word list', 'Open an existing word list', Gtk.STOCK_OPEN)
+        action_open = Gtk.Action('Open', 'Open word list', 'Open an existing word list', Gtk.STOCK_OPEN)
         action_open.connect('activate', self.open_wlist)
         action_group.add_action_with_accel(action_open, None)
 
-        action_create = Gtk.Action('Create', 'Create the crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
+        action_create = Gtk.Action('Create', 'Create crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
         action_create.connect('activate', self.calc_xword)
         action_group.add_action_with_accel(action_create, '<control>C')
 
-        action_incgsize = Gtk.Action('Incgsize', 'Increase the grid size',
+        action_incgsize = Gtk.Action('Incgsize', 'Increase grid size',
             'Increase the grid size and recalculate the crossword', Gtk.STOCK_REDO)
         action_incgsize.connect('activate', self.incgsize)
         action_group.add_action_with_accel(action_incgsize, '<control>R')
 
-        action_save = Gtk.Action('Save', 'Save', 'Save the crossword', Gtk.STOCK_SAVE)
+        action_save = Gtk.Action('Save', 'Save', 'Save crossword', Gtk.STOCK_SAVE)
         action_save.connect('activate', self.save_xword)
         action_group.add_action_with_accel(action_save, None)
 
@@ -178,6 +180,9 @@ class Genxinterface(Gtk.Window):
         save_svg = Gtk.ToggleAction('Savesvg', 'Save as svg', None, None)
         save_svg.connect('toggled', self.save_options, 's')
         action_group.add_action(save_svg)
+        edit_gsize = Gtk.ToggleAction('EditGsize', 'Choose the grid size', None, None)
+        edit_gsize.connect('toggled', self.set_gsize)
+        action_group.add_action(edit_gsize)
 
     def create_ui_manager(self):
         uimanager = Gtk.UIManager()
@@ -217,8 +222,19 @@ class Genxinterface(Gtk.Window):
         adjustment = Gtk.Adjustment(50, 10, 500, 5, 10, 0)
         self.choose_nwords = Gtk.SpinButton()
         self.choose_nwords.set_adjustment(adjustment)
+        self.choose_nwords.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
         self.choose_nwords.set_tooltip_text('Choose the number of words you want to use')
         self.grid.attach(self.choose_nwords, 3, 3, 1, 1)
+
+        gsize_label = Gtk.Label('Grid size')
+        self.grid.attach(gsize_label, 4, 3, 1, 1)
+
+        adjustment = Gtk.Adjustment(17, 9, 101, 2, 10, 0)
+        self.choose_gsize = Gtk.SpinButton()
+        self.choose_gsize.set_adjustment(adjustment)
+        self.choose_gsize.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
+        self.choose_gsize.set_tooltip_text('Choose the crossword grid size')
+        self.grid.attach(self.choose_gsize, 5, 3, 1, 1)
 
     def entry_cleared(self, entry, position, event):
         self.enter_name.set_text('')
@@ -283,7 +299,10 @@ class Genxinterface(Gtk.Window):
             self.gen = control.Genxword()
             with open(wordlist) as infile:
                 self.gen.wlist(infile, nwords)
-            self.gen.grid_size(True)
+            if self.gsize:
+                self.gen.ncol = self.gen.nrow = self.choose_gsize.get_value_as_int()
+            else:
+                self.gen.grid_size(True)
             self.textbuffer.set_text(self.gen.calcgrid())
             self.add_tag(self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
@@ -295,6 +314,12 @@ class Genxinterface(Gtk.Window):
         self.textbuffer.set_text(self.gen.calcgrid(True))
         self.add_tag(self.tag_mono, 0, -1)
         self.textbuffer.insert_at_cursor(save_recalc)
+
+    def set_gsize(self, button):
+        if button.get_active():
+            self.gsize = True
+        else:
+            self.gsize = False
 
     def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()

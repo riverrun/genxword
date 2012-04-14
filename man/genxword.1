@@ -1,9 +1,9 @@
 .\" Manpage for genxword.
-.TH genxword 6 "06/03/2012" "0.2.4" "genxword man page"
+.TH genxword 1 "06/03/2012" "0.2.4" "genxword man page"
 .SH NAME
 genxword \- a crossword generator
 .SH SYNOPSIS
-genxword [\-a] [\-n] [\-o] [\-t] infile saveformat
+genxword [\-a] [\-n] [\-o] infile saveformat
 .SH DESCRIPTION
 genxword is a crossword generator written in Python. It reads words and clues,
 or just words, from a text file. The crossword that is generated can be saved,
@@ -34,11 +34,7 @@ The number of words to be used from the word list file, which can contain thousa
 of words. The default number is 50.
 .TP
 \-o, \-\-output
-The name of the crossword. You can also choose the name while running the program.
-If you save the crossword as a pdf file, this name will be used as the title of the crossword.
-.TP
-\-t, \-\-time
-The time used to calculate the crossword. The default is 1 second.
+The name of the crossword. If you save the crossword as a pdf file, this name will be used as the title of the crossword.
 .TP
 \-h, \-\-help
 Print basic information about how to use the program.

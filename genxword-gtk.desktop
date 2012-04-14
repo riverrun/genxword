@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=0.2.5
+Type=Application
+Terminal=false
+Exec=genxword-gtk
+Name=genxword-gtk
+Icon=/usr/share/pixmaps/genxword.svg
+Categories=Graphics;GTK;Education;
+StartupNotify=True
