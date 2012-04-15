@@ -21,15 +21,16 @@
 
 import os, tempfile
 from gi.repository import Gtk, Pango
-from . import control
+from . import calculate
+from .control import Genxword
 
 help_text = """genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
 or png / svg versions of the crossword grid, together with a text file containing the words and clues.\n
-New - create a new word list
-If you click on the New button, the screen will be cleared and you will be able to create a new word list. \
+New word list
+You can create a new word list by clicking on the 'new' button, or by pressing Control + N. \
 The word list can be just a list of words, like this:\n
-history
+parrot
 spam
 vikings\n
 or it can be a list or words and clues, like this:\n
@@ -38,19 +39,23 @@ duck An animal that weighs the same as a witch.
 coconut A fruit that possibly migrates.\n
 As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. \
 The clue is everything after the first space.\n
-Open - open a word list
-The Open button lets you open, and edit, a word list, which needs to be formatted as written above. \
-The word list can be thousands of words long. If you use a large word list, the crossword will be created \
-with a set amount of words randomly selected from it. The default number of words is 50.\n
+Open word list
+Clicking the 'open' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be \
+formatted as written above. The word list can be thousands of words long. If you use a large word list, \
+the crossword will be created with a set amount of words randomly selected from it. The default number of words is 50.\n
 Calculate - create the crossword
-Click on Calculate to create the crossword. If you click on it a second time, the crossword will be recalculated.\n
+Click on the 'create' button, or press Control + G, to create the crossword. If you click on it a second time, \
+the crossword will be recalculated.\n
 Inc grid size - increase the grid size and recalculate
-This button gives you the option of increasing the grid size before recalculating the crossword.\n
+This button, or Control + R, gives you the option of increasing the grid size before recalculating the crossword.\n
 Save - save the crossword
-This button lets you choose where you save the crossword files.\n
+This button, or Control + S, lets you choose where you save the crossword files.\n
 Further options
-In the entry box below, you can write the name of the crossword.\nYou can save the crossword in pdf, png \
-and / or svg format. Just toggle the appropriate buttons below.
+You can save the crossword in pdf, png and / or svg format. Just click on the appropriate entries in the 'Save options' menu.
+On the bottom row of this window, there are boxes in which you can write the name of the crossword, choose the number \
+of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' \
+menu first (normally, the grid size will be automatically calculated based on the number of words used). \
+The number in the grid size box refers to the number of columns, and rows, that will be used.
 """
 save_recalc = """\nIf you want to save this crossword, press the Save button.
 If you want to recalculate the crossword, press the Calculate button.
@@ -125,6 +130,7 @@ class Genxinterface(Gtk.Window):
 
         self.textview_win()
         self.bottom_row()
+        #self.win_icon()
 
     def add_main_actions(self, action_group):
         action_filemenu = Gtk.Action('FileMenu', '_Word list', None, None)
@@ -146,7 +152,7 @@ class Genxinterface(Gtk.Window):
 
         action_create = Gtk.Action('Create', 'Create crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
         action_create.connect('activate', self.calc_xword)
-        action_group.add_action_with_accel(action_create, '<control>C')
+        action_group.add_action_with_accel(action_create, '<control>G')
 
         action_incgsize = Gtk.Action('Incgsize', 'Increase grid size',
             'Increase the grid size and recalculate the crossword', Gtk.STOCK_REDO)
@@ -246,6 +252,12 @@ class Genxinterface(Gtk.Window):
         else:
             self.saveformat = self.saveformat.replace(name, '')
 
+    def win_icon(self):
+        try:
+            self.set_icon_from_file('/usr/share/pixmaps/genxword.png')
+        except:
+            pass
+
     def new_wlist(self, button):
         self.textview.set_editable(True)
         self.textview.set_cursor_visible(True)
@@ -296,7 +308,7 @@ class Genxinterface(Gtk.Window):
             self.textview.set_editable(False)
             self.textview.set_cursor_visible(False)
             nwords = self.choose_nwords.get_value_as_int()
-            self.gen = control.Genxword()
+            self.gen = Genxword()
             with open(wordlist) as infile:
                 self.gen.wlist(infile, nwords)
             if self.gsize:
@@ -338,6 +350,8 @@ class Genxinterface(Gtk.Window):
             saved_message = 'Your crossword files have been saved in ' + os.getcwd()
             self.textbuffer.set_text(saved_message)
             self.enter_name.set_text('Name of crossword')
+            self.choose_nwords.set_value(50)
+            self.choose_gsize.set_value(17)
         else:
             self.textbuffer.set_text('Please fill in the name of the crossword and how you want it saved.')
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')

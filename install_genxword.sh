@@ -4,17 +4,23 @@
 ERROR_MESSAGE="$(tput bold)$(tput setaf 1)An error occurred. \
 Please read the output above to see what the problem is.$(tput sgr0)\n"
 MAN_DIR=/usr/share/man/man1
+ICON_DIR=/usr/share/pixmaps
+DESKTOP_DIR=/usr/share/applications
 
 printf "Just press Enter to use the Python 2.7 version.\n\
 To use the Python 3 version, press any key and then Enter.\n"
 read PYVERSION
 if [ -z $PYVERSION ]; then
-    python2.7 setup.py install || { printf "$ERROR_MESSAGE"; exit 1; }
+    python2.7 setup.py install --optimize=1 || { printf "$ERROR_MESSAGE"; exit 1; }
     APP_NAME=genxword
 else
-    python3 setup.py install || { printf "$ERROR_MESSAGE"; exit 1; }
+    python3 setup.py install --optimize=1 || { printf "$ERROR_MESSAGE"; exit 1; }
     APP_NAME=genxword3
 fi
+
+printf "Installing the desktop file and icon for $APP_NAME\n"
+cp genxword-gtk.desktop $DESKTOP_DIR || { printf "$ERROR_MESSAGE"; exit 1; }
+cp icons/genxword.png $ICON_DIR || { printf "$ERROR_MESSAGE"; exit 1; }
 
 cd man
 printf "Installing the man page for $APP_NAME\n"
