@@ -49,10 +49,13 @@ class Genxword(object):
             gsize = str(self.ncol) + ', ' + str(self.nrow)
             grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
             if grid_size:
-                try:
-                    self.ncol, self.nrow = int(grid_size.split(',')[0]), int(grid_size.split(',')[1])
-                except:
-                    pass
+                self.check_grid_size(grid_size)
+
+    def check_grid_size(self, grid_size):
+        try:
+            self.ncol, self.nrow = int(grid_size.split(',')[0]), int(grid_size.split(',')[1])
+        except:
+            pass
 
     def calcgrid(self, incgsize=False):
         if incgsize:

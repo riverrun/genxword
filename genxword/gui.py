@@ -41,13 +41,13 @@ As you can see, each word needs to be on a separate line, and there should be a 
 The clue is everything after the first space.\n
 Open word list
 Clicking the 'open' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be \
-formatted as written above. The word list can be thousands of words long. If you use a large word list, \
-the crossword will be created with a set amount of words randomly selected from it. The default number of words is 50.\n
+formatted as written above. The word list can be thousands of words long, and the crossword will be created \
+with a set amount of words randomly selected from it. The default number of words is 50.\n
 Calculate - create the crossword
 Click on the 'create' button, or press Control + G, to create the crossword. If you click on it a second time, \
 the crossword will be recalculated.\n
-Inc grid size - increase the grid size and recalculate
-This button, or Control + R, gives you the option of increasing the grid size before recalculating the crossword.\n
+Increase grid size - increase the grid size and recalculate
+Clicking on this button, or pressing Control + R, increases the grid size before recalculating the crossword.\n
 Save - save the crossword
 This button, or Control + S, lets you choose where you save the crossword files.\n
 Further options
@@ -55,7 +55,7 @@ You can save the crossword in pdf, png and / or svg format. Just click on the ap
 On the bottom row of this window, there are boxes in which you can write the name of the crossword, choose the number \
 of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' \
 menu first (normally, the grid size will be automatically calculated based on the number of words used). \
-The number in the grid size box refers to the number of columns, and rows, that will be used.
+The numbers in the grid size box refer to the number of columns and rows, and they need to be separated by a comma.
 """
 save_recalc = """\nIf you want to save this crossword, press the Save button.
 If you want to recalculate the crossword, press the Calculate button.
@@ -130,7 +130,7 @@ class Genxinterface(Gtk.Window):
 
         self.textview_win()
         self.bottom_row()
-        #self.win_icon()
+        self.win_icon()
 
     def add_main_actions(self, action_group):
         action_filemenu = Gtk.Action('FileMenu', '_Word list', None, None)
@@ -235,11 +235,10 @@ class Genxinterface(Gtk.Window):
         gsize_label = Gtk.Label('Grid size')
         self.grid.attach(gsize_label, 4, 3, 1, 1)
 
-        adjustment = Gtk.Adjustment(17, 9, 101, 2, 10, 0)
-        self.choose_gsize = Gtk.SpinButton()
-        self.choose_gsize.set_adjustment(adjustment)
-        self.choose_gsize.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
+        self.choose_gsize = Gtk.Entry()
+        self.choose_gsize.set_text('17,17')
         self.choose_gsize.set_tooltip_text('Choose the crossword grid size')
+        self.choose_gsize.set_sensitive(False)
         self.grid.attach(self.choose_gsize, 5, 3, 1, 1)
 
     def entry_cleared(self, entry, position, event):
@@ -311,10 +310,9 @@ class Genxinterface(Gtk.Window):
             self.gen = Genxword()
             with open(wordlist) as infile:
                 self.gen.wlist(infile, nwords)
+            self.gen.grid_size(True)
             if self.gsize:
-                self.gen.ncol = self.gen.nrow = self.choose_gsize.get_value_as_int()
-            else:
-                self.gen.grid_size(True)
+                self.gen.check_grid_size(self.choose_gsize.get_text())
             self.textbuffer.set_text(self.gen.calcgrid())
             self.add_tag(self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
@@ -330,8 +328,10 @@ class Genxinterface(Gtk.Window):
     def set_gsize(self, button):
         if button.get_active():
             self.gsize = True
+            self.choose_gsize.set_sensitive(True)
         else:
             self.gsize = False
+            self.choose_gsize.set_sensitive(False)
 
     def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()
