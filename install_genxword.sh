@@ -20,7 +20,7 @@ fi
 
 printf "Installing the desktop file and icon for $APP_NAME\n"
 cp $APP_NAME-gtk.desktop $DESKTOP_DIR || printf "The desktop file could not be installed\n"
-cp icons/genxword-gtk.png $ICON_DIR || printf "The icon could not be installed\n"
+cp icons/$APP_NAME-gtk.png $ICON_DIR || printf "The icon could not be installed\n"
 
 cd man
 printf "Installing the man page for $APP_NAME\n"
