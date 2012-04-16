@@ -9,10 +9,10 @@ A crossword generator
 Description
 ===========
 
-Genxword is a crossword generator written in Python. It runs from the command line, and it creates 
-a crossword from a list of words and clues in a text file. There is an option to save the 
-crossword, with clues, as a pdf file, or you can save the empty grid and key in png and/or svg format, 
-together with the word bank and clues in a text file.
+Genxword is a crossword generator written in Python. There are now two versions, genxword-gtk, which has a 
+graphical user interface, and genxword, which runs from the command line. Both versions create 
+a crossword from a list of words and clues. You can save the crossword, with clues, as a pdf file, 
+or you can save the empty grid and key in png and/or svg format, together with the word bank and clues in a text file.
 
 Usage
 =====
@@ -26,8 +26,9 @@ Linux
 -----
 
 To run this program, you need to have **Python 2.7** or **Python 3** installed. 
-It will not work with earlier versions of Python. It depends on Py2cairo (or Pycairo), 
+It will not work with earlier versions of Python. The command line version depends on Py2cairo (or Pycairo), 
 which is already installed on most popular distros, to produce the image files.
+The GUI version depends on Pygobject (also known as python-gobject or python-gi).
 
 To install this program, run the following commands (the **install** script needs to be run as root or with sudo)::
 

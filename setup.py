@@ -23,7 +23,7 @@ import os, sys
 from distutils.core import setup
 
 if sys.version[0] == '3':
-    scripts = ['bin/genxword3']
+    scripts = ['bin/genxword3', 'bin/genxword3-gtk']
 else:
     scripts = ['bin/genxword', 'bin/genxword-gtk']
 
@@ -35,7 +35,7 @@ def read(fname):
 
 setup(
     name = 'genxword',
-    version = '0.2.5',
+    version = '0.3.0',
     packages = ['genxword'],
     scripts = scripts,
     author = 'David Whitlock',

@@ -253,7 +253,7 @@ class Genxinterface(Gtk.Window):
 
     def win_icon(self):
         try:
-            self.set_icon_from_file('/usr/share/pixmaps/genxword.png')
+            self.set_icon_from_file('/usr/share/pixmaps/genxword-gtk.png')
         except:
             pass
 
@@ -350,8 +350,6 @@ class Genxinterface(Gtk.Window):
             saved_message = 'Your crossword files have been saved in ' + os.getcwd()
             self.textbuffer.set_text(saved_message)
             self.enter_name.set_text('Name of crossword')
-            self.choose_nwords.set_value(50)
-            self.choose_gsize.set_value(17)
         else:
             self.textbuffer.set_text('Please fill in the name of the crossword and how you want it saved.')
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')

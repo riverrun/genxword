@@ -19,12 +19,11 @@ else
 fi
 
 printf "Installing the desktop file and icon for $APP_NAME\n"
-cp genxword-gtk.desktop $DESKTOP_DIR || { printf "$ERROR_MESSAGE"; exit 1; }
-cp icons/genxword.png $ICON_DIR || { printf "$ERROR_MESSAGE"; exit 1; }
+cp $APP_NAME-gtk.desktop $DESKTOP_DIR || printf "The desktop file could not be installed\n"
+cp icons/genxword-gtk.png $ICON_DIR || printf "The icon could not be installed\n"
 
 cd man
 printf "Installing the man page for $APP_NAME\n"
-cp $APP_NAME.1 $MAN_DIR && gzip -f $MAN_DIR/$APP_NAME.1 || { printf "$ERROR_MESSAGE"; exit 1; }
+cp $APP_NAME.1 $MAN_DIR && gzip -f $MAN_DIR/$APP_NAME.1 || printf "The man page could not be installed\n"
 
-printf "$(tput setaf 2)The program $APP_NAME has been successfully installed.\n\
-Run $APP_NAME -h for basic info about the program or read the man page for further options.$(tput sgr0)\n"
+printf "$(tput setaf 2)The programs $APP_NAME and $APP_NAME-gtk have been installed.$(tput sgr0)\n"
