@@ -237,7 +237,8 @@ class Genxinterface(Gtk.Window):
 
         self.choose_gsize = Gtk.Entry()
         self.choose_gsize.set_text('17,17')
-        self.choose_gsize.set_tooltip_text('Choose the crossword grid size')
+        gsize_tip = 'Choose the crossword grid size\nGo to the Crossword menu to enable this option'
+        self.choose_gsize.set_tooltip_text(gsize_tip)
         self.choose_gsize.set_sensitive(False)
         self.grid.attach(self.choose_gsize, 5, 3, 1, 1)
 
