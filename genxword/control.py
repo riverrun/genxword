@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import argparse, random, sys
+import random, sys
 from . import calculate
 
 usage_info = """The word list file contains the words and clues, or just words, that you want in your crossword. 
@@ -85,6 +85,7 @@ class Genxword(object):
         self.calc.create_files(name, saveformat, gtkmode)
 
 def main():
+    import argparse
     parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file.')
     parser.add_argument('saveformat', help='Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s).')

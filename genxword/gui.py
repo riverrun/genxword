@@ -21,7 +21,6 @@
 
 import os, tempfile
 from gi.repository import Gtk, Pango
-from . import calculate
 from .control import Genxword
 
 help_text = """genxword-gtk
