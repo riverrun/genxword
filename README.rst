@@ -2,6 +2,10 @@
 genxword
 ========
 
+.. image:: https://github.com/riverrun/genxword/raw/master/icons/genxword-gtk.png
+  :alt: genxword logo
+  :align: right
+
 ---------------------
 A crossword generator
 ---------------------
@@ -9,9 +13,8 @@ A crossword generator
 Description
 ===========
 
-Genxword is a crossword generator written in Python. There are now two versions, genxword-gtk, which has a 
-graphical user interface, and genxword, which runs from the command line. Both versions create 
-a crossword from a list of words and clues. You can save the crossword, with clues, as a pdf file, 
+Genxword is a crossword generator written in Python. There are now two versions, `genxword-gtk <https://github.com/riverrun/genxword/wiki/genxword-gtk>`_, which has a graphical user interface, and genxword, which runs from the command line. 
+Both versions create a crossword from a list of words and clues. You can save the crossword, with clues, as a pdf file, 
 or you can save the empty grid and key in png and/or svg format, together with the word bank and clues in a text file.
 
 Usage
