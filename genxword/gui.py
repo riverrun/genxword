@@ -39,8 +39,8 @@ duck An animal that weighs the same as a witch.
 coconut A fruit that possibly migrates.\n
 As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. \
 The clue is everything after the first space.
-If you want to edit the word list more after you have calculated the crossword, you can return to this word list \
-by clicking on the 'new' button again. You can also look at the help page and then return to the word list the same way.\n
+If you want to edit the word list more after you have calculated the crossword, or after looking at the help page, \
+you can return to this word list by clicking on the 'new' button again.\n
 Open word list
 Clicking the 'open' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be \
 formatted as written above. The word list can be thousands of words long, and the crossword will be created \
