@@ -19,13 +19,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os, tempfile
+import os
 from gi.repository import Gtk, Pango
 from .control import Genxword
 
 help_text = """genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
-or png / svg versions of the crossword grid, together with a text file containing the words and clues.\n
+or png / svg versions of the crossword grid, together with a text file containing the words and clues.
+The wordlist that is used to create the crossword is also saved as a text file.\n
 New word list
 You can create a new word list by clicking on the 'new' button, or by pressing Control + N. \
 The word list can be just a list of words, like this:\n
@@ -37,7 +38,9 @@ excalibur A sword that a moistened bint lobbed at Arthur.
 duck An animal that weighs the same as a witch.
 coconut A fruit that possibly migrates.\n
 As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. \
-The clue is everything after the first space.\n
+The clue is everything after the first space.
+If you want to edit the word list more after you have calculated the crossword, you can return to this word list \
+by clicking on the 'new' button again. You can also look at the help page and then return to the word list the same way.\n
 Open word list
 Clicking the 'open' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be \
 formatted as written above. The word list can be thousands of words long, and the crossword will be created \
@@ -109,6 +112,7 @@ class Genxinterface(Gtk.Window):
 
         self.set_default_size(650, 450)
         self.saveformat = ''
+        self.wordlist = ''
         self.gsize = False
 
         self.grid = Gtk.Grid()
@@ -117,7 +121,7 @@ class Genxinterface(Gtk.Window):
         self.grid.set_row_spacing(6)
         self.grid.set_column_spacing(6)
 
-        action_group = Gtk.ActionGroup('main_actions')
+        action_group = Gtk.ActionGroup('gui_actions')
         self.add_main_actions(action_group)
         self.add_opts_actions(action_group)
         uimanager = self.create_ui_manager()
@@ -173,18 +177,23 @@ class Genxinterface(Gtk.Window):
     def add_opts_actions(self, action_group):
         action_optsmenu = Gtk.Action('SaveOptsMenu', '_Save options', None, None)
         action_group.add_action(action_optsmenu)
+
         save_A4 = Gtk.ToggleAction('SaveA4', 'Save as A4 pdf', None, None)
         save_A4.connect('toggled', self.save_options, 'p')
         action_group.add_action(save_A4)
+
         save_letter = Gtk.ToggleAction('Saveletter', 'Save as letter pdf', None, None)
         save_letter.connect('toggled', self.save_options, 'l')
         action_group.add_action(save_letter)
+
         save_png = Gtk.ToggleAction('Savepng', 'Save as png', None, None)
         save_png.connect('toggled', self.save_options, 'n')
         action_group.add_action(save_png)
+
         save_svg = Gtk.ToggleAction('Savesvg', 'Save as svg', None, None)
         save_svg.connect('toggled', self.save_options, 's')
         action_group.add_action(save_svg)
+
         edit_gsize = Gtk.ToggleAction('EditGsize', 'Choose the grid size', None, None)
         edit_gsize.connect('toggled', self.set_gsize)
         action_group.add_action(edit_gsize)
@@ -261,7 +270,7 @@ class Genxinterface(Gtk.Window):
         self.textview.set_editable(True)
         self.textview.set_cursor_visible(True)
         self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
-        self.textbuffer.set_text('')
+        self.textbuffer.set_text(self.wordlist)
 
     def open_wlist(self, button):
         dialog = Gtk.FileChooserDialog('Please choose a file', self,
@@ -301,23 +310,18 @@ class Genxinterface(Gtk.Window):
             self.add_tag(self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
         else:
-            fd, wordlist = tempfile.mkstemp()
-            with open(wordlist, 'w') as wlist_file:
-                wlist_file.write(rawtext)
             self.textview.set_editable(False)
             self.textview.set_cursor_visible(False)
             nwords = self.choose_nwords.get_value_as_int()
             self.gen = Genxword()
-            with open(wordlist) as infile:
-                self.gen.wlist(infile, nwords)
+            self.gen.wlist(rawtext.splitlines(), nwords)
             self.gen.grid_size(True)
             if self.gsize:
                 self.gen.check_grid_size(self.choose_gsize.get_text())
             self.textbuffer.set_text(self.gen.calcgrid())
             self.add_tag(self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
-            os.close(fd)
-            os.remove(wordlist)
+            self.wordlist = rawtext
 
     def incgsize(self, button):
         self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
@@ -333,7 +337,7 @@ class Genxinterface(Gtk.Window):
             self.gsize = False
             self.choose_gsize.set_sensitive(False)
 
-    def save_xword(self, button):
+    def save_xword(self, button, wordlist=False):
         self.xwordname = self.enter_name.get_text()
         if self.saveformat and self.xwordname != 'Name of crossword':
             dialog = Gtk.FileChooserDialog('Please choose a folder', self,
@@ -347,14 +351,21 @@ class Genxinterface(Gtk.Window):
             dialog.destroy()
 
             self.gen.savefiles(self.saveformat, self.xwordname, True)
+            with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
+                wlist_file.write(self.wordlist)
             saved_message = 'Your crossword files have been saved in ' + os.getcwd()
             self.textbuffer.set_text(saved_message)
             self.enter_name.set_text('Name of crossword')
+            self.wordlist = ''
         else:
             self.textbuffer.set_text('Please fill in the name of the crossword and how you want it saved.')
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')
 
     def help_page(self, button):
+        buff = self.textview.get_buffer()
+        rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
+        if save_recalc not in rawtext:
+            self.wordlist = rawtext
         self.help_message()
 
     def help_message(self):
@@ -363,12 +374,12 @@ class Genxinterface(Gtk.Window):
         self.textview.set_wrap_mode(Gtk.WrapMode.WORD)
         self.textbuffer.set_text(help_text)
         self.add_tag(self.tag_title, 0, 1)
-        self.add_tag(self.tag_subtitle, 3, 4)
-        self.add_tag(self.tag_subtitle, 18, 19)
-        self.add_tag(self.tag_subtitle, 21, 22)
-        self.add_tag(self.tag_subtitle, 24, 25)
-        self.add_tag(self.tag_subtitle, 27, 28)
-        self.add_tag(self.tag_subtitle, 30, 31)
+        self.add_tag(self.tag_subtitle, 4, 5)
+        self.add_tag(self.tag_subtitle, 20, 21)
+        self.add_tag(self.tag_subtitle, 23, 24)
+        self.add_tag(self.tag_subtitle, 26, 27)
+        self.add_tag(self.tag_subtitle, 29, 30)
+        self.add_tag(self.tag_subtitle, 32, 33)
 
     def add_tag(self, tag_name, startline, endline):
         start = self.textbuffer.get_iter_at_line(startline)
