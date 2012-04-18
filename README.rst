@@ -2,10 +2,6 @@
 genxword
 ========
 
-.. image:: https://github.com/riverrun/genxword/raw/master/icons/genxword-gtk.png
-  :alt: genxword logo
-  :align: right
-
 ---------------------
 A crossword generator
 ---------------------
