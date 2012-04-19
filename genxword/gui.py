@@ -168,7 +168,7 @@ class Genxinterface(Gtk.Window):
 
         action_help = Gtk.Action('Help', 'Help', 'Help page', Gtk.STOCK_HELP)
         action_help.connect('activate', self.help_page)
-        action_group.add_action_with_accel(action_help, None)
+        action_group.add_action_with_accel(action_help, 'F1')
 
         action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
         action_quit.connect('activate', self.quit_app)
@@ -222,6 +222,11 @@ class Genxinterface(Gtk.Window):
         self.help_message()
         scrolledwindow.add(self.textview)
 
+    def text_edit_wrap(self, edit, wrap=Gtk.WrapMode.NONE):
+        self.textview.set_editable(edit)
+        self.textview.set_cursor_visible(edit)
+        self.textview.set_wrap_mode(wrap)
+
     def bottom_row(self):
         self.enter_name = Gtk.Entry()
         self.enter_name.set_text('Name of crossword')
@@ -267,9 +272,7 @@ class Genxinterface(Gtk.Window):
             pass
 
     def new_wlist(self, button):
-        self.textview.set_editable(True)
-        self.textview.set_cursor_visible(True)
-        self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
+        self.text_edit_wrap(True)
         self.textbuffer.set_text(self.wordlist)
 
     def open_wlist(self, button):
@@ -284,9 +287,7 @@ class Genxinterface(Gtk.Window):
         if response == Gtk.ResponseType.OK:
             with open(dialog.get_filename()) as infile:
                 data = infile.read()
-            self.textview.set_editable(True)
-            self.textview.set_cursor_visible(True)
-            self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
+            self.text_edit_wrap(True)
             self.textbuffer.set_text(data)
         dialog.destroy()
 
@@ -302,7 +303,7 @@ class Genxinterface(Gtk.Window):
         dialog.add_filter(filter_any)
 
     def calc_xword(self, button):
-        self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
+        self.text_edit_wrap(False)
         buff = self.textview.get_buffer()
         rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
         if save_recalc in rawtext:
@@ -310,8 +311,6 @@ class Genxinterface(Gtk.Window):
             self.add_tag(self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
         else:
-            self.textview.set_editable(False)
-            self.textview.set_cursor_visible(False)
             nwords = self.choose_nwords.get_value_as_int()
             self.gen = Genxword()
             self.gen.wlist(rawtext.splitlines(), nwords)
@@ -362,16 +361,10 @@ class Genxinterface(Gtk.Window):
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')
 
     def help_page(self, button):
-        buff = self.textview.get_buffer()
-        rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
-        if save_recalc not in rawtext:
-            self.wordlist = rawtext
         self.help_message()
 
     def help_message(self):
-        self.textview.set_editable(False)
-        self.textview.set_cursor_visible(False)
-        self.textview.set_wrap_mode(Gtk.WrapMode.WORD)
+        self.text_edit_wrap(False, Gtk.WrapMode.WORD)
         self.textbuffer.set_text(help_text)
         self.add_tag(self.tag_title, 0, 1)
         self.add_tag(self.tag_subtitle, 4, 5)
