@@ -26,7 +26,7 @@ from .control import Genxword
 help_text = """genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
 or png / svg versions of the crossword grid, together with a text file containing the words and clues.
-The wordlist that is used to create the crossword is also saved as a text file.\n
+The word list that is used to create the crossword is also saved as a text file.\n
 New word list
 You can create a new word list by clicking on the 'new' button, or by pressing Control + N. \
 The word list can be just a list of words, like this:\n
@@ -336,7 +336,7 @@ class Genxinterface(Gtk.Window):
             self.gsize = False
             self.choose_gsize.set_sensitive(False)
 
-    def save_xword(self, button, wordlist=False):
+    def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()
         if self.saveformat and self.xwordname != 'Name of crossword':
             dialog = Gtk.FileChooserDialog('Please choose a folder', self,
