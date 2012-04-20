@@ -23,11 +23,9 @@ import os
 from gi.repository import Gtk, Pango
 from .control import Genxword
 
-about_text = """genxword-gtk
-Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, 
-or png / svg versions of the crossword grid, together with a text file containing the words and clues.\n
-If you need any help, click on F1 to switch between the help page and the main view.\n
-For more information, please visit https://github.com/riverrun/genxword/wiki/genxword-gtk
+about_text = """genxword-gtk\n
+Genxword-gtk is a crossword generator.\n\nIf you need any help, click on F1 to see the help page.\n
+Clicking on F1 again will bring you back to the main view.
 """
 
 help_text = """genxword-gtk
