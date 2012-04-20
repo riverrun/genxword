@@ -371,12 +371,8 @@ class Genxinterface(Gtk.Window):
             tag_title = helpbuffer.create_tag('title', font='sans bold 12')
             tag_subtitle = helpbuffer.create_tag('subtitle', font='sans bold')
             self.add_tag(helpbuffer, tag_title, 0, 1)
-            self.add_tag(helpbuffer, tag_subtitle, 6, 7)
-            self.add_tag(helpbuffer, tag_subtitle, 22, 23)
-            self.add_tag(helpbuffer, tag_subtitle, 25, 26)
-            self.add_tag(helpbuffer, tag_subtitle, 28, 29)
-            self.add_tag(helpbuffer, tag_subtitle, 31, 32)
-            self.add_tag(helpbuffer, tag_subtitle, 34, 35)
+            for startline in (6, 22, 25, 28, 31, 34):
+                self.add_tag(helpbuffer, tag_subtitle, startline, startline+1)
         else:
             self.textview.set_buffer(self.textbuffer)
             self.text_edit_wrap(self.text_editable)
