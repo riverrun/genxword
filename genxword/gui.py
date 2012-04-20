@@ -23,11 +23,6 @@ import os
 from gi.repository import Gtk, Pango
 from .control import Genxword
 
-about_text = """genxword-gtk\n
-Genxword-gtk is a crossword generator.\n\nIf you need any help, click on F1 to see the help page.\n
-Clicking on F1 again will bring you back to the main view.
-"""
-
 help_text = """genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
 or png / svg versions of the crossword grid, together with a text file containing the words and clues.
@@ -222,9 +217,7 @@ class Genxinterface(Gtk.Window):
         fontdesc = Pango.FontDescription('serif')
         self.textview.modify_font(fontdesc)
         self.textbuffer = self.textview.get_buffer()
-        self.tag_title = self.textbuffer.create_tag('title', font='sans bold 12')
         self.tag_mono = self.textbuffer.create_tag('mono', font='monospace')
-        self.about_message()
         scrolledwindow.add(self.textview)
 
     def text_edit_wrap(self, edit, wrap=Gtk.WrapMode.NONE):
@@ -374,11 +367,6 @@ class Genxinterface(Gtk.Window):
         else:
             self.textview.set_buffer(self.textbuffer)
             self.text_edit_wrap(self.text_editable)
-
-    def about_message(self):
-        self.text_edit_wrap(False)
-        self.textbuffer.set_text(about_text)
-        self.add_tag(self.textbuffer, self.tag_title, 0, 1)
 
     def add_tag(self, buffer_name, tag_name, startline, endline):
         start = buffer_name.get_iter_at_line(startline)
