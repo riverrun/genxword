@@ -23,10 +23,18 @@ import os
 from gi.repository import Gtk, Pango
 from .control import Genxword
 
+about_text = """genxword-gtk
+Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, 
+or png / svg versions of the crossword grid, together with a text file containing the words and clues.\n
+If you need any help, click on F1 to switch between the help page and the main view.\n
+For more information, please visit https://github.com/riverrun/genxword/wiki/genxword-gtk
+"""
+
 help_text = """genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
 or png / svg versions of the crossword grid, together with a text file containing the words and clues.
 The word list that is used to create the crossword is also saved as a text file.\n
+To go back to the main view, click on F1.\n
 New word list
 You can create a new word list by clicking on the 'new' button, or by pressing Control + N. \
 The word list can be just a list of words, like this:\n
@@ -40,7 +48,7 @@ coconut A fruit that possibly migrates.\n
 As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. \
 The clue is everything after the first space.
 If you want to edit the word list more after you have calculated the crossword, you can return to this \
-word list by clicking on the 'new' button again.\n
+word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.\n
 Open word list
 Clicking the 'open' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be \
 formatted as written above. The word list can be thousands of words long, and the crossword will be created \
@@ -166,8 +174,8 @@ class Genxinterface(Gtk.Window):
         action_save.connect('activate', self.save_xword)
         action_group.add_action_with_accel(action_save, None)
 
-        action_help = Gtk.Action('Help', 'Help', 'Help page', Gtk.STOCK_HELP)
-        action_help.connect('activate', self.help_page)
+        action_help = Gtk.ToggleAction('Help', 'Help', 'Help page', Gtk.STOCK_HELP)
+        action_help.connect('toggled', self.help_page)
         action_group.add_action_with_accel(action_help, 'F1')
 
         action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
@@ -217,9 +225,8 @@ class Genxinterface(Gtk.Window):
         self.textview.modify_font(fontdesc)
         self.textbuffer = self.textview.get_buffer()
         self.tag_title = self.textbuffer.create_tag('title', font='sans bold 12')
-        self.tag_subtitle = self.textbuffer.create_tag('subtitle', font='sans bold')
         self.tag_mono = self.textbuffer.create_tag('mono', font='monospace')
-        self.help_message()
+        self.about_message()
         scrolledwindow.add(self.textview)
 
     def text_edit_wrap(self, edit, wrap=Gtk.WrapMode.NONE):
@@ -308,7 +315,7 @@ class Genxinterface(Gtk.Window):
         rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
         if save_recalc in rawtext:
             self.textbuffer.set_text(self.gen.calcgrid())
-            self.add_tag(self.tag_mono, 0, -1)
+            self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
         else:
             nwords = self.choose_nwords.get_value_as_int()
@@ -318,23 +325,18 @@ class Genxinterface(Gtk.Window):
             if self.gsize:
                 self.gen.check_grid_size(self.choose_gsize.get_text())
             self.textbuffer.set_text(self.gen.calcgrid())
-            self.add_tag(self.tag_mono, 0, -1)
+            self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
             self.textbuffer.insert_at_cursor(save_recalc)
             self.wordlist = rawtext
 
     def incgsize(self, button):
-        self.textview.set_wrap_mode(Gtk.WrapMode.NONE)
         self.textbuffer.set_text(self.gen.calcgrid(True))
-        self.add_tag(self.tag_mono, 0, -1)
+        self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
         self.textbuffer.insert_at_cursor(save_recalc)
 
     def set_gsize(self, button):
-        if button.get_active():
-            self.gsize = True
-            self.choose_gsize.set_sensitive(True)
-        else:
-            self.gsize = False
-            self.choose_gsize.set_sensitive(False)
+        self.gsize = button.get_active()
+        self.choose_gsize.set_sensitive(button.get_active())
 
     def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()
@@ -352,8 +354,7 @@ class Genxinterface(Gtk.Window):
             self.gen.savefiles(self.saveformat, self.xwordname, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.wordlist)
-            saved_message = 'Your crossword files have been saved in ' + os.getcwd()
-            self.textbuffer.set_text(saved_message)
+            self.textbuffer.set_text('Your crossword files have been saved in ' + os.getcwd())
             self.enter_name.set_text('Name of crossword')
             self.wordlist = ''
         else:
@@ -361,23 +362,34 @@ class Genxinterface(Gtk.Window):
             self.textbuffer.insert_at_cursor('\nThen click on the Save button again.')
 
     def help_page(self, button):
-        self.help_message()
+        if button.get_active():
+            self.text_editable = self.textview.get_editable()
+            self.text_edit_wrap(False, Gtk.WrapMode.WORD)
+            helpbuffer = self.textbuffer.new(None)
+            self.textview.set_buffer(helpbuffer)
+            helpbuffer.set_text(help_text)
+            tag_title = helpbuffer.create_tag('title', font='sans bold 12')
+            tag_subtitle = helpbuffer.create_tag('subtitle', font='sans bold')
+            self.add_tag(helpbuffer, tag_title, 0, 1)
+            self.add_tag(helpbuffer, tag_subtitle, 6, 7)
+            self.add_tag(helpbuffer, tag_subtitle, 22, 23)
+            self.add_tag(helpbuffer, tag_subtitle, 25, 26)
+            self.add_tag(helpbuffer, tag_subtitle, 28, 29)
+            self.add_tag(helpbuffer, tag_subtitle, 31, 32)
+            self.add_tag(helpbuffer, tag_subtitle, 34, 35)
+        else:
+            self.textview.set_buffer(self.textbuffer)
+            self.text_edit_wrap(self.text_editable)
 
-    def help_message(self):
-        self.text_edit_wrap(False, Gtk.WrapMode.WORD)
-        self.textbuffer.set_text(help_text)
-        self.add_tag(self.tag_title, 0, 1)
-        self.add_tag(self.tag_subtitle, 4, 5)
-        self.add_tag(self.tag_subtitle, 20, 21)
-        self.add_tag(self.tag_subtitle, 23, 24)
-        self.add_tag(self.tag_subtitle, 26, 27)
-        self.add_tag(self.tag_subtitle, 29, 30)
-        self.add_tag(self.tag_subtitle, 32, 33)
+    def about_message(self):
+        self.text_edit_wrap(False)
+        self.textbuffer.set_text(about_text)
+        self.add_tag(self.textbuffer, self.tag_title, 0, 1)
 
-    def add_tag(self, tag_name, startline, endline):
-        start = self.textbuffer.get_iter_at_line(startline)
-        end = self.textbuffer.get_iter_at_line(endline)
-        self.textbuffer.apply_tag(tag_name, start, end)
+    def add_tag(self, buffer_name, tag_name, startline, endline):
+        start = buffer_name.get_iter_at_line(startline)
+        end = buffer_name.get_iter_at_line(endline)
+        buffer_name.apply_tag(tag_name, start, end)
 
     def quit_app(self, widget):
         Gtk.main_quit()
