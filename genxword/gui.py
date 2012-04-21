@@ -3,8 +3,8 @@
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
-# Copyright 2010-2011 Bryan Helmig
-# Copyright 2011-2012 David Whitlock
+# Copyright (C) 2010-2011 Bryan Helmig
+# Copyright (C) 2011-2012 David Whitlock
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -378,7 +378,8 @@ class Genxinterface(Gtk.Window):
         about.set_version('0.3.1')
         about.set_copyright('Copyright David Whitlock <alovedalongthe@gmail.com>')
         about.set_comments('A crossword generator')
-        about.set_website('https://github.com/riverrun/genxword')
+        about.set_website('https://github.com/riverrun/genxword/wiki/genxword-gtk')
+        about.set_website_label('genxword-gtk wiki')
         about.set_logo_icon_name('genxword-gtk')
         about.run()
         about.destroy()
