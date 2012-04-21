@@ -3,8 +3,8 @@
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
-# Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011-2012 David Whitlock
+# Copyright 2010-2011 Bryan Helmig
+# Copyright 2011-2012 David Whitlock
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import os, sys
 from distutils.core import setup
