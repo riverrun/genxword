@@ -89,6 +89,7 @@ ui_info = """
       <menuitem action='Savesvg'/>
     </menu>
     <menu action='HelpMenu'>
+      <menuitem action='About'/>
       <menuitem action='Help'/>
     </menu>
   </menubar>
@@ -112,6 +113,7 @@ class Genxinterface(Gtk.Window):
         Gtk.Window.__init__(self, title='genxword-gtk')
 
         self.set_default_size(650, 450)
+        self.set_default_icon_name('genxword-gtk')
         self.saveformat = ''
         self.wordlist = ''
         self.gsize = False
@@ -134,7 +136,6 @@ class Genxinterface(Gtk.Window):
 
         self.textview_win()
         self.bottom_row()
-        self.win_icon()
 
     def add_main_actions(self, action_group):
         action_filemenu = Gtk.Action('FileMenu', '_Word list', None, None)
@@ -170,6 +171,10 @@ class Genxinterface(Gtk.Window):
         action_help = Gtk.ToggleAction('Help', 'Help', 'Help page', Gtk.STOCK_HELP)
         action_help.connect('toggled', self.help_page)
         action_group.add_action_with_accel(action_help, 'F1')
+
+        action_about = Gtk.Action('About', 'About', None, Gtk.STOCK_ABOUT)
+        action_about.connect('activate', self.about_dialog)
+        action_group.add_action(action_about)
 
         action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
         action_quit.connect('activate', self.quit_app)
@@ -262,12 +267,6 @@ class Genxinterface(Gtk.Window):
             self.saveformat += name
         else:
             self.saveformat = self.saveformat.replace(name, '')
-
-    def win_icon(self):
-        try:
-            self.set_icon_from_file('/usr/share/pixmaps/genxword-gtk.png')
-        except:
-            pass
 
     def new_wlist(self, button):
         self.text_edit_wrap(True)
@@ -372,6 +371,17 @@ class Genxinterface(Gtk.Window):
         start = buffer_name.get_iter_at_line(startline)
         end = buffer_name.get_iter_at_line(endline)
         buffer_name.apply_tag(tag_name, start, end)
+
+    def about_dialog(self, button):
+        about = Gtk.AboutDialog()
+        about.set_program_name('genxword-gtk')
+        about.set_version('0.3.1')
+        about.set_copyright('Copyright David Whitlock <alovedalongthe@gmail.com>')
+        about.set_comments('A crossword generator')
+        about.set_website('https://github.com/riverrun/genxword')
+        about.set_logo_icon_name('genxword-gtk')
+        about.run()
+        about.destroy()
 
     def quit_app(self, widget):
         Gtk.main_quit()
