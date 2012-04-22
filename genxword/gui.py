@@ -60,11 +60,6 @@ of words used, and choose the grid size. To change the grid size, you will need 
 menu first (normally, the grid size will be automatically calculated based on the number of words used). \
 The numbers in the grid size box refer to the number of columns and rows, and they need to be separated by a comma.
 """
-save_recalc = """\nIf you want to save this crossword, press the Save button.
-If you want to recalculate the crossword, press the Calculate button.
-To increase the grid size and then recalculate the crossword, 
-press the Inc grid size button.
-"""
 
 ui_info = """
 <ui>
@@ -89,8 +84,8 @@ ui_info = """
       <menuitem action='Savesvg'/>
     </menu>
     <menu action='HelpMenu'>
-      <menuitem action='About'/>
       <menuitem action='Help'/>
+      <menuitem action='About'/>
     </menu>
   </menubar>
   <toolbar name='ToolBar'>
@@ -114,8 +109,8 @@ class Genxinterface(Gtk.Window):
 
         self.set_default_size(650, 450)
         self.set_default_icon_name('genxword-gtk')
-        self.saveformat = ''
-        self.wordlist = ''
+        self.calc_first_time = True
+        self.saveformat = self.wordlist = ''
         self.gsize = False
 
         self.grid = Gtk.Grid()
@@ -156,7 +151,7 @@ class Genxinterface(Gtk.Window):
         action_group.add_action_with_accel(action_open, None)
 
         action_create = Gtk.Action('Create', 'Create crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
-        action_create.connect('activate', self.calc_xword)
+        action_create.connect('activate', self.create_xword)
         action_group.add_action_with_accel(action_create, '<control>G')
 
         action_incgsize = Gtk.Action('Incgsize', 'Increase grid size',
@@ -271,6 +266,7 @@ class Genxinterface(Gtk.Window):
     def new_wlist(self, button):
         self.text_edit_wrap(True)
         self.textbuffer.set_text(self.wordlist)
+        self.calc_first_time = True
 
     def open_wlist(self, button):
         dialog = Gtk.FileChooserDialog('Please choose a file', self,
@@ -287,6 +283,7 @@ class Genxinterface(Gtk.Window):
             self.text_edit_wrap(True)
             self.textbuffer.set_text(data)
         dialog.destroy()
+        self.calc_first_time = True
 
     def add_filters(self, dialog):
         filter_text = Gtk.FileFilter()
@@ -299,30 +296,37 @@ class Genxinterface(Gtk.Window):
         filter_any.add_pattern('*')
         dialog.add_filter(filter_any)
 
-    def calc_xword(self, button):
+    def calc_xword(self, increase=False):
+        save_recalc = ('\nIf you want to save this crossword, press the Save button.\n'
+        'If you want to recalculate the crossword, press the Calculate button.\n'
+        'To increase the grid size and then recalculate the crossword,\n'
+        'press the Increase grid size button.')
+        self.textbuffer.set_text(self.gen.calcgrid(increase))
+        self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
+        self.textbuffer.insert_at_cursor(save_recalc)
+
+    def create_xword(self, button):
         self.text_edit_wrap(False)
-        buff = self.textview.get_buffer()
-        rawtext = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
-        if save_recalc in rawtext:
-            self.textbuffer.set_text(self.gen.calcgrid())
-            self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
-            self.textbuffer.insert_at_cursor(save_recalc)
-        else:
+        if self.calc_first_time:
+            buff = self.textview.get_buffer()
+            self.wordlist = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
             nwords = self.choose_nwords.get_value_as_int()
             self.gen = Genxword()
-            self.gen.wlist(rawtext.splitlines(), nwords)
+            self.gen.wlist(self.wordlist.splitlines(), nwords)
             self.gen.grid_size(True)
             if self.gsize:
                 self.gen.check_grid_size(self.choose_gsize.get_text())
-            self.textbuffer.set_text(self.gen.calcgrid())
-            self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
-            self.textbuffer.insert_at_cursor(save_recalc)
-            self.wordlist = rawtext
+            try:
+                self.calc_xword()
+            except:
+                self.gen.grid_size(True)
+                self.calc_xword()
+            self.calc_first_time = False
+        else:
+            self.calc_xword()
 
     def incgsize(self, button):
-        self.textbuffer.set_text(self.gen.calcgrid(True))
-        self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
-        self.textbuffer.insert_at_cursor(save_recalc)
+        self.calc_xword(True)
 
     def set_gsize(self, button):
         self.gsize = button.get_active()

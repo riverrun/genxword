@@ -58,7 +58,6 @@ class Crossword(object):
                 self.grid = copy.grid
             if len(self.current_word_list) == len(self.available_words):
                 break
-        return
  
     def get_coords(self, word):
         """Return possible coordinates for each letter."""
@@ -106,7 +105,6 @@ class Crossword(object):
                 fit = True 
                 self.set_word(col, row, vertical, word) 
             count += 1
-        return
  
     def check_fit_score(self, col, row, vertical, word):
         """Return score (0 means no fit, 1 means a fit, 2+ means a cross)."""
@@ -165,7 +163,6 @@ class Crossword(object):
                 row += 1
             else:
                 col += 1
-        return
  
     def check_cell_empty(self, col, row):
         try:
