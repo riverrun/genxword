@@ -127,6 +127,7 @@ class Genxinterface(Gtk.Window):
         menubar = uimanager.get_widget('/MenuBar')
         self.grid.attach(menubar, 0, 0, 6, 1)
         toolbar = uimanager.get_widget('/ToolBar')
+        toolbar.set_style(Gtk.ToolbarStyle.ICONS)
         self.grid.attach(toolbar, 0, 1, 6, 1)
 
         self.textview_win()
@@ -163,7 +164,7 @@ class Genxinterface(Gtk.Window):
         action_save.connect('activate', self.save_xword)
         action_group.add_action_with_accel(action_save, None)
 
-        action_help = Gtk.ToggleAction('Help', 'Help', 'Help page', Gtk.STOCK_HELP)
+        action_help = Gtk.ToggleAction('Help', 'Help', 'Switch between the help page and the main view', Gtk.STOCK_HELP)
         action_help.connect('toggled', self.help_page)
         action_group.add_action_with_accel(action_help, 'F1')
 
@@ -248,6 +249,7 @@ class Genxinterface(Gtk.Window):
 
         self.choose_gsize = Gtk.Entry()
         self.choose_gsize.set_text('17,17')
+        self.choose_gsize.set_width_chars(5)
         gsize_tip = 'Choose the crossword grid size\nGo to the Crossword menu to enable this option'
         self.choose_gsize.set_tooltip_text(gsize_tip)
         self.choose_gsize.set_sensitive(False)
