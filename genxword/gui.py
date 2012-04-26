@@ -29,7 +29,7 @@ or png / svg versions of the crossword grid, together with a text file containin
 The word list that is used to create the crossword is also saved as a text file.\n
 To go back to the main view, click on F1.\n
 New word list
-You can create a new word list by clicking on the 'new' button, or by pressing Control + N. \
+You can create a new word list by clicking on the 'New word list' button, or by pressing Control + N. \
 The word list can be just a list of words, like this:\n
 parrot
 spam
@@ -43,13 +43,13 @@ The clue is everything after the first space.
 If you want to edit the word list more after you have calculated the crossword, you can return to this \
 word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.\n
 Open word list
-Clicking the 'open' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be \
+Clicking the 'Open word list' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be \
 formatted as written above. The word list can be thousands of words long, and the crossword will be created \
-with a set amount of words randomly selected from it. The default number of words is 50.\n
+with a set amount of words randomly selected from it. You can select the number of words in the box below.\n
 Calculate - create the crossword
-Click on the 'create' button, or press Control + G, to create the crossword. If you click on it a second time, \
+Click on the 'Create crossword' button, or press Control + G, to create the crossword. If you click on it a second time, \
 the crossword will be recalculated.\n
-Increase grid size - increase the grid size and recalculate
+Recalculate - increase the grid size and recalculate
 Clicking on this button, or pressing Control + R, increases the grid size before recalculating the crossword.\n
 Save - save the crossword
 This button, or Control + S, lets you choose where you save the crossword files.\n
