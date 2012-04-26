@@ -127,7 +127,6 @@ class Genxinterface(Gtk.Window):
         menubar = uimanager.get_widget('/MenuBar')
         self.grid.attach(menubar, 0, 0, 6, 1)
         toolbar = uimanager.get_widget('/ToolBar')
-        toolbar.set_style(Gtk.ToolbarStyle.ICONS)
         self.grid.attach(toolbar, 0, 1, 6, 1)
 
         self.textview_win()
@@ -155,7 +154,7 @@ class Genxinterface(Gtk.Window):
         action_create.connect('activate', self.create_xword)
         action_group.add_action_with_accel(action_create, '<control>G')
 
-        action_incgsize = Gtk.Action('Incgsize', 'Increase grid size',
+        action_incgsize = Gtk.Action('Incgsize', 'Recalculate',
             'Increase the grid size and recalculate the crossword', Gtk.STOCK_REDO)
         action_incgsize.connect('activate', self.incgsize)
         action_group.add_action_with_accel(action_incgsize, '<control>R')
