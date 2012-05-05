@@ -21,7 +21,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
-import random, time, string, cairo
+import random, time, cairo
  
 class Crossword(object):
     def __init__(self, cols, rows, empty = '-', available_words=[]):
@@ -30,18 +30,6 @@ class Crossword(object):
         self.empty = empty
         self.available_words = available_words
         self.current_word_list = []
-        self.prep_grid_words()
- 
-    def prep_grid_words(self):
-        """Initialize grid and word list."""
-        self.grid = [[self.empty for j in range(self.cols)] for i in range(self.rows)]
-        try:
-            temp_list = [Word(word.word, word.clue) if isinstance(word, Word) else Word(word[0], word[1]) for word in self.available_words]
-        except:
-            temp_list = [Word(word[0], 'Write clue for ' + word[0]) for word in self.available_words]
-        random.shuffle(temp_list) # randomize word list
-        temp_list.sort(key=lambda i: len(i.word), reverse=True) # sort by length
-        self.available_words = temp_list
  
     def compute_crossword(self, time_permitted = 1.00, spins=2):
         time_permitted = float(time_permitted)
@@ -50,7 +38,8 @@ class Crossword(object):
         start_full = float(time.time())
         while (float(time.time()) - start_full) < time_permitted:
             copy.current_word_list = []
-            copy.prep_grid_words()
+            copy.grid = [[copy.empty]*copy.cols for i in range(copy.rows)]
+            copy.available_words = [word[:2] for word in copy.available_words]
             copy.first_word(copy.available_words[0])
             [copy.add_words(word) for i in range(spins) for word in copy.available_words if word not in copy.current_word_list]
             if len(copy.current_word_list) > len(self.current_word_list):
@@ -61,18 +50,19 @@ class Crossword(object):
  
     def get_coords(self, word):
         """Return possible coordinates for each letter."""
+        word_length = len(word[0])
         coordlist = []
-        temp_list =  [(l, r, self.grid[r].index(letter)) for l, letter in enumerate(word.word) for r in range(self.rows) if letter in self.grid[r]]
+        temp_list =  [(l, r, self.grid[r].index(letter)) for l, letter in enumerate(word[0]) for r in range(self.rows) if letter in self.grid[r]]
         for coord in temp_list:
             letc, rowc, colc = coord[0], coord[1], coord[2]
-            if rowc - letc >= 0 and ((rowc - letc) + word.length) <= self.rows:
+            if rowc - letc >= 0 and ((rowc - letc) + word_length) <= self.rows:
                 col, row, vertical = (colc, rowc - letc, 1)
-                score = self.check_fit_score(col, row, vertical, word)
+                score = self.check_fit_score(col, row, vertical, word, word_length)
                 if score:
                     coordlist.append([colc, rowc - letc, 1, score])
-            if colc - letc >= 0 and ((colc - letc) + word.length) <= self.cols:
+            if colc - letc >= 0 and ((colc - letc) + word_length) <= self.cols:
                 col, row, vertical = (colc - letc, rowc, 0)
-                score = self.check_fit_score(col, row, vertical, word)
+                score = self.check_fit_score(col, row, vertical, word, word_length)
                 if score:
                         coordlist.append([colc - letc, rowc, 0, score])
         random.shuffle(coordlist)
@@ -84,9 +74,9 @@ class Crossword(object):
         vertical = random.randrange(0, 2)
         if vertical:
             col = random.randrange(0, self.cols)
-            row = random.randrange(0, self.rows - word.length)
+            row = random.randrange(0, self.rows - len(word[0]))
         else:
-            col = random.randrange(0, self.cols - word.length)
+            col = random.randrange(0, self.cols - len(word[0]))
             row = random.randrange(0, self.rows)
         self.set_word(col, row, vertical, word)
 
@@ -99,20 +89,20 @@ class Crossword(object):
         while not fit:
             try: 
                 col, row, vertical = coordlist[count][0], coordlist[count][1], coordlist[count][2]
-            except IndexError: return # no more cordinates, stop trying to fit
+            except IndexError: return
 
-            if coordlist[count][3]: # already filtered these out, but double check
+            if coordlist[count][3]:
                 fit = True 
                 self.set_word(col, row, vertical, word) 
             count += 1
  
-    def check_fit_score(self, col, row, vertical, word):
+    def check_fit_score(self, col, row, vertical, word, word_length):
         """Return score (0 means no fit, 1 means a fit, 2+ means a cross)."""
         if col < 0 or row < 0:
             return 0
  
-        count, score = 1, 1 # give score a standard value of 1, will override with 0 if collisions detected
-        for letter in word.word:            
+        count, score = 1, 1
+        for letter in word[0]:            
             try:
                 active_cell = self.grid[row][col]
             except IndexError:
@@ -130,7 +120,7 @@ class Crossword(object):
                         return 0
                 if count == 1 and not self.check_cell_empty(col, row-1):
                     return 0
-                if count == len(word.word) and not self.check_cell_empty(col, row+1) and row + 1 != self.rows:
+                if count == word_length and not self.check_cell_empty(col, row+1) and row + 1 != self.rows:
                     return 0
             else:
                 if active_cell != letter:
@@ -138,12 +128,12 @@ class Crossword(object):
                         return 0
                 if count == 1 and not self.check_cell_empty(col-1, row):
                     return 0
-                if count == len(word.word) and not self.check_cell_empty(col+1, row) and col + 1 != self.cols:
+                if count == word_length and not self.check_cell_empty(col+1, row) and col + 1 != self.cols:
                     return 0
 
-            if vertical: # progress to next letter and position
+            if vertical:
                 row += 1
-            else: # else horizontal
+            else:
                 col += 1
  
             count += 1
@@ -152,12 +142,10 @@ class Crossword(object):
  
     def set_word(self, col, row, vertical, word):
         """Put words on the grid and add them to the word list."""
-        word.col = col + 1
-        word.row = row + 1
-        word.vertical = vertical
+        word.extend([col + 1, row + 1, vertical])
         self.current_word_list.append(word)
 
-        for letter in word.word:
+        for letter in word[0]:
             self.grid[row][col] = letter
             if vertical:
                 row += 1
@@ -177,14 +165,14 @@ class Crossword(object):
         answer = '\n'.join([''.join(['{} '.format(c) for c in self.grid[r]]) for r in range(self.rows)])
         return answer + '\n' + str(len(self.current_word_list)) + ' out of ' + str(len(self.available_words))
  
-    def order_number_words(self): # orders words and applies numbering system to them
-        self.current_word_list.sort(key=lambda i: (i.col))
-        self.current_word_list.sort(key=lambda i: (i.row))
+    def order_number_words(self):
+        self.current_word_list.sort(key=lambda i: (i[2]))
+        self.current_word_list.sort(key=lambda i: (i[3]))
         count, icount = 1, 1
         for word in self.current_word_list:
-            word.number = count
+            word.append(count)
             if icount < len(self.current_word_list):
-                if word.col == self.current_word_list[icount].col and word.row == self.current_word_list[icount].row:
+                if word[2] == self.current_word_list[icount][2] and word[3] == self.current_word_list[icount][3]:
                     pass
                 else:
                     count += 1
@@ -207,8 +195,8 @@ class Crossword(object):
 
         self.order_number_words()
         for word in self.current_word_list:
-            x, y = xoffset+((word.col-1)*px), yoffset+((word.row-1)*px)
-            self.draw_letters(str(word.number), context, x+3, y+10, 8)
+            x, y = xoffset+((word[2]-1)*px), yoffset+((word[3]-1)*px)
+            self.draw_letters(str(word[5]), context, x+3, y+10, 8)
 
     def draw_letters(self, text, context, xval, yval, fontsize, bold=False):
         if bold:
@@ -316,28 +304,18 @@ class Crossword(object):
     def word_bank(self): 
         temp_list = list(self.current_word_list)
         random.shuffle(temp_list)
-        return 'Word bank\n' + ''.join(['{}\n'.format(word.word) for word in temp_list])
+        return 'Word bank\n' + ''.join(['{}\n'.format(word[0]) for word in temp_list])
  
     def legend(self):
         outStrA, outStrD = '\nClues\nAcross\n', 'Down\n'
         for word in self.current_word_list:
-            if word.vertical:
-                outStrD += '{:d}. {}\n'.format(word.number, word.clue)
+            if word[4]:
+                outStrD += '{:d}. {}\n'.format(word[5], word[1])
             else:
-                outStrA += '{:d}. {}\n'.format(word.number, word.clue)
+                outStrA += '{:d}. {}\n'.format(word[5], word[1])
         return outStrA + outStrD
  
     def clues_txt(self, name):
         with open(name, 'w') as clues_file:
             clues_file.write(self.word_bank())
             clues_file.write(self.legend())
-
-class Word(object):
-    def __init__(self, word=None, clue=None):
-        self.word = word.upper()
-        self.clue = clue
-        self.length = len(self.word)
-        self.row = None
-        self.col = None
-        self.vertical = None
-        self.number = None
