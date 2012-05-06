@@ -22,6 +22,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import random, time, cairo
+from collections import defaultdict
  
 class Crossword(object):
     def __init__(self, cols, rows, empty = '-', available_words=[]):
@@ -30,6 +31,7 @@ class Crossword(object):
         self.empty = empty
         self.available_words = available_words
         self.current_word_list = []
+        self.let_coords = defaultdict(list)
  
     def compute_crossword(self, time_permitted = 1.00, spins=2):
         time_permitted = float(time_permitted)
@@ -38,6 +40,7 @@ class Crossword(object):
         start_full = float(time.time())
         while (float(time.time()) - start_full) < time_permitted:
             copy.current_word_list = []
+            copy.let_coords.clear()
             copy.grid = [[copy.empty]*copy.cols for i in range(copy.rows)]
             copy.available_words = [word[:2] for word in copy.available_words]
             copy.first_word(copy.available_words[0])
@@ -52,19 +55,21 @@ class Crossword(object):
         """Return possible coordinates for each letter."""
         word_length = len(word[0])
         coordlist = []
-        temp_list =  [(l, r, self.grid[r].index(letter)) for l, letter in enumerate(word[0]) for r in range(self.rows) if letter in self.grid[r]]
+        temp_list =  [(l, v) for l, letter in enumerate(word[0]) for k, v in self.let_coords.items() if k == letter]
         for coord in temp_list:
-            letc, rowc, colc = coord[0], coord[1], coord[2]
-            if rowc - letc >= 0 and ((rowc - letc) + word_length) <= self.rows:
-                col, row, vertical = (colc, rowc - letc, 1)
-                score = self.check_fit_score(col, row, vertical, word, word_length)
-                if score:
-                    coordlist.append([colc, rowc - letc, 1, score])
-            if colc - letc >= 0 and ((colc - letc) + word_length) <= self.cols:
-                col, row, vertical = (colc - letc, rowc, 0)
-                score = self.check_fit_score(col, row, vertical, word, word_length)
-                if score:
-                        coordlist.append([colc - letc, rowc, 0, score])
+            letc = coord[0]
+            for item in coord[1]:
+                (rowc, colc) = item
+                if rowc - letc >= 0 and ((rowc - letc) + word_length) <= self.rows:
+                    col, row, vertical = (colc, rowc - letc, 1)
+                    score = self.check_fit_score(col, row, vertical, word, word_length)
+                    if score:
+                        coordlist.append([colc, rowc - letc, 1, score])
+                if colc - letc >= 0 and ((colc - letc) + word_length) <= self.cols:
+                    col, row, vertical = (colc - letc, rowc, 0)
+                    score = self.check_fit_score(col, row, vertical, word, word_length)
+                    if score:
+                            coordlist.append([colc - letc, rowc, 0, score])
         random.shuffle(coordlist)
         coordlist.sort(key=lambda i: i[3], reverse=True)
         return coordlist
@@ -135,9 +140,7 @@ class Crossword(object):
                 row += 1
             else:
                 col += 1
- 
             count += 1
- 
         return score
  
     def set_word(self, col, row, vertical, word):
@@ -147,6 +150,7 @@ class Crossword(object):
 
         for letter in word[0]:
             self.grid[row][col] = letter
+            self.let_coords[letter].append((row, col))
             if vertical:
                 row += 1
             else:
