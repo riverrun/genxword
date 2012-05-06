@@ -59,17 +59,19 @@ class Crossword(object):
         for coord in temp_list:
             letc = coord[0]
             for item in coord[1]:
-                (rowc, colc) = item
-                if rowc - letc >= 0 and ((rowc - letc) + word_length) <= self.rows:
-                    col, row, vertical = (colc, rowc - letc, 1)
-                    score = self.check_fit_score(col, row, vertical, word, word_length)
-                    if score:
-                        coordlist.append([colc, rowc - letc, 1, score])
-                if colc - letc >= 0 and ((colc - letc) + word_length) <= self.cols:
-                    col, row, vertical = (colc - letc, rowc, 0)
-                    score = self.check_fit_score(col, row, vertical, word, word_length)
-                    if score:
+                (rowc, colc, vertc) = item
+                if vertc:
+                    if colc - letc >= 0 and ((colc - letc) + word_length) <= self.cols:
+                        col, row, vertical = (colc - letc, rowc, 0)
+                        score = self.check_fit_score(col, row, vertical, word, word_length)
+                        if score:
                             coordlist.append([colc - letc, rowc, 0, score])
+                else:
+                    if rowc - letc >= 0 and ((rowc - letc) + word_length) <= self.rows:
+                        col, row, vertical = (colc, rowc - letc, 1)
+                        score = self.check_fit_score(col, row, vertical, word, word_length)
+                        if score:
+                            coordlist.append([colc, rowc - letc, 1, score])
         random.shuffle(coordlist)
         coordlist.sort(key=lambda i: i[3], reverse=True)
         return coordlist
@@ -150,7 +152,7 @@ class Crossword(object):
 
         for letter in word[0]:
             self.grid[row][col] = letter
-            self.let_coords[letter].append((row, col))
+            self.let_coords[letter].append((row, col, vertical))
             if vertical:
                 row += 1
             else:
