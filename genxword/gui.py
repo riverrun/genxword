@@ -317,11 +317,7 @@ class Genxinterface(Gtk.Window):
             self.gen.grid_size(True)
             if self.gsize:
                 self.gen.check_grid_size(self.choose_gsize.get_text())
-            try:
-                self.calc_xword()
-            except:
-                self.gen.grid_size(True)
-                self.calc_xword()
+            self.calc_xword()
             self.calc_first_time = False
         else:
             self.calc_xword()
@@ -391,7 +387,7 @@ class Genxinterface(Gtk.Window):
         'along with this program.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('0.4.0')
+        about.set_version('0.4.1')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')

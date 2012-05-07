@@ -34,11 +34,11 @@ class Genxword(object):
         self.auto = auto
 
     def wlist(self, infile, nwords=50):
-        self.word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
-        if len(self.word_list) > nwords:
-            self.word_list = random.sample(self.word_list, nwords)
+        word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
+        if len(word_list) > nwords:
+            word_list = random.sample(word_list, nwords)
         try:
-            self.word_list = [[word[0].upper(), word[1]] for word in self.word_list]
+            self.word_list = [[word[0].upper(), word[1]] for word in word_list]
         except:
             self.word_list = [[word[0].upper(), 'Write clue for ' + word[0]] for word in self.word_list]
         self.word_list.sort(key=lambda i: len(i[0]), reverse=True)
@@ -58,9 +58,12 @@ class Genxword(object):
 
     def check_grid_size(self, grid_size):
         try:
-            self.ncol, self.nrow = int(grid_size.split(',')[0]), int(grid_size.split(',')[1])
+            ncol, nrow = int(grid_size.split(',')[0]), int(grid_size.split(',')[1])
         except:
             pass
+        else:
+            if len(self.word_list[0][0]) < min(ncol, nrow):
+                self.ncol, self.nrow = ncol, nrow
 
     def calcgrid(self, incgsize=False):
         if incgsize:
