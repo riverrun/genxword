@@ -61,13 +61,13 @@ class Crossword(object):
             for item in coord[1]:
                 (rowc, colc, vertc) = item
                 if vertc:
-                    if colc - letc >= 0 and ((colc - letc) + word_length) <= self.cols:
+                    if colc - letc >= 0 and (colc - letc) + word_length <= self.cols:
                         col, row, vertical = (colc - letc, rowc, 0)
                         score = self.check_fit_score(col, row, vertical, word, word_length)
                         if score:
                             coordlist.append([colc - letc, rowc, 0, score])
                 else:
-                    if rowc - letc >= 0 and ((rowc - letc) + word_length) <= self.rows:
+                    if rowc - letc >= 0 and (rowc - letc) + word_length <= self.rows:
                         col, row, vertical = (colc, rowc - letc, 1)
                         score = self.check_fit_score(col, row, vertical, word, word_length)
                         if score:
@@ -105,15 +105,9 @@ class Crossword(object):
  
     def check_fit_score(self, col, row, vertical, word, word_length):
         """Return score (0 means no fit, 1 means a fit, 2+ means a cross)."""
-        if col < 0 or row < 0:
-            return 0
- 
         count, score = 1, 1
         for letter in word[0]:            
-            try:
-                active_cell = self.grid[row][col]
-            except IndexError:
-                return 0
+            active_cell = self.grid[row][col]
             if active_cell == self.empty or active_cell == letter:
                 pass
             else:
@@ -150,9 +144,13 @@ class Crossword(object):
         word.extend([col + 1, row + 1, vertical])
         self.current_word_list.append(word)
 
+        horizontal = not vertical
         for letter in word[0]:
             self.grid[row][col] = letter
-            self.let_coords[letter].append((row, col, vertical))
+            if (row, col, horizontal) not in self.let_coords[letter]:
+                self.let_coords[letter].append((row, col, vertical))
+            else:
+                self.let_coords[letter].remove((row, col, horizontal))
             if vertical:
                 row += 1
             else:
