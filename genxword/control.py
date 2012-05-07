@@ -40,7 +40,7 @@ class Genxword(object):
         try:
             self.word_list = [[word[0].upper(), word[1]] for word in word_list]
         except:
-            self.word_list = [[word[0].upper(), 'Write clue for ' + word[0]] for word in self.word_list]
+            self.word_list = [[word[0].upper(), 'Write clue for ' + word[0]] for word in word_list]
         self.word_list.sort(key=lambda i: len(i[0]), reverse=True)
 
     def grid_size(self, gtkmode=False):
