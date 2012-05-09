@@ -58,7 +58,7 @@ You can save the crossword in pdf, png and / or svg format. Just click on the ap
 On the bottom row of this window, there are boxes in which you can write the name of the crossword, choose the number \
 of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' \
 menu first (normally, the grid size will be automatically calculated based on the number of words used). \
-The numbers in the grid size box refer to the number of columns and rows, and they need to be separated by a comma.
+The numbers in the grid size box refer to the number of rows and columns, and they need to be separated by a comma.
 """
 
 ui_info = """

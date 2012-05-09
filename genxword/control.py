@@ -45,30 +45,30 @@ class Genxword(object):
 
     def grid_size(self, gtkmode=False):
         if len(self.word_list) <= 20:
-            self.ncol = self.nrow = 17
+            self.nrow = self.ncol = 17
         elif len(self.word_list) <= 100:
-            self.ncol = self.nrow = int((round(((len(self.word_list) - 20) / 7.5), 0) * 2) + 19)
+            self.nrow = self.ncol = int((round(((len(self.word_list) - 20) / 7.5), 0) * 2) + 19)
         else:
-            self.ncol = self.nrow = 43
+            self.nrow = self.ncol = 43
         if not gtkmode and not self.auto:
-            gsize = str(self.ncol) + ', ' + str(self.nrow)
+            gsize = str(self.nrow) + ', ' + str(self.ncol)
             grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
             if grid_size:
                 self.check_grid_size(grid_size)
 
     def check_grid_size(self, grid_size):
         try:
-            ncol, nrow = int(grid_size.split(',')[0]), int(grid_size.split(',')[1])
+            nrow, ncol = int(grid_size.split(',')[0]), int(grid_size.split(',')[1])
         except:
             pass
         else:
-            if len(self.word_list[0][0]) < min(ncol, nrow):
-                self.ncol, self.nrow = ncol, nrow
+            if len(self.word_list[0][0]) < min(nrow, ncol):
+                self.nrow, self.ncol = nrow, ncol
 
     def calcgrid(self, incgsize=False):
         if incgsize:
-            self.ncol += 2;self.nrow += 2
-        self.calc = calculate.Crossword(self.ncol, self.nrow, '-', self.word_list)
+            self.nrow += 2;self.ncol += 2
+        self.calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
         self.calc.compute_crossword()
         return self.calc.solution()
 
@@ -78,7 +78,7 @@ class Genxword(object):
             print(self.calcgrid())
             if self.auto:
                 if float(len(self.calc.current_word_list))/len(self.word_list) < 0.9:
-                    self.ncol += 2;self.nrow += 2
+                    self.nrow += 2;self.ncol += 2
                 else:
                     break
             else:
@@ -87,7 +87,7 @@ class Genxword(object):
                     break
                 inc_gsize = raw_input('And increase the grid size? [Y/n] ')
                 if inc_gsize.strip() != 'n':
-                    self.ncol += 2;self.nrow += 2
+                    self.nrow += 2;self.ncol += 2
 
     def savefiles(self, saveformat, name, gtkmode=False):
         self.calc.create_files(name, saveformat, gtkmode)
