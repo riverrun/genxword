@@ -105,11 +105,12 @@ class Crossword(object):
  
     def check_fit_score(self, word, row, col, vertical, word_length):
         """Return score (0 means no fit, 1 means a fit, 2+ means a cross)."""
+        occupied = self.cell_occupied
         if vertical:
-            if self.cell_occupied(row-1, col) or self.cell_occupied(row + word_length, col):
+            if occupied(row-1, col) or occupied(row + word_length, col):
                 return 0
         else:
-            if self.cell_occupied(row, col-1) or self.cell_occupied(row, col + word_length):
+            if occupied(row, col-1) or occupied(row, col + word_length):
                 return 0
         score = 1
         for letter in word[0]:            
@@ -122,10 +123,10 @@ class Crossword(object):
                 score += 1
             else:
                 if vertical:
-                    if self.cell_occupied(row, col+1) or self.cell_occupied(row, col-1):
+                    if occupied(row, col+1) or occupied(row, col-1):
                         return 0
                 else:
-                    if self.cell_occupied(row-1, col) or self.cell_occupied(row+1, col):
+                    if occupied(row-1, col) or occupied(row+1, col):
                         return 0
             if vertical:
                 row += 1
