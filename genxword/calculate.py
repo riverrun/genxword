@@ -62,19 +62,21 @@ class Crossword(object):
                 (rowc, colc, vertc) = item
                 if vertc:
                     if colc - letc >= 0 and (colc - letc) + word_length <= self.cols:
-                        row, col, vertical = (rowc, colc - letc, 0)
-                        score = self.check_fit_score(word, row, col, vertical, word_length)
+                        row, col = (rowc, colc - letc)
+                        score = self.check_score_horiz(word, row, col, word_length)
                         if score:
                             coordlist.append([rowc, colc - letc, 0, score])
                 else:
                     if rowc - letc >= 0 and (rowc - letc) + word_length <= self.rows:
-                        row, col, vertical = (rowc - letc, colc, 1)
-                        score = self.check_fit_score(word, row, col, vertical, word_length)
+                        row, col = (rowc - letc, colc)
+                        score = self.check_score_vert(word, row, col, word_length)
                         if score:
                             coordlist.append([rowc - letc, colc, 1, score])
-        random.shuffle(coordlist)
-        coordlist.sort(key=lambda i: i[3], reverse=True)
-        return coordlist
+        if coordlist:
+            random.shuffle(coordlist)
+            return max(coordlist, key=lambda i: i[3])
+        else:
+            return 0
  
     def first_word(self, word):
         """Place the first word at a random position in the grid."""
@@ -89,49 +91,42 @@ class Crossword(object):
 
     def add_words(self, word):
         """Add the rest of the words to the grid."""
-        fit = False
-        count = 0
         coordlist = self.get_coords(word)
+        if not coordlist:
+            return 0
+        row, col, vertical = coordlist[0], coordlist[1], coordlist[2]
+        self.set_word(word, row, col, vertical) 
  
-        while not fit:
-            try: 
-                row, col, vertical = coordlist[count][0], coordlist[count][1], coordlist[count][2]
-            except IndexError: return
-
-            if coordlist[count][3]:
-                fit = True 
-                self.set_word(word, row, col, vertical) 
-            count += 1
- 
-    def check_fit_score(self, word, row, col, vertical, word_length):
-        """Return score (0 means no fit, 1 means a fit, 2+ means a cross)."""
-        occupied = self.cell_occupied
-        if vertical:
-            if occupied(row-1, col) or occupied(row + word_length, col):
-                return 0
-        else:
-            if occupied(row, col-1) or occupied(row, col + word_length):
-                return 0
-        score = 1
+    def check_score_horiz(self, word, row, col, word_length, score=1):
+        cell_occupied = self.cell_occupied
+        if cell_occupied(row, col-1) or cell_occupied(row, col + word_length):
+            return 0
         for letter in word[0]:            
             active_cell = self.grid[row][col]
-            if active_cell == self.empty or active_cell == letter:
-                pass
-            else:
-                return 0
-            if active_cell == letter:
+            if active_cell == self.empty:
+                if cell_occupied(row+1, col) or cell_occupied(row-1, col):
+                    return 0
+            elif active_cell == letter:
                 score += 1
             else:
-                if vertical:
-                    if occupied(row, col+1) or occupied(row, col-1):
-                        return 0
-                else:
-                    if occupied(row-1, col) or occupied(row+1, col):
-                        return 0
-            if vertical:
-                row += 1
+                return 0
+            col += 1
+        return score
+
+    def check_score_vert(self, word, row, col, word_length, score=1):
+        cell_occupied = self.cell_occupied
+        if cell_occupied(row-1, col) or cell_occupied(row + word_length, col):
+            return 0
+        for letter in word[0]:            
+            active_cell = self.grid[row][col]
+            if active_cell == self.empty:
+                if cell_occupied(row, col+1) or cell_occupied(row, col-1):
+                    return 0
+            elif active_cell == letter:
+                score += 1
             else:
-                col += 1
+                return 0
+            row += 1
         return score
  
     def set_word(self, word, row, col, vertical):

@@ -45,7 +45,7 @@ and run the following commands (again, the **install** script needs to be run as
 Authors
 =======
 
-This program was originally written by Bryan Helmig and has since been developed by David Whitlock. 
+This program has been developed by David Whitlock, and it is based on a program originally written by Bryan Helmig. 
 
 Note about svg files
 ====================
