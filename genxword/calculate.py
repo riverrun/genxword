@@ -22,6 +22,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import random, time, cairo
+from operator import itemgetter
 from collections import defaultdict
  
 class Crossword(object):
@@ -73,7 +74,7 @@ class Crossword(object):
                         if score:
                             coordlist.append([rowc - letc, colc, 1, score])
         if coordlist:
-            return max(coordlist, key=lambda i: i[3])
+            return max(coordlist, key=itemgetter(3))
         else:
             return 0
  
@@ -157,8 +158,8 @@ class Crossword(object):
         return answer + '\n' + str(len(self.current_word_list)) + ' out of ' + str(len(self.available_words))
  
     def order_number_words(self):
-        self.current_word_list.sort(key=lambda i: (i[2]))
-        self.current_word_list.sort(key=lambda i: (i[3]))
+        self.current_word_list.sort(key=itemgetter(2))
+        self.current_word_list.sort(key=itemgetter(3))
         count, icount = 1, 1
         for word in self.current_word_list:
             word.append(count)
