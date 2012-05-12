@@ -73,7 +73,6 @@ class Crossword(object):
                         if score:
                             coordlist.append([rowc - letc, colc, 1, score])
         if coordlist:
-            random.shuffle(coordlist)
             return max(coordlist, key=lambda i: i[3])
         else:
             return 0
@@ -99,12 +98,12 @@ class Crossword(object):
  
     def check_score_horiz(self, word, row, col, word_length, score=1):
         cell_occupied = self.cell_occupied
-        if cell_occupied(row, col-1) or cell_occupied(row, col + word_length):
+        if col and cell_occupied(row, col-1) or col + word_length != self.cols and cell_occupied(row, col + word_length):
             return 0
         for letter in word[0]:            
             active_cell = self.grid[row][col]
             if active_cell == self.empty:
-                if cell_occupied(row+1, col) or cell_occupied(row-1, col):
+                if row + 1 != self.rows and cell_occupied(row+1, col) or row and cell_occupied(row-1, col):
                     return 0
             elif active_cell == letter:
                 score += 1
@@ -115,12 +114,12 @@ class Crossword(object):
 
     def check_score_vert(self, word, row, col, word_length, score=1):
         cell_occupied = self.cell_occupied
-        if cell_occupied(row-1, col) or cell_occupied(row + word_length, col):
+        if row and cell_occupied(row-1, col) or row + word_length != self.rows and cell_occupied(row + word_length, col):
             return 0
         for letter in word[0]:            
             active_cell = self.grid[row][col]
             if active_cell == self.empty:
-                if cell_occupied(row, col+1) or cell_occupied(row, col-1):
+                if col + 1 != self.cols and cell_occupied(row, col+1) or col and cell_occupied(row, col-1):
                     return 0
             elif active_cell == letter:
                 score += 1
@@ -147,13 +146,11 @@ class Crossword(object):
                 col += 1
  
     def cell_occupied(self, row, col):
-        try:
-            cell = self.grid[row][col]
-            if cell != self.empty: 
-                return True
-        except IndexError:
-            pass
-        return False
+        cell = self.grid[row][col]
+        if cell == self.empty: 
+            return False
+        else:
+            return True
  
     def solution(self):
         answer = '\n'.join([''.join(['{} '.format(c) for c in self.grid[r]]) for r in range(self.rows)])
