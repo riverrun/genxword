@@ -131,7 +131,7 @@ class Crossword(object):
  
     def set_word(self, word, row, col, vertical):
         """Put words on the grid and add them to the word list."""
-        word.extend([col, row, vertical])
+        word.extend([row, col, vertical])
         self.current_word_list.append(word)
 
         horizontal = not vertical
@@ -158,7 +158,7 @@ class Crossword(object):
         return answer + '\n' + str(len(self.current_word_list)) + ' out of ' + str(len(self.available_words))
  
     def order_number_words(self):
-        self.current_word_list.sort(key=itemgetter(3, 2))
+        self.current_word_list.sort(key=itemgetter(2, 3))
         count, icount = 1, 1
         for word in self.current_word_list:
             word.append(count)
@@ -186,7 +186,7 @@ class Crossword(object):
 
         self.order_number_words()
         for word in self.current_word_list:
-            x, y = xoffset+(word[2]*px), yoffset+(word[3]*px)
+            x, y = xoffset+(word[3]*px), yoffset+(word[2]*px)
             self.draw_letters(str(word[5]), context, x+3, y+10, 8)
 
     def draw_letters(self, text, context, xval, yval, fontsize, bold=False):
