@@ -22,6 +22,7 @@
 import os
 from gi.repository import Gtk, Pango
 from .control import Genxword
+from . import calculate
 
 help_text = """genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
@@ -297,14 +298,17 @@ class Genxinterface(Gtk.Window):
         filter_any.add_pattern('*')
         dialog.add_filter(filter_any)
 
-    def calc_xword(self, increase=False):
+    def calc_xword(self):
         save_recalc = ('\nIf you want to save this crossword, press the Save button.\n'
         'If you want to recalculate the crossword, press the Calculate button.\n'
         'To increase the grid size and then recalculate the crossword,\n'
         'press the Increase grid size button.')
-        self.textbuffer.set_text(self.gen.calcgrid(increase))
+        calc = calculate.Crossword(self.nrow, self.ncol, '-', self.wlist)
+        self.textbuffer.set_text(calc.compute_crossword())
         self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
         self.textbuffer.insert_at_cursor(save_recalc)
+        self.best_word_list = calc.best_word_list
+        self.best_grid = calc.best_grid
 
     def create_xword(self, button):
         self.text_edit_wrap(False)
@@ -312,17 +316,20 @@ class Genxinterface(Gtk.Window):
             buff = self.textview.get_buffer()
             self.wordlist = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
             nwords = self.choose_nwords.get_value_as_int()
-            self.gen = Genxword()
-            self.gen.wlist(self.wordlist.splitlines(), nwords)
-            self.gen.grid_size(True)
+            gen = Genxword()
+            gen.wlist(self.wordlist.splitlines(), nwords)
+            self.wlist = gen.word_list
+            gen.grid_size(True)
             if self.gsize:
-                self.gen.check_grid_size(self.choose_gsize.get_text())
+                gen.check_grid_size(self.choose_gsize.get_text())
+            self.nrow, self.ncol = gen.nrow, gen.ncol
             self.calc_xword()
             self.calc_first_time = False
         else:
             self.calc_xword()
 
     def incgsize(self, button):
+        self.nrow += 2;self.ncol += 2
         self.calc_xword(True)
 
     def set_gsize(self, button):
@@ -342,7 +349,8 @@ class Genxinterface(Gtk.Window):
                 os.chdir(dialog.get_filename())
             dialog.destroy()
 
-            self.gen.savefiles(self.saveformat, self.xwordname, True)
+            exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
+            exp.create_files(self.xwordname, self.saveformat, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.wordlist)
             self.textbuffer.set_text('Your crossword files have been saved in\n' + os.getcwd())

@@ -65,18 +65,13 @@ class Genxword(object):
             if len(self.word_list[0][0]) < min(nrow, ncol):
                 self.nrow, self.ncol = nrow, ncol
 
-    def calcgrid(self, incgsize=False):
-        if incgsize:
-            self.nrow += 2;self.ncol += 2
-        self.calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
-        return self.calc.compute_crossword()
-
-    def gengrid(self):
+    def gengrid(self, name, saveformat):
         while 1:
             print('Calculating your crossword...')
-            print(self.calcgrid())
+            calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
+            print(calc.compute_crossword())
             if self.auto:
-                if float(len(self.calc.current_word_list))/len(self.word_list) < 0.9:
+                if float(len(calc.current_word_list))/len(self.word_list) < 0.9:
                     self.nrow += 2;self.ncol += 2
                 else:
                     break
@@ -87,9 +82,8 @@ class Genxword(object):
                 inc_gsize = raw_input('And increase the grid size? [Y/n] ')
                 if inc_gsize.strip() != 'n':
                     self.nrow += 2;self.ncol += 2
-
-    def savefiles(self, saveformat, name, gtkmode=False):
-        self.calc.create_files(name, saveformat, gtkmode)
+        exp = calculate.Exportfiles(calc.rows, calc.cols, calc.best_grid, calc.best_word_list)
+        exp.create_files(name, saveformat)
 
 def main():
     import argparse
@@ -103,5 +97,4 @@ def main():
     gen = Genxword(args.auto)
     gen.wlist(args.infile, args.nwords)
     gen.grid_size()
-    gen.gengrid()
-    gen.savefiles(args.saveformat, args.output)
+    gen.gengrid(args.output, args.saveformat)

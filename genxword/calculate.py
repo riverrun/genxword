@@ -26,7 +26,7 @@ from operator import itemgetter
 from collections import defaultdict
  
 class Crossword(object):
-    def __init__(self, rows, cols, empty = '-', available_words=[]):
+    def __init__(self, rows, cols, empty='-', available_words=[]):
         self.rows = rows
         self.cols = cols
         self.empty = empty
@@ -157,13 +157,21 @@ class Crossword(object):
         else:
             return True
  
+class Exportfiles(object):
+    def __init__(self, rows, cols, grid, wordlist, empty='-'):
+        self.rows = rows
+        self.cols = cols
+        self.grid = grid
+        self.wordlist = wordlist
+        self.empty = empty
+
     def order_number_words(self):
-        self.best_word_list.sort(key=itemgetter(2, 3))
+        self.wordlist.sort(key=itemgetter(2, 3))
         count, icount = 1, 1
-        for word in self.best_word_list:
+        for word in self.wordlist:
             word.append(count)
-            if icount < len(self.best_word_list):
-                if word[2] == self.best_word_list[icount][2] and word[3] == self.best_word_list[icount][3]:
+            if icount < len(self.wordlist):
+                if word[2] == self.wordlist[icount][2] and word[3] == self.wordlist[icount][3]:
                     pass
                 else:
                     count += 1
@@ -171,7 +179,7 @@ class Crossword(object):
 
     def draw_img(self, name, context, px, xoffset, yoffset):
         for r in range(self.rows):
-            for i, c in enumerate(self.best_grid[r]):
+            for i, c in enumerate(self.grid[r]):
                 if c != self.empty:
                     context.set_line_width(1.0)
                     context.set_source_rgb(0.5, 0.5, 0.5)
@@ -185,7 +193,7 @@ class Crossword(object):
                         self.draw_letters(c, context, xoffset+(i*px)+10, yoffset+(r*px)+22, 14)
 
         self.order_number_words()
-        for word in self.best_word_list:
+        for word in self.wordlist:
             x, y = xoffset+(word[3]*px), yoffset+(word[2]*px)
             self.draw_letters(str(word[5]), context, x+3, y+10, 8)
 
@@ -293,13 +301,13 @@ class Crossword(object):
         return '\n'.join(lines)
 
     def word_bank(self): 
-        temp_list = list(self.best_word_list)
+        temp_list = list(self.wordlist)
         random.shuffle(temp_list)
         return 'Word bank\n' + ''.join(['{}\n'.format(word[0]) for word in temp_list])
  
     def legend(self):
         outStrA, outStrD = '\nClues\nAcross\n', 'Down\n'
-        for word in self.best_word_list:
+        for word in self.wordlist:
             if word[4]:
                 outStrD += '{:d}. {}\n'.format(word[5], word[1])
             else:
