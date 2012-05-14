@@ -104,11 +104,10 @@ ui_info = """
 """
 
 class Genxinterface(Gtk.Window):
-
     def __init__(self):
         Gtk.Window.__init__(self, title='genxword-gtk')
 
-        self.set_default_size(650, 450)
+        self.set_default_size(-1, 550)
         self.set_default_icon_name('genxword-gtk')
         self.calc_first_time = True
         self.saveformat = self.wordlist = ''
