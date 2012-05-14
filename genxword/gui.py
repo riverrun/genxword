@@ -330,7 +330,7 @@ class Genxinterface(Gtk.Window):
 
     def incgsize(self, button):
         self.nrow += 2;self.ncol += 2
-        self.calc_xword(True)
+        self.calc_xword()
 
     def set_gsize(self, button):
         self.gsize = button.get_active()

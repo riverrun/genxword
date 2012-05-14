@@ -71,7 +71,7 @@ class Genxword(object):
             calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
             print(calc.compute_crossword())
             if self.auto:
-                if float(len(calc.current_word_list))/len(self.word_list) < 0.9:
+                if float(len(calc.best_word_list))/len(self.word_list) < 0.9:
                     self.nrow += 2;self.ncol += 2
                 else:
                     break
@@ -82,7 +82,7 @@ class Genxword(object):
                 inc_gsize = raw_input('And increase the grid size? [Y/n] ')
                 if inc_gsize.strip() != 'n':
                     self.nrow += 2;self.ncol += 2
-        exp = calculate.Exportfiles(calc.rows, calc.cols, calc.best_grid, calc.best_word_list)
+        exp = calculate.Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list)
         exp.create_files(name, saveformat)
 
 def main():
