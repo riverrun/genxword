@@ -69,8 +69,7 @@ class Genxword(object):
         if incgsize:
             self.nrow += 2;self.ncol += 2
         self.calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
-        self.calc.compute_crossword()
-        return self.calc.solution()
+        return self.calc.compute_crossword()
 
     def gengrid(self):
         while 1:

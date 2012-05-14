@@ -31,26 +31,30 @@ class Crossword(object):
         self.cols = cols
         self.empty = empty
         self.available_words = available_words
-        self.current_word_list = []
         self.let_coords = defaultdict(list)
  
-    def compute_crossword(self, time_permitted = 1.00, spins=2):
+    def prep_grid_words(self):
+        self.current_word_list = []
+        self.let_coords.clear()
+        self.grid = [[self.empty]*self.cols for i in range(self.rows)]
+        self.available_words = [word[:2] for word in self.available_words]
+        self.first_word(self.available_words[0])
+
+    def compute_crossword(self, time_permitted = 1.00):
+        self.best_word_list = []
+        wordlist_length = len(self.available_words)
         time_permitted = float(time_permitted)
-        copy = Crossword(self.rows, self.cols, self.empty, self.available_words)
- 
         start_full = float(time.time())
         while (float(time.time()) - start_full) < time_permitted:
-            copy.current_word_list = []
-            copy.let_coords.clear()
-            copy.grid = [[copy.empty]*copy.cols for i in range(copy.rows)]
-            copy.available_words = [word[:2] for word in copy.available_words]
-            copy.first_word(copy.available_words[0])
-            [copy.add_words(word) for i in range(spins) for word in copy.available_words if word not in copy.current_word_list]
-            if len(copy.current_word_list) > len(self.current_word_list):
-                self.current_word_list = copy.current_word_list
-                self.grid = copy.grid
-            if len(self.current_word_list) == len(self.available_words):
+            self.prep_grid_words()
+            [self.add_words(word) for i in range(2) for word in self.available_words if word not in self.current_word_list]
+            if len(self.current_word_list) > len(self.best_word_list):
+                self.best_word_list = list(self.current_word_list)
+                self.best_grid = list(self.grid)
+            if len(self.best_word_list) == wordlist_length:
                 break
+        answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
+        return answer + '\n' + str(len(self.best_word_list)) + ' out of ' + str(len(self.available_words))
  
     def get_coords(self, word):
         """Return possible coordinates for each letter."""
@@ -153,17 +157,13 @@ class Crossword(object):
         else:
             return True
  
-    def solution(self):
-        answer = '\n'.join([''.join(['{} '.format(c) for c in self.grid[r]]) for r in range(self.rows)])
-        return answer + '\n' + str(len(self.current_word_list)) + ' out of ' + str(len(self.available_words))
- 
     def order_number_words(self):
-        self.current_word_list.sort(key=itemgetter(2, 3))
+        self.best_word_list.sort(key=itemgetter(2, 3))
         count, icount = 1, 1
-        for word in self.current_word_list:
+        for word in self.best_word_list:
             word.append(count)
-            if icount < len(self.current_word_list):
-                if word[2] == self.current_word_list[icount][2] and word[3] == self.current_word_list[icount][3]:
+            if icount < len(self.best_word_list):
+                if word[2] == self.best_word_list[icount][2] and word[3] == self.best_word_list[icount][3]:
                     pass
                 else:
                     count += 1
@@ -171,7 +171,7 @@ class Crossword(object):
 
     def draw_img(self, name, context, px, xoffset, yoffset):
         for r in range(self.rows):
-            for i, c in enumerate(self.grid[r]):
+            for i, c in enumerate(self.best_grid[r]):
                 if c != self.empty:
                     context.set_line_width(1.0)
                     context.set_source_rgb(0.5, 0.5, 0.5)
@@ -185,7 +185,7 @@ class Crossword(object):
                         self.draw_letters(c, context, xoffset+(i*px)+10, yoffset+(r*px)+22, 14)
 
         self.order_number_words()
-        for word in self.current_word_list:
+        for word in self.best_word_list:
             x, y = xoffset+(word[3]*px), yoffset+(word[2]*px)
             self.draw_letters(str(word[5]), context, x+3, y+10, 8)
 
@@ -293,13 +293,13 @@ class Crossword(object):
         return '\n'.join(lines)
 
     def word_bank(self): 
-        temp_list = list(self.current_word_list)
+        temp_list = list(self.best_word_list)
         random.shuffle(temp_list)
         return 'Word bank\n' + ''.join(['{}\n'.format(word[0]) for word in temp_list])
  
     def legend(self):
         outStrA, outStrD = '\nClues\nAcross\n', 'Down\n'
-        for word in self.current_word_list:
+        for word in self.best_word_list:
             if word[4]:
                 outStrD += '{:d}. {}\n'.format(word[5], word[1])
             else:
