@@ -110,7 +110,8 @@ class Genxinterface(Gtk.Window):
         self.set_default_size(-1, 550)
         self.set_default_icon_name('genxword-gtk')
         self.calc_first_time = True
-        self.saveformat = self.wordlist = ''
+        self.saveformat = ''
+        self.words = ''
         self.gsize = False
 
         self.grid = Gtk.Grid()
@@ -266,7 +267,7 @@ class Genxinterface(Gtk.Window):
 
     def new_wlist(self, button):
         self.text_edit_wrap(True)
-        self.textbuffer.set_text(self.wordlist)
+        self.textbuffer.set_text(self.words)
         self.calc_first_time = True
 
     def open_wlist(self, button):
@@ -313,10 +314,10 @@ class Genxinterface(Gtk.Window):
         self.text_edit_wrap(False)
         if self.calc_first_time:
             buff = self.textview.get_buffer()
-            self.wordlist = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
+            self.words = buff.get_text(buff.get_start_iter(), buff.get_end_iter(), False)
             nwords = self.choose_nwords.get_value_as_int()
             gen = Genxword()
-            gen.wlist(self.wordlist.splitlines(), nwords)
+            gen.wlist(self.words.splitlines(), nwords)
             self.wlist = gen.word_list
             gen.grid_size(True)
             if self.gsize:
@@ -351,10 +352,10 @@ class Genxinterface(Gtk.Window):
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
             exp.create_files(self.xwordname, self.saveformat, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
-                wlist_file.write(self.wordlist)
+                wlist_file.write(self.words)
             self.textbuffer.set_text('Your crossword files have been saved in\n' + os.getcwd())
             self.enter_name.set_text('Name of crossword')
-            self.wordlist = ''
+            self.words = ''
         else:
             text = ('Please fill in the name of the crossword and the format you want it saved in.\n'
                     'Go to the Save options menu to choose the format.\nThen click on the Save button again.')
@@ -394,7 +395,7 @@ class Genxinterface(Gtk.Window):
         'along with this program.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('0.4.2')
+        about.set_version('0.4.3')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')
