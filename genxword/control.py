@@ -47,7 +47,7 @@ class Genxword(object):
         if len(self.word_list) <= 20:
             self.nrow = self.ncol = 17
         elif len(self.word_list) <= 100:
-            self.nrow = self.ncol = int((round(((len(self.word_list) - 20) / 7.5), 0) * 2) + 19)
+            self.nrow = self.ncol = int((round(((len(self.word_list) - 20) / 8), 0) * 2) + 19)
         else:
             self.nrow = self.ncol = 43
         if not gtkmode and not self.auto:

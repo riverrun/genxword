@@ -291,11 +291,6 @@ class Genxinterface(Gtk.Window):
         filter_text.add_mime_type('text/plain')
         dialog.add_filter(filter_text)
 
-        filter_any = Gtk.FileFilter()
-        filter_any.set_name('Any files')
-        filter_any.add_pattern('*')
-        dialog.add_filter(filter_any)
-
     def calc_xword(self):
         save_recalc = ('\nIf you want to save this crossword, press the Save button.\n'
         'If you want to recalculate the crossword, press the Calculate button.\n'
