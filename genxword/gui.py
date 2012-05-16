@@ -275,9 +275,7 @@ class Genxinterface(Gtk.Window):
             Gtk.FileChooserAction.OPEN,
             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
              Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
-
         self.add_filters(dialog)
-
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
             with open(dialog.get_filename()) as infile:
@@ -338,17 +336,18 @@ class Genxinterface(Gtk.Window):
 
     def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()
-        if self.saveformat and self.xwordname != 'Name of crossword':
+        if self.xwordname != 'Name of crossword' and self.saveformat:
             dialog = Gtk.FileChooserDialog('Please choose a folder', self,
                 Gtk.FileChooserAction.SELECT_FOLDER,
                 (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                  'Select', Gtk.ResponseType.OK))
-
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
-                os.chdir(dialog.get_filename())
+                pass
+            else:
+                return 0
             dialog.destroy()
-
+            os.chdir(dialog.get_filename())
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
             exp.create_files(self.xwordname, self.saveformat, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
