@@ -300,6 +300,7 @@ class Genxinterface(Gtk.Window):
         self.textbuffer.set_text(calc.compute_crossword())
         self.add_tag(self.textbuffer, self.tag_mono, 0, -1)
         self.textbuffer.insert_at_cursor(save_recalc)
+        self.choose_gsize.set_text(str(self.nrow) + ',' + str(self.ncol))
         self.best_word_list = calc.best_word_list
         self.best_grid = calc.best_grid
 
@@ -338,11 +339,10 @@ class Genxinterface(Gtk.Window):
                  'Select', Gtk.ResponseType.OK))
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
-                pass
+                os.chdir(dialog.get_filename())
             else:
                 return 0
             dialog.destroy()
-            os.chdir(dialog.get_filename())
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
             exp.create_files(self.xwordname, self.saveformat, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
