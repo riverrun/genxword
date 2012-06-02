@@ -25,21 +25,15 @@ Linux
 -----
 
 To run this program, you need to have **Python 2.7** or **Python 3** installed. 
-It will not work with earlier versions of Python. The command line version depends on Py2cairo (or Pycairo), 
+It will not work with earlier versions of Python. The command line version depends on py2cairo (or pycairo), 
 which is already installed on most popular distros, to produce the image files.
-The GUI version depends on Pygobject (also known as python-gobject or python-gi).
+The GUI version depends on pygobject (also known as python-gobject or python-gi).
 
-To install this program, run the following commands (the **install** script needs to be run as root or with sudo)::
+To install this program, go to the **Downloads** tab, download the latest stable version, currently genxword-0.4.4, 
+and run the following commands (the **install** script needs to be run as root or with sudo)::
 
-    git clone git://github.com/riverrun/genxword.git
-    cd genxword
-    sudo ./install_genxword.sh
-
-Alternatively, go to the **Tags** or **Downloads** tab, download the **tar.gz** version, 
-and run the following commands (again, the **install** script needs to be run as root or with sudo)::
-
-    tar xvzf riverrun-genxword-xxxx.tar.gz
-    cd riverrun-genxword-xxxx
+    tar xvzf genxword-0.4.4.tar.gz
+    cd genxword-0.4.4
     sudo ./install_genxword.sh
 
 Authors
