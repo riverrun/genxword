@@ -29,8 +29,9 @@ It will not work with earlier versions of Python. The command line version depen
 which is already installed on most popular distros, to produce the image files.
 The GUI version depends on pygobject (also known as python-gobject or python-gi).
 
-To install this program, go to the **Downloads** tab, download the latest stable version, currently genxword-0.4.4, 
-and run the following commands (the **install** script needs to be run as root or with sudo)::
+To install this program, go to the **Downloads** tab, download the latest stable version, currently genxword-v0.4.4, 
+or genxword3-v0.4.4 (the Python 3 version), and run the following commands (replace genxword with genxword3 if 
+using the Python 3 version). The **install** script needs to be run as root or with sudo::
 
     tar xvzf genxword-0.4.4.tar.gz
     cd genxword-0.4.4
