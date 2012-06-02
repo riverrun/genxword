@@ -1,0 +1,21 @@
+diff -ru genxword/genxword/control.py distribute/genxword-v0.4.4/genxword/control.py
+--- genxword/genxword/control.py	2012-05-18 11:58:23.609648719 +0700
++++ distribute/genxword-v0.4.4/genxword/control.py	2012-06-02 15:58:58.348898879 +0700
+@@ -19,16 +19,13 @@
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.
+ 
+-import random, sys
++import random
+ from . import calculate
+ 
+ usage_info = """The word list file contains the words and clues, or just words, that you want in your crossword. 
+ For further information on how to format the word list file and about the other options, please consult the man page.
+ """
+ 
+-if sys.version[0] == '3':
+-    raw_input = input
+-
+ class Genxword(object):
+     def __init__(self, auto=False):
+         self.auto = auto
