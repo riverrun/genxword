@@ -1,6 +1,6 @@
-diff -ru genxword/genxword/control.py distribute/genxword-v0.4.4/genxword/control.py
+diff -ru genxword/genxword/control.py distribute/genxword-0.4.4/genxword/control.py
 --- genxword/genxword/control.py	2012-05-18 11:58:23.609648719 +0700
-+++ distribute/genxword-v0.4.4/genxword/control.py	2012-06-02 15:58:58.348898879 +0700
++++ distribute/genxword-0.4.4/genxword/control.py	2012-06-02 15:58:58.348898879 +0700
 @@ -19,16 +19,13 @@
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.

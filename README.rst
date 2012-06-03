@@ -31,7 +31,7 @@ The GUI version depends on pygobject (also known as python-gobject or python-gi)
 
 To install this program, go to the **Downloads** tab, download the latest stable version, currently genxword-0.4.4, 
 or genxword3-0.4.4 (the Python 3 version), and run the following commands (replace genxword with genxword3 if 
-using the Python 3 version). The **install** script needs to be run as root or with sudo::
+using the Python 3 version)::
 
     tar xvzf genxword-0.4.4.tar.gz
     cd genxword-0.4.4

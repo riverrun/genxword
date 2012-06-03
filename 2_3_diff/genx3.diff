@@ -1,6 +1,6 @@
-diff -ru genxword/genxword/calculate.py distribute/genxword3-v0.4.4/genxword/calculate.py
+diff -ru genxword/genxword/calculate.py distribute/genxword3-0.4.4/genxword/calculate.py
 --- genxword/genxword/calculate.py	2012-05-18 11:58:23.589648826 +0700
-+++ distribute/genxword3-v0.4.4/genxword/calculate.py	2012-06-02 16:03:25.200786552 +0700
++++ distribute/genxword3-0.4.4/genxword/calculate.py	2012-06-02 16:03:25.200786552 +0700
 @@ -232,9 +232,9 @@
          context.rectangle(0, 0, width, height)
          context.fill()
@@ -13,9 +13,9 @@ diff -ru genxword/genxword/calculate.py distribute/genxword3-v0.4.4/genxword/cal
          context.scale(sc_ratio, sc_ratio)
          self.draw_img(name, context, 28, xoffset, 80)
          context.restore()
-diff -ru genxword/genxword/control.py distribute/genxword3-v0.4.4/genxword/control.py
+diff -ru genxword/genxword/control.py distribute/genxword3-0.4.4/genxword/control.py
 --- genxword/genxword/control.py	2012-05-18 11:58:23.609648719 +0700
-+++ distribute/genxword3-v0.4.4/genxword/control.py	2012-06-02 17:45:04.964407963 +0700
++++ distribute/genxword3-0.4.4/genxword/control.py	2012-06-02 17:45:04.964407963 +0700
 @@ -19,16 +19,13 @@
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.
