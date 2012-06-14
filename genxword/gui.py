@@ -107,7 +107,7 @@ class Genxinterface(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title='genxword-gtk')
 
-        self.set_default_size(-1, 550)
+        self.set_default_size(650, 550)
         self.set_default_icon_name('genxword-gtk')
         self.calc_first_time = True
         self.saveformat = ''
@@ -249,7 +249,7 @@ class Genxinterface(Gtk.Window):
 
         self.choose_gsize = Gtk.Entry()
         self.choose_gsize.set_text('17,17')
-        self.choose_gsize.set_width_chars(5)
+        self.choose_gsize.set_width_chars(8)
         gsize_tip = 'Choose the crossword grid size\nGo to the Crossword menu to enable this option'
         self.choose_gsize.set_tooltip_text(gsize_tip)
         self.choose_gsize.set_sensitive(False)
@@ -389,7 +389,7 @@ class Genxinterface(Gtk.Window):
         'along with this program.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('0.4.4')
+        about.set_version('0.4.5')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')
