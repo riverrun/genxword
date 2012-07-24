@@ -19,15 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
-import random, sys
+import random
 from . import calculate
 
 usage_info = """The word list file contains the words and clues, or just words, that you want in your crossword. 
 For further information on how to format the word list file and about the other options, please consult the man page.
 """
-
-if sys.version[0] == '3':
-    raw_input = input
 
 class Genxword(object):
     def __init__(self, auto=False):
@@ -52,7 +49,7 @@ class Genxword(object):
             self.nrow = self.ncol = 43
         if not gtkmode and not self.auto:
             gsize = str(self.nrow) + ', ' + str(self.ncol)
-            grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
+            grid_size = input('Enter grid size (' + gsize + ' is the default): ')
             if grid_size:
                 self.check_grid_size(grid_size)
 
@@ -71,15 +68,15 @@ class Genxword(object):
             calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
             print(calc.compute_crossword())
             if self.auto:
-                if float(len(calc.best_word_list))/len(self.word_list) < 0.9:
+                if len(calc.best_word_list)/len(self.word_list) < 0.9:
                     self.nrow += 2;self.ncol += 2
                 else:
                     break
             else:
-                h = raw_input('Are you happy with this solution? [Y/n] ')
+                h = input('Are you happy with this solution? [Y/n] ')
                 if h.strip() != 'n':
                     break
-                inc_gsize = raw_input('And increase the grid size? [Y/n] ')
+                inc_gsize = input('And increase the grid size? [Y/n] ')
                 if inc_gsize.strip() != 'n':
                     self.nrow += 2;self.ncol += 2
         exp = calculate.Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list)

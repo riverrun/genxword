@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from genxword import gui
+from genxword3 import control
 
 if __name__ == '__main__':
-    gui.main()
+    control.main()
