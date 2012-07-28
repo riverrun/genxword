@@ -24,44 +24,6 @@ from gi.repository import Gtk, Pango
 from .control import Genxword
 from . import calculate
 
-help_text = """genxword-gtk
-Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, \
-or png / svg versions of the crossword grid, together with a text file containing the words and clues.
-The word list that is used to create the crossword is also saved as a text file.\n
-To go back to the main view, click on F1.\n
-New word list
-You can create a new word list by clicking on the 'New word list' button, or by pressing Control + N. \
-The word list can be just a list of words, like this:\n
-parrot
-spam
-vikings\n
-or it can be a list or words and clues, like this:\n
-excalibur A sword that a moistened bint lobbed at Arthur.
-duck An animal that weighs the same as a witch.
-coconut A fruit that possibly migrates.\n
-As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. \
-The clue is everything after the first space.
-If you want to edit the word list more after you have calculated the crossword, you can return to this \
-word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.\n
-Open word list
-Clicking the 'Open word list' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be \
-formatted as written above. The word list can be thousands of words long, and the crossword will be created \
-with a set amount of words randomly selected from it. You can select the number of words in the box below.\n
-Calculate - create the crossword
-Click on the 'Create crossword' button, or press Control + G, to create the crossword. If you click on it a second time, \
-the crossword will be recalculated.\n
-Recalculate - increase the grid size and recalculate
-Clicking on this button, or pressing Control + R, increases the grid size before recalculating the crossword.\n
-Save - save the crossword
-This button, or Control + S, lets you choose where you save the crossword files.\n
-Further options
-You can save the crossword in pdf, png and / or svg format. Just click on the appropriate entries in the 'Save options' menu.
-On the bottom row of this window, there are boxes in which you can write the name of the crossword, choose the number \
-of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' \
-menu first (normally, the grid size will be automatically calculated based on the number of words used). \
-The numbers in the grid size box refer to the number of rows and columns, and they need to be separated by a comma.
-"""
-
 ui_info = """
 <ui>
   <menubar name='MenuBar'>
@@ -361,7 +323,7 @@ class Genxinterface(Gtk.Window):
             self.text_edit_wrap(False, Gtk.WrapMode.WORD)
             helpbuffer = self.textbuffer.new(None)
             self.textview.set_buffer(helpbuffer)
-            helpbuffer.set_text(help_text)
+            helpbuffer.set_text(self.help_text())
             tag_title = helpbuffer.create_tag('title', font='sans bold 12')
             tag_subtitle = helpbuffer.create_tag('subtitle', font='sans bold')
             self.add_tag(helpbuffer, tag_title, 0, 1)
@@ -370,6 +332,13 @@ class Genxinterface(Gtk.Window):
         else:
             self.textview.set_buffer(self.textbuffer)
             self.text_edit_wrap(self.text_editable)
+
+    def help_text(self):
+        try:
+            with open('/usr/local/share/genxword/help_page') as help_file:
+                return help_file.read()
+        except:
+            return 'Sorry, we cannot find what you asked for.'
 
     def add_tag(self, buffer_name, tag_name, startline, endline):
         start = buffer_name.get_iter_at_line(startline)

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
@@ -34,6 +34,12 @@ setup(
     version = '0.4.5',
     packages = ['genxword3'],
     scripts = ['bin/genxword3', 'bin/genxword3-gtk'],
+    data_files = [
+        ('share/applications', ['genxword3-gtk.desktop']),
+        ('share/pixmaps', ['genxword3-gtk.png']),
+        ('share/genxword3', ['help_page']),
+        ('share/genxword3/word_lists', ['word_lists/2000ENwords', 'word_lists/pythonwords']),
+        ],
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',

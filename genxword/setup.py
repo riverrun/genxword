@@ -34,6 +34,12 @@ setup(
     version = '0.4.5',
     packages = ['genxword'],
     scripts = ['bin/genxword', 'bin/genxword-gtk'],
+    data_files = [
+        ('share/applications', ['genxword-gtk.desktop']),
+        ('share/pixmaps', ['genxword-gtk.png']),
+        ('share/genxword', ['help_page']),
+        ('share/genxword/word_lists', ['word_lists/2000ENwords', 'word_lists/pythonwords']),
+        ],
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',
