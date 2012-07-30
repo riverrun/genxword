@@ -17,7 +17,7 @@ excalibur A sword that a moistened bint lobbed at Arthur.
 duck An animal that weighs the same as a witch.
 coconut A fruit that possibly migrates.
 
-As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. The clue is everything after the first space.
+As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. The clue is everything after the first space. You can find some example word lists in the /usr/share/genxword3/word_lists directory.
 If you want to edit the word list more after you have calculated the crossword, you can return to this word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.
 
 Open word list

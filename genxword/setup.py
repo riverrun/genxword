@@ -23,15 +23,9 @@
 import os
 from distutils.core import setup
 
-def read(fname):
-    try:
-        return open(os.path.join(os.path.dirname(__file__), fname)).read()
-    except IOError:
-        return "File '{}'.format(fname) not found.\n"
-
 setup(
     name = 'genxword',
-    version = '0.4.5',
+    version = '0.4.6',
     packages = ['genxword'],
     scripts = ['bin/genxword', 'bin/genxword-gtk'],
     data_files = [
@@ -44,6 +38,5 @@ setup(
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',
     description = 'A crossword generator',
-    long_description = read('README.rst'),
     license = 'GPLv3',
 )

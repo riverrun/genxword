@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
@@ -23,15 +23,9 @@
 import os
 from distutils.core import setup
 
-def read(fname):
-    try:
-        return open(os.path.join(os.path.dirname(__file__), fname)).read()
-    except IOError:
-        return "File '{}'.format(fname) not found.\n"
-
 setup(
     name = 'genxword3',
-    version = '0.4.5',
+    version = '0.4.6',
     packages = ['genxword3'],
     scripts = ['bin/genxword3', 'bin/genxword3-gtk'],
     data_files = [
@@ -44,6 +38,5 @@ setup(
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',
     description = 'A crossword generator',
-    long_description = read('README.rst'),
     license = 'GPLv3',
 )
