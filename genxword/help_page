@@ -2,7 +2,7 @@ genxword-gtk
 Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, or png / svg versions of the crossword grid, together with a text file containing the words and clues.
 The word list that is used to create the crossword is also saved as a text file.
 
-To go back to the main view, click on F1.
+To go back to the main view, click the help button, or F1, again.
 
 New word list
 You can create a new word list by clicking on the 'New word list' button, or by pressing Control + N. The word list can be just a list of words, like this:
