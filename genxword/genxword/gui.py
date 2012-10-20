@@ -320,7 +320,7 @@ class Genxinterface(Gtk.Window):
             self.textbuffer.set_text(text)
 
     def help_page(self, button):
-        webbrowser.open('/usr/local/share/genxword/help_page')
+        webbrowser.open('/usr/local/share/genxword/help_page.html')
 
     def about_dialog(self, button):
         license = ('This program is free software: you can redistribute it and/or modify'
