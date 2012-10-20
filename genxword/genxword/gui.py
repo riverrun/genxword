@@ -109,7 +109,7 @@ class Genxinterface(Gtk.Window):
         action_open.connect('activate', self.open_wlist)
         action_group.add_action_with_accel(action_open, None)
 
-        action_create = Gtk.Action('Create', 'Create crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
+        action_create = Gtk.Action('Create', 'Calculate crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
         action_create.connect('activate', self.create_xword)
         action_group.add_action_with_accel(action_create, '<control>G')
 
@@ -152,7 +152,6 @@ class Genxinterface(Gtk.Window):
         scrolledwindow.set_vexpand(True)
         self.grid.attach(scrolledwindow, 0, 2, 6, 1)
 
-        #self.textview = Gtk.TextView()
         self.textview = GtkSource.View.new()
         self.textview.set_show_line_numbers(True)
         self.textview.set_border_width(6)
@@ -162,33 +161,28 @@ class Genxinterface(Gtk.Window):
         self.tag_mono = self.textbuffer.create_tag('mono', font='monospace')
         scrolledwindow.add(self.textview)
 
-    def text_edit_wrap(self, edit, wrap=Gtk.WrapMode.NONE):
-        self.textview.set_editable(edit)
-        self.textview.set_cursor_visible(edit)
-        self.textview.set_wrap_mode(wrap)
-
     def save_buttons(self):
-        self.save_bar = Gtk.ButtonBox()
-        self.grid.attach(self.save_bar, 0, 3, 6, 1)
+        save_bar = Gtk.ButtonBox()
+        self.grid.attach(save_bar, 0, 3, 6, 1)
 
         save_label = Gtk.Label('Save the crossword as')
-        self.save_bar.add(save_label)
+        save_bar.add(save_label)
 
         save_A4 = Gtk.CheckButton('A4 pdf')
         save_A4.connect('toggled', self.save_options, 'p')
-        self.save_bar.add(save_A4)
+        save_bar.add(save_A4)
 
         save_letter = Gtk.CheckButton('letter pdf')
         save_letter.connect('toggled', self.save_options, 'l')
-        self.save_bar.add(save_letter)
+        save_bar.add(save_letter)
 
         save_png = Gtk.CheckButton('png')
         save_png.connect('toggled', self.save_options, 'n')
-        self.save_bar.add(save_png)
+        save_bar.add(save_png)
 
         save_svg = Gtk.CheckButton('svg')
         save_svg.connect('toggled', self.save_options, 's')
-        self.save_bar.add(save_svg)
+        save_bar.add(save_svg)
 
     def option_buttons(self):
         self.enter_name = Gtk.Entry()
@@ -229,9 +223,13 @@ class Genxinterface(Gtk.Window):
         else:
             self.saveformat = self.saveformat.replace(name, '')
 
+    def text_edit_numbers(self, edit):
+        self.textview.set_editable(edit)
+        self.textview.set_cursor_visible(edit)
+        self.textview.set_show_line_numbers(edit)
+
     def new_wlist(self, button):
-        self.textview.set_show_line_numbers(True)
-        self.text_edit_wrap(True)
+        self.text_edit_numbers(True)
         self.textbuffer.set_text(self.words)
         self.calc_first_time = True
 
@@ -245,10 +243,9 @@ class Genxinterface(Gtk.Window):
         if response == Gtk.ResponseType.OK:
             with open(dialog.get_filename()) as infile:
                 data = infile.read()
-            self.text_edit_wrap(True)
             self.textbuffer.set_text(data)
         dialog.destroy()
-        self.textview.set_show_line_numbers(True)
+        self.text_edit_numbers(True)
         self.calc_first_time = True
 
     def add_filters(self, dialog):
@@ -259,20 +256,20 @@ class Genxinterface(Gtk.Window):
 
     def calc_xword(self):
         save_recalc = ('\nIf you want to save this crossword, press the Save button.\n'
-        'If you want to recalculate the crossword, press the Calculate button.\n'
+        'If you want to recalculate the crossword with the same grid size,\n'
+        'press the Calculate crossword button again.\n'
         'To increase the grid size and then recalculate the crossword,\n'
         'press the Increase grid size button.')
         calc = calculate.Crossword(self.nrow, self.ncol, '-', self.wlist)
         self.textbuffer.set_text(calc.compute_crossword())
-        self.textview.set_show_line_numbers(False)
         self.textbuffer.apply_tag(self.tag_mono, self.textbuffer.get_start_iter(), self.textbuffer.get_end_iter())
+        self.text_edit_numbers(False)
         self.textbuffer.insert_at_cursor(save_recalc)
         self.choose_gsize.set_text(str(self.nrow) + ',' + str(self.ncol))
         self.best_word_list = calc.best_word_list
         self.best_grid = calc.best_grid
 
     def create_xword(self, button):
-        self.text_edit_wrap(False)
         if self.calc_first_time:
             self.words = self.textbuffer.get_text(self.textbuffer.get_start_iter(), self.textbuffer.get_end_iter(), False)
             nwords = self.choose_nwords.get_value_as_int()
@@ -307,6 +304,7 @@ class Genxinterface(Gtk.Window):
             if response == Gtk.ResponseType.OK:
                 os.chdir(dialog.get_filename())
             else:
+                dialog.destroy()
                 return 0
             dialog.destroy()
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
@@ -323,11 +321,6 @@ class Genxinterface(Gtk.Window):
 
     def help_page(self, button):
         webbrowser.open('/usr/local/share/genxword/help_page')
-
-    def add_tag(self, buffer_name, tag_name, startline, endline):
-        start = buffer_name.get_iter_at_line(startline)
-        end = buffer_name.get_iter_at_line(endline)
-        buffer_name.apply_tag(tag_name, start, end)
 
     def about_dialog(self, button):
         license = ('This program is free software: you can redistribute it and/or modify'
