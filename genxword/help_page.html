@@ -9,13 +9,13 @@
 <p>Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, or png / svg versions of the crossword grid, together with a text file containing the words and clues.
 The word list that is used to create the crossword is also saved as a text file.</p>
 <h2>Contents</h2>
-<h2><a href="#1">1. New word list</a></h2>
-<h2><a href="#2">2. Open word list</a></h2>
-<h2><a href="#3">3. Calculate the crossword</a></h2>
-<h2><a href="#4">4. Recalculate the crossword</a></h2>
-<h2><a href="#5">5. Save the crossword</a></h2>
-<h2><a href="#6">6. Further options</a></h2>
-<h2><a name="1"></a>1. New word list</h2>
+<h3><a href="#1">Creating a word list</a></h3>
+<h3><a href="#2">Calculating the crossword</a></h3>
+<h3><a href="#3">Saving the crossword</a></h3>
+<h3><a href="#4">Further options</a></h3>
+<h3><a href="#5">Authors</a></h3>
+<h3><a href="#6">License</a></h3>
+<h2><a name="1"></a>Creating a word list</h2>
 <p>You can create a new word list by clicking on the 'New word list' button, or by pressing Control + N. The word list can be just a list of words, like this:
 <blockquote>parrot</blockquote>
 <blockquote>spam</blockquote>
@@ -25,18 +25,20 @@ or it can be a list or words and clues, like this:
 <blockquote>duck An animal that weighs the same as a witch.</blockquote>
 <blockquote>coconut A fruit that possibly migrates.</blockquote>
 As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. The clue is everything after the first space. You can find some example word lists in the /usr/share/genxword/word_lists directory.
-If you want to edit the word list more after you have calculated the crossword, you can return to this word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.</p>
-<h2><a name="2"></a>2. Open word list</h2>
 <p>Clicking the 'Open word list' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be formatted as written above. The word list can be thousands of words long, and the crossword will be created with a set amount of words randomly selected from it. You can select the number of words in the box below.</p>
-<h2><a name="3"></a>3. Calculate the crossword</h2>
+If you want to edit the word list more after you have calculated the crossword, you can return to this word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.</p>
+<h2><a name="2"></a>Calculating the crossword</h2>
 <p>Click on the 'Create crossword' button, or press Control + G, to create the crossword. If you click on it a second time, the crossword will be recalculated with the same grid size.</p>
-<h2><a name="4"></a>4. Recalculate the crossword</h2>
-<p>Clicking on this button, or pressing Control + R, increases the grid size before recalculating the crossword.</p>
-<h2><a name="5"></a>5. Save the crossword</h2>
+<p>If you want to increase the grid size before recalculating the crossword, you need to click on the 'Recalculate' button or press Control + R.</p>
+<h2><a name="3"></a>Saving the crossword</h2>
 <p>This button, or Control + S, lets you choose where you save the crossword files.</p>
-<h2><a name="6"></a>6. Further options</h2>
-<p>You can save the crossword in pdf, png and / or svg format. Just click on the appropriate entries on the 'Save the crossword as' bar.
-On the bottom row of the main window, there are boxes in which you can write the name of the crossword, choose the number of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' menu first (normally, the grid size will be automatically calculated based on the number of words used). The numbers in the grid size box refer to the number of rows and columns, and they need to be separated by a comma.</p>
+<p>You can save the crossword in pdf, png and / or svg format. Just click on the appropriate entries on the 'Save the crossword as' bar.</p>
+<h2><a name="4"></a>Further options</h2>
+<p>On the bottom row of the main window, there are boxes in which you can write the name of the crossword, choose the number of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' menu first (normally, the grid size will be automatically calculated based on the number of words used). The numbers in the grid size box refer to the number of rows and columns, and they need to be separated by a comma.</p>
 <p>For more detailed information, go to <a href="https://github.com/riverrun/genxword/wiki/genxword-gtk">https://github.com/riverrun/genxword/wiki/genxword-gtk</a></p>
+<h2><a name="5"></a>Authors</h2>
+<p>This program has been developed by David Whitlock <a href="mailto:alovedalongthe@gmail.com">alovedalongthe@gmail.com</a>, and it is based on a program originally written by Bryan Helmig.</p>
+<h2><a name="6"></a>License</h2>
+<p>Genxword-gtk is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
 </body>
 </html>
