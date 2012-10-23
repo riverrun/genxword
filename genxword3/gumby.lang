@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language id="gumby" _name="Gumby" version="2.0" _section="Others">
+  <styles>
+    <style id="comment" _name="Comment" map-to="def:comment"/>
+  </styles>
+  <definitions>
+    <context id="gumby">
+      <include>
+        <context id="comment" style-ref="comment">
+          <start>^</start>
+          <end>\s</end>
+        </context>
+      </include>
+    </context>
+  </definitions>
+</language>

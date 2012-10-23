@@ -157,9 +157,13 @@ class Genxinterface(Gtk.Window):
         self.textview.set_border_width(6)
         fontdesc = Pango.FontDescription('serif 11')
         self.textview.modify_font(fontdesc)
-        self.textbuffer = self.textview.get_buffer()
-        self.tag_mono = self.textbuffer.create_tag('mono', font='monospace')
+        self.buff = self.textview.get_buffer()
         scrolledwindow.add(self.textview)
+
+        manager = GtkSource.LanguageManager()
+        lang = manager.get_language('gumby')
+        self.buff.set_language(lang)
+        self.tag_mono = self.buff.create_tag('mono', font='monospace')
 
     def save_buttons(self):
         save_bar = Gtk.ButtonBox()
@@ -227,10 +231,11 @@ class Genxinterface(Gtk.Window):
         self.textview.set_editable(edit)
         self.textview.set_cursor_visible(edit)
         self.textview.set_show_line_numbers(edit)
+        self.buff.set_highlight_syntax(edit)
 
     def new_wlist(self, button):
         self.text_edit_numbers(True)
-        self.textbuffer.set_text(self.words)
+        self.buff.set_text(self.words)
         self.calc_first_time = True
 
     def open_wlist(self, button):
@@ -243,7 +248,7 @@ class Genxinterface(Gtk.Window):
         if response == Gtk.ResponseType.OK:
             with open(dialog.get_filename()) as infile:
                 data = infile.read()
-            self.textbuffer.set_text(data)
+            self.buff.set_text(data)
         dialog.destroy()
         self.text_edit_numbers(True)
         self.calc_first_time = True
@@ -261,17 +266,17 @@ class Genxinterface(Gtk.Window):
         'To increase the grid size and then recalculate the crossword,\n'
         'press the Increase grid size button.')
         calc = calculate.Crossword(self.nrow, self.ncol, '-', self.wlist)
-        self.textbuffer.set_text(calc.compute_crossword())
-        self.textbuffer.apply_tag(self.tag_mono, self.textbuffer.get_start_iter(), self.textbuffer.get_end_iter())
+        self.buff.set_text(calc.compute_crossword())
+        self.buff.apply_tag(self.tag_mono, self.buff.get_start_iter(), self.buff.get_end_iter())
         self.text_edit_numbers(False)
-        self.textbuffer.insert_at_cursor(save_recalc)
+        self.buff.insert_at_cursor(save_recalc)
         self.choose_gsize.set_text(str(self.nrow) + ',' + str(self.ncol))
         self.best_word_list = calc.best_word_list
         self.best_grid = calc.best_grid
 
     def create_xword(self, button):
         if self.calc_first_time:
-            self.words = self.textbuffer.get_text(self.textbuffer.get_start_iter(), self.textbuffer.get_end_iter(), False)
+            self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
             nwords = self.choose_nwords.get_value_as_int()
             gen = Genxword()
             gen.wlist(self.words.splitlines(), nwords)
@@ -311,13 +316,13 @@ class Genxinterface(Gtk.Window):
             exp.create_files(self.xwordname, self.saveformat, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
-            self.textbuffer.set_text('Your crossword files have been saved in\n' + os.getcwd())
+            self.buff.set_text('Your crossword files have been saved in\n' + os.getcwd())
             self.enter_name.set_text('Name of crossword')
             self.words = ''
         else:
-            text = ('Please fill in the name of the crossword and the format you want it saved in.\n'
-                    'Go to the Save options menu to choose the format.\nThen click on the Save button again.')
-            self.textbuffer.set_text(text)
+            text = ('Please fill in the name of the crossword and the format you want it saved in\n'
+                    '(A4 size pdf, letter size pdf, png or svg).\nThen click on the Save button again.')
+            self.buff.set_text(text)
 
     def help_page(self, button):
         webbrowser.open('/usr/local/share/genxword3/help_page.html')
@@ -341,7 +346,7 @@ class Genxinterface(Gtk.Window):
         about.set_comments('A crossword generator')
         about.set_authors(['David Whitlock <alovedalongthe@gmail.com>', 'Bryan Helmig'])
         about.set_website('https://github.com/riverrun/genxword/wiki/genxword-gtk')
-        about.set_website_label('genxword-gtk wiki')
+        about.set_website_label('genxword3-gtk wiki')
         about.set_logo_icon_name('genxword3-gtk')
         about.run()
         about.destroy()
