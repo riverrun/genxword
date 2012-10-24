@@ -31,7 +31,7 @@ setup(
     data_files = [
         ('share/applications', ['genxword-gtk.desktop']),
         ('share/pixmaps', ['genxword-gtk.png']),
-        ('share/genxword', ['help_page.html']),
+        ('share/genxword', ['gumby.lang', 'help_page.html']),
         ('share/genxword/word_lists', ['word_lists/2000ENwords', 'word_lists/pythonwords']),
         ],
     author = 'David Whitlock',

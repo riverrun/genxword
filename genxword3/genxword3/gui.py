@@ -77,8 +77,9 @@ class Genxinterface(Gtk.Window):
         self.grid.set_column_spacing(6)
 
         action_group = Gtk.ActionGroup('gui_actions')
-        self.add_main_actions(action_group)
-        self.add_opts_actions(action_group)
+        self.file_menu_actions(action_group)
+        self.xword_menu_actions(action_group)
+        self.help_menu_actions(action_group)
         uimanager = self.create_ui_manager()
         uimanager.insert_action_group(action_group)
         menubar = uimanager.get_widget('/MenuBar')
@@ -90,15 +91,9 @@ class Genxinterface(Gtk.Window):
         self.save_buttons()
         self.option_buttons()
 
-    def add_main_actions(self, action_group):
+    def file_menu_actions(self, action_group):
         action_filemenu = Gtk.Action('FileMenu', '_Word list', None, None)
         action_group.add_action(action_filemenu)
-
-        action_xwordmenu = Gtk.Action('CrosswordMenu', '_Crossword', None, None)
-        action_group.add_action(action_xwordmenu)
-
-        action_helpmenu = Gtk.Action('HelpMenu', '_Help', None, None)
-        action_group.add_action(action_helpmenu)
 
         action_new = Gtk.Action('New', 'New word list',
                 'Create a new word list or go back to the already open word list', Gtk.STOCK_NEW)
@@ -108,6 +103,14 @@ class Genxinterface(Gtk.Window):
         action_open = Gtk.Action('Open', 'Open word list', 'Open a word list', Gtk.STOCK_OPEN)
         action_open.connect('activate', self.open_wlist)
         action_group.add_action_with_accel(action_open, None)
+
+        action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
+        action_quit.connect('activate', self.quit_app)
+        action_group.add_action_with_accel(action_quit, None)
+
+    def xword_menu_actions(self, action_group):
+        action_xwordmenu = Gtk.Action('CrosswordMenu', '_Crossword', None, None)
+        action_group.add_action(action_xwordmenu)
 
         action_create = Gtk.Action('Create', 'Calculate crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
         action_create.connect('activate', self.create_xword)
@@ -122,6 +125,14 @@ class Genxinterface(Gtk.Window):
         action_save.connect('activate', self.save_xword)
         action_group.add_action_with_accel(action_save, None)
 
+        edit_gsize = Gtk.ToggleAction('EditGsize', 'Choose the grid size', None, None)
+        edit_gsize.connect('toggled', self.set_gsize)
+        action_group.add_action(edit_gsize)
+
+    def help_menu_actions(self, action_group):
+        action_helpmenu = Gtk.Action('HelpMenu', '_Help', None, None)
+        action_group.add_action(action_helpmenu)
+
         action_help = Gtk.Action('Help', 'Help', 'Open the help page in your web browser', Gtk.STOCK_HELP)
         action_help.connect('activate', self.help_page)
         action_group.add_action_with_accel(action_help, 'F1')
@@ -129,15 +140,6 @@ class Genxinterface(Gtk.Window):
         action_about = Gtk.Action('About', 'About', None, Gtk.STOCK_ABOUT)
         action_about.connect('activate', self.about_dialog)
         action_group.add_action(action_about)
-
-        action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
-        action_quit.connect('activate', self.quit_app)
-        action_group.add_action_with_accel(action_quit, None)
-
-    def add_opts_actions(self, action_group):
-        edit_gsize = Gtk.ToggleAction('EditGsize', 'Choose the grid size', None, None)
-        edit_gsize.connect('toggled', self.set_gsize)
-        action_group.add_action(edit_gsize)
 
     def create_ui_manager(self):
         uimanager = Gtk.UIManager()
@@ -161,6 +163,7 @@ class Genxinterface(Gtk.Window):
         scrolledwindow.add(self.textview)
 
         manager = GtkSource.LanguageManager()
+        manager.set_search_path(['/usr/share/gtksourceview-3.0/language-specs', '/usr/local/share/genxword'])
         lang = manager.get_language('gumby')
         self.buff.set_language(lang)
         self.tag_mono = self.buff.create_tag('mono', font='monospace')
