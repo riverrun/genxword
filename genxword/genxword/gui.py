@@ -163,7 +163,9 @@ class Genxinterface(Gtk.Window):
         scrolledwindow.add(self.textview)
 
         manager = GtkSource.LanguageManager()
-        manager.set_search_path(['/usr/share/gtksourceview-3.0/language-specs', '/usr/local/share/genxword'])
+        path = manager.get_search_path()
+        path.extend(['/usr/share/genxword', '/usr/local/share/genxword'])
+        manager.set_search_path(path)
         lang = manager.get_language('gumby')
         self.buff.set_language(lang)
         self.tag_mono = self.buff.create_tag('mono', font='monospace')
@@ -328,7 +330,10 @@ class Genxinterface(Gtk.Window):
             self.buff.set_text(text)
 
     def help_page(self, button):
-        webbrowser.open('/usr/local/share/genxword/help_page.html')
+        if os.path.isfile('/usr/share/genxword/help_page.html'):
+            webbrowser.open('/usr/share/genxword/help_page.html')
+        else:
+            webbrowser.open('/usr/local/share/genxword/help_page.html')
 
     def about_dialog(self, button):
         license = ('Genxword-gtk is free software: you can redistribute it and/or modify'
