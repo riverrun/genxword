@@ -7,5 +7,5 @@ Exec=genxword-gtk
 Name=genxword-gtk
 Comment=Create crosswords in pdf, png and svg formats
 Icon=genxword-gtk
-Categories=Graphics;GTK;
+Categories=GTK;Education;Graphics;
 StartupNotify=True
