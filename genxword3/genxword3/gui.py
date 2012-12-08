@@ -164,7 +164,7 @@ class Genxinterface(Gtk.Window):
 
         manager = GtkSource.LanguageManager()
         path = manager.get_search_path()
-        path.extend(['/usr/share/genxword', '/usr/local/share/genxword'])
+        path.extend(['/usr/share/genxword3', '/usr/local/share/genxword3'])
         manager.set_search_path(path)
         lang = manager.get_language('gumby')
         self.buff.set_language(lang)
