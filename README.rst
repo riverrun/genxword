@@ -29,12 +29,31 @@ It will not work with earlier versions of Python. The command line version depen
 which is already installed on most popular distros, to produce the image files.
 The GUI version depends on pygobject (also known as python-gobject or python-gi).
 
-To install this program, go to the **Downloads** tab, download the latest stable version, currently genxword-0.4.4, 
-or genxword3-0.4.4 (the Python 3 version), and run the following commands (replace genxword with genxword3 if 
-using the Python 3 version)::
+Ubuntu-based distros
+-----
 
-    tar xvzf genxword-0.4.4.tar.gz
-    cd genxword-0.4.4
+Open a terminal and run the following commands::
+
+    sudo add-apt-repository ppa:riverrun/genxword
+    sudo apt-get update
+
+And then to install the Python 2.7 version::
+
+    sudo apt-get install genxword
+
+Or alternatively, to install the Python 3 version::
+
+    sudo apt-get install genxword3
+
+Other distros
+-----
+
+To install this program, go to the **Downloads** tab, download the latest stable version, currently genxword-0.5.0, 
+or genxword3-0.5.0 (the Python 3 version), and run the following commands (on each line, replace genxword with 
+genxword3 if using the Python 3 version)::
+
+    tar xvzf genxword-0.5.0.tar.gz
+    cd genxword-0.5.0
     sudo ./install_genxword.sh
 
 Authors
