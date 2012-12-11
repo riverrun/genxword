@@ -1,13 +1,14 @@
-.TH GENXWORD 1 "20/10/2012" "Version 0.5.0" "User manuals"
+.TH GENXWORD 1 "12/12/2012" "Version 0.5.1" "User Commands"
 .SH NAME
 genxword \- a crossword generator
 .SH SYNOPSIS
 genxword [\-a] [\-n] [\-o] infile saveformat
 .SH DESCRIPTION
-genxword is a crossword generator written in Python. It reads words and clues,
-or just words, from a text file. The crossword that is generated can be saved,
-with the clues, as a pdf file, and/or it can be saved in png/svg format,
-together with a text file containing the word bank and clues.
+genxword is a crossword generator which runs from the command line. There is 
+also a version with a graphical user interface, which is called genxword-gtk.
+It reads words and clues, or just words, from a text file and produces 
+crosswords as pdf files, with the clues, and/or png/svg files, together 
+with a text file containing the word bank and clues.
 .PP
 The infile is a text file containing words and clues, or just words.
 Each word, or word and clue, should be on a separate line, and there should 
@@ -16,6 +17,8 @@ and the clue is 'The sword that a moistened bint lobbed at Arthur':
 .TP
 .PP
 excalibur The sword that a moistened bint lobbed at Arthur.
+.PP
+Example word lists can be found in the /usr/share/genxword/word_lists/ directory.
 .PP
 Saveformat refers to the file format that you want the crossword saved as.
 You can save it as an A4 size pdf (p), letter size pdf (l), or you can save 
