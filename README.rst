@@ -52,8 +52,8 @@ and `genxword3-git <https://aur.archlinux.org/packages.php?ID=58514>`_.
 Other distros
 -------------
 
-Go to the **Tags** tab, download the latest stable version, currently genxword-0.5.0, extract the files, 
-and run the following commands.
+Go to the **Tags** tab, near the top of this page, download the latest stable version, 
+currently genxword-0.5.0, extract the files, and run the following commands.
 
 For the Python 2.7 version::
 

@@ -31,6 +31,8 @@ ui_info = """
       <menuitem action='New'/>
       <menuitem action='Open'/>
       <separator/>
+      <menuitem action='Sort'/>
+      <separator/>
       <menuitem action='Quit'/>
     </menu>
     <menu action='CrosswordMenu'>
@@ -103,6 +105,11 @@ class Genxinterface(Gtk.Window):
         action_open = Gtk.Action('Open', 'Open word list', 'Open a word list', Gtk.STOCK_OPEN)
         action_open.connect('activate', self.open_wlist)
         action_group.add_action_with_accel(action_open, None)
+
+        action_sort = Gtk.Action('Sort', 'Sort word list', 
+                'Sort the word list and remove words with non-alphabetic characters', None)
+        action_sort.connect('activate', self.sort_wlist)
+        action_group.add_action(action_sort)
 
         action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
         action_quit.connect('activate', self.quit_app)
@@ -263,6 +270,13 @@ class Genxinterface(Gtk.Window):
         filter_text.set_name('Text files')
         filter_text.add_mime_type('text/plain')
         dialog.add_filter(filter_text)
+
+    def sort_wlist(self, button):
+        data = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
+        valid = [[word for word in line.split(' ', 1)] for line in data.splitlines() if line.split(' ', 1)[0].isalpha()]
+        valid.sort(key=lambda i: len(i[0]))
+        output = '\n'.join([' '.join(word) for word in valid])
+        self.buff.set_text(output)
 
     def calc_xword(self):
         save_recalc = ('\nIf you want to save this crossword, press the Save button.\n'
