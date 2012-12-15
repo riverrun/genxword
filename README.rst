@@ -25,12 +25,10 @@ Linux
 -----
 
 To run this program, you need to have **Python 2.7** or **Python 3** installed. 
-It will not work with earlier versions of Python. The command line version depends on py2cairo (or pycairo), 
-which is already installed on most popular distros, to produce the image files.
-The GUI version depends on pygobject (also known as python-gobject or python-gi).
+It will not work with earlier versions of Python.
 
 Ubuntu-based distros
------
+--------------------
 
 Open a terminal and run the following commands::
 
@@ -45,16 +43,31 @@ Or alternatively, to install the Python 3 version::
 
     sudo apt-get install genxword3
 
+Archlinux
+---------
+
+There are PKGBUILDs available at `genxword-git <https://aur.archlinux.org/packages.php?ID=53985>`_
+and `genxword3-git <https://aur.archlinux.org/packages.php?ID=58514>`_.
+
 Other distros
------
+-------------
 
-To install this program, go to the **Downloads** tab, download the latest stable version, currently genxword-0.5.0, 
-or genxword3-0.5.0 (the Python 3 version), and run the following commands (on each line, replace genxword with 
-genxword3 if using the Python 3 version)::
+Go to the **Tags** tab, download the latest stable version, currently genxword-0.5.0, extract the files, 
+and run the following commands.
 
-    tar xvzf genxword-0.5.0.tar.gz
-    cd genxword-0.5.0
+For the Python 2.7 version::
+
+    cd genxword-0.5.0/genxword
     sudo ./install_genxword.sh
+
+And for the Python 3 version::
+
+    cd genxword-0.5.0/genxword3
+    sudo ./install_genxword3.sh
+
+The GUI version depends on pycairo (python-cairo), pygobject (python-gobject or python-gi) 
+and gtksourceview3 (gir1.2-gtksource-3.0).
+The command line version just depends on pycairo.
 
 Authors
 =======
