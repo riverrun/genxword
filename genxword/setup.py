@@ -25,7 +25,7 @@ from distutils.core import setup
 
 setup(
     name = 'genxword',
-    version = '0.5.2',
+    version = '0.5.3',
     packages = ['genxword'],
     scripts = ['bin/genxword', 'bin/genxword-gtk'],
     data_files = [
