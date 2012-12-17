@@ -107,7 +107,7 @@ class Genxinterface(Gtk.Window):
         action_group.add_action_with_accel(action_open, None)
 
         action_sort = Gtk.Action('Sort', 'Sort word list', 
-                'Sort the word list and remove words with non-alphabetic characters', None)
+                'Sort the word list and remove words with nonalphabetic characters', None)
         action_sort.connect('activate', self.sort_wlist)
         action_group.add_action(action_sort)
 
@@ -362,7 +362,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword3-gtk')
-        about.set_version('0.5.1')
+        about.set_version('0.5.2')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')
