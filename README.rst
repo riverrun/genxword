@@ -21,7 +21,7 @@ Please read the `wiki <https://github.com/riverrun/genxword/wiki>`_ for informat
 Installation
 ============
 
-Go to `Get genxword <https://riverrun.github.com/genxword/install.html>`_ for information 
+Go to `Get genxword <http://riverrun.github.com/genxword/install.html>`_ for information 
 about how to download and install genxword.
 
 Authors
