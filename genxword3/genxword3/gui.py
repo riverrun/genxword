@@ -107,7 +107,7 @@ class Genxinterface(Gtk.Window):
         action_group.add_action_with_accel(action_open, None)
 
         action_sort = Gtk.Action('Sort', 'Sort word list', 
-                'Sort the word list and remove words with nonalphabetic characters', None)
+                'Sort the word list and remove words with non-alphabetic characters', None)
         action_sort.connect('activate', self.sort_wlist)
         action_group.add_action(action_sort)
 

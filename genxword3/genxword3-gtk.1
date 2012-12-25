@@ -1,13 +1,16 @@
-.TH GENXWORD3-GTK 1 "20/12/2012" "Version 0.5.3" "User Commands"
+.TH GENXWORD3-GTK 1 "23/12/2012" "Version 0.5.3" "User Commands"
 .SH NAME
 genxword3-gtk \- a crossword generator
 .SH SYNOPSIS
 genxword3-gtk
 .SH DESCRIPTION
-genxword3-gtk is a crossword generator that produces crosswords as pdf files,
-with the clues, and/or png/svg files, together with a text file containing the word bank and clues.
+Genxword3-gtk is a crossword generator, which produces pdf (A4 or letter size) 
+versions of the grid and clues, or png / svg versions of the crossword grid, 
+together with a text file containing the words and clues.
+The word list that is used to create the crossword is also saved as a text file.
 .PP
-The infile is a text file containing words and clues, or just words.
+The word list can be created when using genxword3-gtk, or it can be a text file 
+that has already been written. It can contain words and clues, or just words.
 Each word, or word and clue, should be on a separate line, and there should 
 be a space between the word and clue. In the following example, the word is 'excalibur'
 and the clue is 'The sword that a moistened bint lobbed at Arthur':
@@ -16,6 +19,9 @@ and the clue is 'The sword that a moistened bint lobbed at Arthur':
 excalibur The sword that a moistened bint lobbed at Arthur.
 .PP
 Example word lists can be found in the /usr/share/genxword3/word_lists/ directory.
+.PP
+There is also an option to sort the word list by word length, which might be useful 
+when editing a long word list. This option also removes words with non-alphabetic characters.
 .SH SEE ALSO
 https://github.com/riverrun/genxword
 .SH BUGS
