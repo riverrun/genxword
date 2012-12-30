@@ -106,10 +106,10 @@ class Genxinterface(Gtk.Window):
         action_open.connect('activate', self.open_wlist)
         action_group.add_action_with_accel(action_open, None)
 
-        action_sort = Gtk.Action('Sort', 'Sort word list', 
+        self.action_sort = Gtk.Action('Sort', 'Sort word list', 
                 'Sort the word list and remove words with non-alphabetic characters', None)
-        action_sort.connect('activate', self.sort_wlist)
-        action_group.add_action(action_sort)
+        self.action_sort.connect('activate', self.sort_wlist)
+        action_group.add_action(self.action_sort)
 
         action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
         action_quit.connect('activate', self.quit_app)
@@ -244,6 +244,7 @@ class Genxinterface(Gtk.Window):
         self.textview.set_cursor_visible(edit)
         self.textview.set_show_line_numbers(edit)
         self.buff.set_highlight_syntax(edit)
+        self.action_sort.set_sensitive(edit)
 
     def new_wlist(self, button):
         self.text_edit_numbers(True)
@@ -362,7 +363,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('0.5.3')
+        about.set_version('0.5.4')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')
