@@ -21,6 +21,7 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword3.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
+from gi.repository import Pango, PangoCairo
 import random, time, cairo
 from operator import itemgetter
 from collections import defaultdict
@@ -192,7 +193,7 @@ class Exportfiles(object):
                     context.rectangle(xoffset+1+(i*px), yoffset+1+(r*px), px-2, px-2)
                     context.stroke()
                     if '_key.' in name:
-                        self.draw_letters(c, context, xoffset+(i*px)+10, yoffset+(r*px)+22, 14)
+                        self.draw_letters(c, context, xoffset+(i*px)+10, yoffset+(r*px)+8, 'monospace 11')
 
         self.order_number_words()
         for word in self.wordlist:
@@ -200,16 +201,16 @@ class Exportfiles(object):
                 x, y = ((self.cols-1)*px)+xoffset-(word[3]*px), yoffset+(word[2]*px)
             else:
                 x, y = xoffset+(word[3]*px), yoffset+(word[2]*px)
-            self.draw_letters(str(word[5]), context, x+3, y+10, 8)
+            self.draw_letters(str(word[5]), context, x+3, y+2, 'monospace 6')
 
-    def draw_letters(self, text, context, xval, yval, fontsize, bold=False):
-        if bold:
-            context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-        else:
-            context.select_font_face('monospace')
-        context.set_font_size(fontsize)
+    def draw_letters(self, text, context, xval, yval, fontdesc):
         context.move_to(xval, yval)
-        context.show_text(text)
+        layout = PangoCairo.create_layout(context)
+        font = Pango.FontDescription(fontdesc)
+        layout.set_font_description(font)
+        layout.set_text(text, -1)
+        PangoCairo.update_layout(context, layout)
+        PangoCairo.show_layout(context, layout)
 
     def create_img(self, name, RTL):
         px = 28
@@ -244,9 +245,9 @@ class Exportfiles(object):
         self.draw_img(name, context, 28, xoffset, 80, RTL)
         context.restore()
         context.set_source_rgb(0, 0, 0)
-        self.draw_letters(xwname, context, round((width-len(xwname)*10)/2), yoffset/2, 18, bold=True)
+        self.draw_letters(xwname, context, round((width-len(xwname)*10)/2), yoffset/2, 'Sans 18 bold')
         x, y = 36, yoffset+5+(self.rows*px*sc_ratio)
-        self.draw_letters('Across', context, x, y, 14, bold=True)
+        self.draw_letters('Across', context, x, y, 'Sans 14 bold')
         clues = self.wrap(self.legend())
         for line in clues.splitlines()[3:]:
             if y >= height-(yoffset/2)-15:
@@ -256,10 +257,10 @@ class Exportfiles(object):
                 if self.cols > 17 and y > 700:
                     context.show_page()
                     y = yoffset/2
-                self.draw_letters('Down', context, x, y+15, 14, bold=True)
+                self.draw_letters('Down', context, x, y+15, 'Sans 14 bold')
                 y += 16
                 continue
-            self.draw_letters(line, context, x, y+15, 10)
+            self.draw_letters(line, context, x, y+18, 'Serif 9')
             y += 16
         context.show_page()
         surface.finish()
