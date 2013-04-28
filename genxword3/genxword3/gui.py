@@ -296,7 +296,7 @@ class Genxinterface(Gtk.Window):
         'press the Calculate crossword button again.\n'
         'To increase the grid size and then recalculate the crossword,\n'
         'press the Increase grid size button.')
-        calc = calculate.Crossword(self.nrow, self.ncol, '-', self.wlist)
+        calc = calculate.Crossword(self.nrow, self.ncol, ' ', self.wlist)
         self.buff.set_text(calc.compute_crossword(self.RTL))
         self.buff.apply_tag(self.tag_mono, self.buff.get_start_iter(), self.buff.get_end_iter())
         self.text_edit_numbers(False)

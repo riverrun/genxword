@@ -27,7 +27,7 @@ from operator import itemgetter
 from collections import defaultdict
  
 class Crossword(object):
-    def __init__(self, rows, cols, empty='-', available_words=[]):
+    def __init__(self, rows, cols, empty=' ', available_words=[]):
         self.rows = rows
         self.cols = cols
         self.empty = empty
@@ -54,9 +54,10 @@ class Crossword(object):
                 self.best_grid = list(self.grid)
             if len(self.best_word_list) == wordlist_length:
                 break
+        answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
         if RTL:
             [i.reverse() for i in self.best_grid]
-        answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
+        #answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
         return answer + '\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
  
     def get_coords(self, word):
@@ -161,7 +162,7 @@ class Crossword(object):
             return True
  
 class Exportfiles(object):
-    def __init__(self, rows, cols, grid, wordlist, empty='-'):
+    def __init__(self, rows, cols, grid, wordlist, empty=' '):
         self.rows = rows
         self.cols = cols
         self.grid = grid
