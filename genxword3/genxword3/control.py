@@ -63,7 +63,7 @@ class Genxword(object):
         while 1:
             print('Calculating your crossword...')
             calc = calculate.Crossword(self.nrow, self.ncol, ' ', self.word_list)
-            print(calc.compute_crossword(RTL, False))
+            print(calc.compute_crossword(RTL))
             if self.auto:
                 if len(calc.best_word_list)/len(self.word_list) < 0.9:
                     self.nrow += 2;self.ncol += 2

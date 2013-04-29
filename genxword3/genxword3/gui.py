@@ -297,7 +297,7 @@ class Genxinterface(Gtk.Window):
         'To increase the grid size and then recalculate the crossword,\n'
         'press the Increase grid size button.')
         calc = calculate.Crossword(self.nrow, self.ncol, ' ', self.wlist)
-        self.buff.set_text(calc.compute_crossword(self.RTL, True))
+        self.buff.set_text(calc.compute_crossword())
         self.buff.apply_tag(self.tag_mono, self.buff.get_start_iter(), self.buff.get_end_iter())
         self.text_edit_numbers(False)
         self.buff.insert_at_cursor(save_recalc)
@@ -343,6 +343,8 @@ class Genxinterface(Gtk.Window):
                 dialog.destroy()
                 return 0
             dialog.destroy()
+            if self.RTL:
+                [i.reverse() for i in self.best_grid]
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
             exp.create_files(self.xwordname, self.saveformat, self.RTL, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
