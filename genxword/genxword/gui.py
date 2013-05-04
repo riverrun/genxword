@@ -274,7 +274,8 @@ class Genxinterface(Gtk.Window):
 
     def sort_wlist(self, button):
         data = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
-        valid = [[word for word in line.split(' ', 1)] for line in data.splitlines() if line.split(' ', 1)[0].isalpha()]
+        valid = [[word for word in line.split(' ', 1)] for line
+                in data.splitlines() if line.split(' ', 1)[0].decode('utf-8', 'ignore').isalpha()]
         valid.sort(key=lambda i: len(i[0]))
         output = '\n'.join([' '.join(word) for word in valid])
         self.buff.set_text(output)

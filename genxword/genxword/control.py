@@ -31,7 +31,7 @@ class Genxword(object):
         self.auto = auto
 
     def wlist(self, infile, nwords=50):
-        word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
+        word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
         self.word_list = [[word[0].upper(), word[-1]] for word in word_list]
