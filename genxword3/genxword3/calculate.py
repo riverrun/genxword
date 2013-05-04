@@ -41,7 +41,7 @@ class Crossword(object):
         self.available_words = [word[:2] for word in self.available_words]
         self.first_word(self.available_words[0])
 
-    def compute_crossword(self, cli_RTL=False, time_permitted=1.00):
+    def compute_crossword(self, time_permitted=1.00):
         self.best_word_list = []
         wordlist_length = len(self.available_words)
         time_permitted = float(time_permitted)
@@ -54,8 +54,6 @@ class Crossword(object):
                 self.best_grid = list(self.grid)
             if len(self.best_word_list) == wordlist_length:
                 break
-        if cli_RTL:
-            [i.reverse() for i in self.best_grid]
         answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
         return answer + '\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
  
@@ -265,7 +263,10 @@ class Exportfiles(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_format, RTL, gtkmode=False):
+    def create_files(self, name, save_format, gtkmode=False, RTL=False):
+        if Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
+            [i.reverse() for i in self.grid]
+            RTL = True
         img_files = ''
         if 'p' in save_format:
             self.export_pdf(name, '_grid.pdf', RTL)

@@ -40,8 +40,6 @@ ui_info = """
       <menuitem action='Incgsize'/>
       <menuitem action='Save'/>
       <separator/>
-      <menuitem action='RTL'/>
-      <separator/>
       <menuitem action='EditGsize'/>
     </menu>
     <menu action='HelpMenu'>
@@ -73,7 +71,6 @@ class Genxinterface(Gtk.Window):
         self.saveformat = ''
         self.words = ''
         self.gsize = False
-        self.RTL = False
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -134,11 +131,6 @@ class Genxinterface(Gtk.Window):
         action_save = Gtk.Action('Save', 'Save', 'Save crossword', Gtk.STOCK_SAVE)
         action_save.connect('activate', self.save_xword)
         action_group.add_action_with_accel(action_save, None)
-
-        self.action_RTL = Gtk.ToggleAction('RTL', 'Right-to-left text', 
-                'Toggle right-to-left text output', None)
-        self.action_RTL.connect('toggled', self.RTL_text)
-        action_group.add_action(self.action_RTL)
 
         edit_gsize = Gtk.ToggleAction('EditGsize', 'Choose the grid size', None, None)
         edit_gsize.connect('toggled', self.set_gsize)
@@ -287,9 +279,6 @@ class Genxinterface(Gtk.Window):
         output = '\n'.join([' '.join(word) for word in valid])
         self.buff.set_text(output)
 
-    def RTL_text(self, button):
-        self.RTL = button.get_active()
-
     def calc_xword(self):
         save_recalc = ('\nIf you want to save this crossword, press the Save button.\n'
         'If you want to recalculate the crossword with the same grid size,\n'
@@ -343,10 +332,8 @@ class Genxinterface(Gtk.Window):
                 dialog.destroy()
                 return 0
             dialog.destroy()
-            if self.RTL:
-                [i.reverse() for i in self.best_grid]
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
-            exp.create_files(self.xwordname, self.saveformat, self.RTL, True)
+            exp.create_files(self.xwordname, self.saveformat, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
             self.buff.set_text('Your crossword files have been saved in\n' + os.getcwd())

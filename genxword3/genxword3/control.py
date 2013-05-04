@@ -59,11 +59,11 @@ class Genxword(object):
             if len(self.word_list[0][0]) < min(nrow, ncol):
                 self.nrow, self.ncol = nrow, ncol
 
-    def gengrid(self, name, saveformat, RTL):
+    def gengrid(self, name, saveformat):
         while 1:
             print('Calculating your crossword...')
             calc = calculate.Crossword(self.nrow, self.ncol, ' ', self.word_list)
-            print(calc.compute_crossword(RTL))
+            print(calc.compute_crossword())
             if self.auto:
                 if len(calc.best_word_list)/len(self.word_list) < 0.9:
                     self.nrow += 2;self.ncol += 2
@@ -77,7 +77,7 @@ class Genxword(object):
                 if inc_gsize.strip() != 'n':
                     self.nrow += 2;self.ncol += 2
         exp = calculate.Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list)
-        exp.create_files(name, saveformat, RTL)
+        exp.create_files(name, saveformat)
 
 def main():
     import argparse
@@ -86,10 +86,9 @@ def main():
     parser.add_argument('saveformat', help='Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s).')
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
     parser.add_argument('-n', '--number', dest='nwords', type=int, default=50, help='Number of words to be used.')
-    parser.add_argument('-r', '--rtl', dest='rtl', action='store_true', help='Right-to-left text.')
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
     args = parser.parse_args()
     gen = Genxword(args.auto)
     gen.wlist(args.infile, args.nwords)
     gen.grid_size()
-    gen.gengrid(args.output, args.saveformat, args.rtl)
+    gen.gengrid(args.output, args.saveformat)
