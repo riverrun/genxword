@@ -175,7 +175,7 @@ class Genxinterface(Gtk.Window):
         manager.set_search_path(path)
         lang = manager.get_language('gumby')
         self.buff.set_language(lang)
-        self.tag_mono = self.buff.create_tag('mono', font='monospace')
+        self.tag_mono = self.buff.create_tag('mono', font='monospace', background='#DCDCDC')
 
     def save_buttons(self):
         save_bar = Gtk.ButtonBox()
@@ -280,7 +280,7 @@ class Genxinterface(Gtk.Window):
         self.buff.set_text(output)
 
     def calc_xword(self):
-        save_recalc = ('\nIf you want to save this crossword, press the Save button.\n'
+        save_recalc = ('\n\nIf you want to save this crossword, press the Save button.\n'
         'If you want to recalculate the crossword with the same grid size,\n'
         'press the Calculate crossword button again.\n'
         'To increase the grid size and then recalculate the crossword,\n'

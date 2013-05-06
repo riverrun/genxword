@@ -26,7 +26,7 @@ from operator import itemgetter
 from collections import defaultdict
  
 class Crossword(object):
-    def __init__(self, rows, cols, empty='-', available_words=[]):
+    def __init__(self, rows, cols, empty=' ', available_words=[]):
         self.rows = rows
         self.cols = cols
         self.empty = empty
@@ -54,7 +54,7 @@ class Crossword(object):
             if len(self.best_word_list) == wordlist_length:
                 break
         answer = '\n'.join([''.join([u'{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
-        return answer + '\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
+        return answer + '\n\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
  
     def get_coords(self, word):
         """Return possible coordinates for each letter."""
@@ -158,7 +158,7 @@ class Crossword(object):
             return True
  
 class Exportfiles(object):
-    def __init__(self, rows, cols, grid, wordlist, empty='-'):
+    def __init__(self, rows, cols, grid, wordlist, empty=' '):
         self.rows = rows
         self.cols = cols
         self.grid = grid
