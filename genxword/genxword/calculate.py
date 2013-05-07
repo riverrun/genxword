@@ -21,6 +21,7 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
+from gi.repository import Pango, PangoCairo
 import random, time, cairo
 from operator import itemgetter
 from collections import defaultdict
@@ -40,7 +41,7 @@ class Crossword(object):
         self.available_words = [word[:2] for word in self.available_words]
         self.first_word(self.available_words[0])
 
-    def compute_crossword(self, time_permitted = 1.00):
+    def compute_crossword(self, time_permitted=1.00):
         self.best_word_list = []
         wordlist_length = len(self.available_words)
         time_permitted = float(time_permitted)
@@ -177,7 +178,7 @@ class Exportfiles(object):
                     count += 1
             icount += 1
 
-    def draw_img(self, name, context, px, xoffset, yoffset):
+    def draw_img(self, name, context, px, xoffset, yoffset, RTL):
         for r in range(self.rows):
             for i, c in enumerate(self.grid[r]):
                 if c != self.empty:
@@ -190,23 +191,26 @@ class Exportfiles(object):
                     context.rectangle(xoffset+1+(i*px), yoffset+1+(r*px), px-2, px-2)
                     context.stroke()
                     if '_key.' in name:
-                        self.draw_letters(c, context, xoffset+(i*px)+10, yoffset+(r*px)+22, 14)
+                        self.draw_letters(c, context, xoffset+(i*px)+10, yoffset+(r*px)+8, 'monospace 11')
 
         self.order_number_words()
         for word in self.wordlist:
-            x, y = xoffset+(word[3]*px), yoffset+(word[2]*px)
-            self.draw_letters(str(word[5]), context, x+3, y+10, 8)
+            if RTL:
+                x, y = ((self.cols-1)*px)+xoffset-(word[3]*px), yoffset+(word[2]*px)
+            else:
+                x, y = xoffset+(word[3]*px), yoffset+(word[2]*px)
+            self.draw_letters(str(word[5]), context, x+3, y+2, 'monospace 6')
 
-    def draw_letters(self, text, context, xval, yval, fontsize, bold=False):
-        if bold:
-            context.select_font_face('monospace', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_BOLD)
-        else:
-            context.select_font_face('monospace')
-        context.set_font_size(fontsize)
+    def draw_letters(self, text, context, xval, yval, fontdesc):
         context.move_to(xval, yval)
-        context.show_text(text)
+        layout = PangoCairo.create_layout(context)
+        font = Pango.FontDescription(fontdesc)
+        layout.set_font_description(font)
+        layout.set_text(text, -1)
+        PangoCairo.update_layout(context, layout)
+        PangoCairo.show_layout(context, layout)
 
-    def create_img(self, name):
+    def create_img(self, name, RTL):
         px = 28
         if name.endswith('png'):
             surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 10+(self.cols*px), 10+(self.rows*px))
@@ -216,14 +220,14 @@ class Exportfiles(object):
         context.set_source_rgb(1, 1, 1)
         context.rectangle(0, 0, 10+(self.cols*px), 10+(self.rows*px))
         context.fill()
-        self.draw_img(name, context, 28, 5, 5)
+        self.draw_img(name, context, 28, 5, 5, RTL)
         if name.endswith('png'):
             surface.write_to_png(name)
         else:
             context.show_page()
             surface.finish()
 
-    def export_pdf(self, xwname, filetype, width=595, height=842):
+    def export_pdf(self, xwname, filetype, RTL, width=595, height=842):
         px, xoffset, yoffset = 28, 36, 72
         name = xwname + filetype
         surface = cairo.PDFSurface(name, width, height)
@@ -236,12 +240,12 @@ class Exportfiles(object):
         if self.cols <= 21:
             sc_ratio, xoffset = 0.8, float(1.25*width-(px*self.cols))/2
         context.scale(sc_ratio, sc_ratio)
-        self.draw_img(name, context, 28, xoffset, 80)
+        self.draw_img(name, context, 28, xoffset, 80, RTL)
         context.restore()
         context.set_source_rgb(0, 0, 0)
-        self.draw_letters(xwname, context, round((width-len(xwname)*10)/2), yoffset/2, 18, bold=True)
+        self.draw_letters(xwname, context, round((width-len(xwname)*10)/2), yoffset/2, 'Sans 18 bold')
         x, y = 36, yoffset+5+(self.rows*px*sc_ratio)
-        self.draw_letters('Across', context, x, y, 14, bold=True)
+        self.draw_letters('Across', context, x, y, 'Sans 14 bold')
         clues = self.wrap(self.legend())
         for line in clues.splitlines()[3:]:
             if y >= height-(yoffset/2)-15:
@@ -251,31 +255,34 @@ class Exportfiles(object):
                 if self.cols > 17 and y > 700:
                     context.show_page()
                     y = yoffset/2
-                self.draw_letters('Down', context, x, y+15, 14, bold=True)
+                self.draw_letters('Down', context, x, y+15, 'Sans 14 bold')
                 y += 16
                 continue
-            self.draw_letters(line, context, x, y+15, 10)
+            self.draw_letters(line, context, x, y+18, 'Serif 9')
             y += 16
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_format, gtkmode=False):
+    def create_files(self, name, save_format, gtkmode=False, RTL=False):
+        if Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
+            [i.reverse() for i in self.grid]
+            RTL = True
         img_files = ''
         if 'p' in save_format:
-            self.export_pdf(name, '_grid.pdf')
-            self.export_pdf(name, '_key.pdf')
+            self.export_pdf(name, '_grid.pdf', RTL)
+            self.export_pdf(name, '_key.pdf', RTL)
             img_files += name + '_grid.pdf ' + name + '_key.pdf '
         if 'l' in save_format:
-            self.export_pdf(name, 'l_grid.pdf', 612, 792)
-            self.export_pdf(name, 'l_key.pdf', 612, 792)
+            self.export_pdf(name, 'l_grid.pdf', RTL, 612, 792)
+            self.export_pdf(name, 'l_key.pdf', RTL, 612, 792)
             img_files += name + 'l_grid.pdf ' + name + 'l_key.pdf '
         if 'n' in save_format:
-            self.create_img(name + '_grid.png')
-            self.create_img(name + '_key.png')
+            self.create_img(name + '_grid.png', RTL)
+            self.create_img(name + '_key.png', RTL)
             img_files += name + '_grid.png ' + name + '_key.png '
         if 's' in save_format:
-            self.create_img(name + '_grid.svg')
-            self.create_img(name + '_key.svg')
+            self.create_img(name + '_grid.svg', RTL)
+            self.create_img(name + '_key.svg', RTL)
             img_files += name + '_grid.svg ' + name + '_key.svg '
         if 'n' in save_format or 's' in save_format:
             self.clues_txt(name + '_clues.txt')
