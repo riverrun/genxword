@@ -175,7 +175,7 @@ class Genxinterface(Gtk.Window):
         manager.set_search_path(path)
         lang = manager.get_language('gumby')
         self.buff.set_language(lang)
-        self.tag_mono = self.buff.create_tag('mono', font='monospace', background='#DCDCDC')
+        self.tag_mono = self.buff.create_tag('mono', font='monospace', background='#E8E8E8')
 
     def save_buttons(self):
         save_bar = Gtk.ButtonBox()
