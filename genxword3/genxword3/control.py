@@ -44,6 +44,8 @@ class Genxword(object):
             self.nrow = self.ncol = int((round((len(self.word_list) - 20) / 8) * 2) + 19)
         else:
             self.nrow = self.ncol = 41
+        if min(self.nrow, self.ncol) <= len(self.word_list[0][0]):
+            self.nrow = self.ncol = len(self.word_list[0][0]) + 2
         if not gtkmode and not self.auto:
             gsize = str(self.nrow) + ', ' + str(self.ncol)
             grid_size = input('Enter grid size (' + gsize + ' is the default): ')
