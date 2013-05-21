@@ -123,14 +123,16 @@ class Genxinterface(Gtk.Window):
         action_create.connect('activate', self.create_xword)
         action_group.add_action_with_accel(action_create, '<control>G')
 
-        action_incgsize = Gtk.Action('Incgsize', 'Recalculate',
+        self.action_incgsize = Gtk.Action('Incgsize', 'Recalculate',
             'Increase the grid size and recalculate the crossword', Gtk.STOCK_ADD)
-        action_incgsize.connect('activate', self.incgsize)
-        action_group.add_action_with_accel(action_incgsize, '<control>R')
+        self.action_incgsize.connect('activate', self.incgsize)
+        self.action_incgsize.set_sensitive(False)
+        action_group.add_action_with_accel(self.action_incgsize, '<control>R')
 
-        action_save = Gtk.Action('Save', 'Save', 'Save crossword', Gtk.STOCK_SAVE)
-        action_save.connect('activate', self.save_xword)
-        action_group.add_action_with_accel(action_save, None)
+        self.action_save = Gtk.Action('Save', 'Save', 'Save crossword', Gtk.STOCK_SAVE)
+        self.action_save.connect('activate', self.save_xword)
+        self.action_save.set_sensitive(False)
+        action_group.add_action_with_accel(self.action_save, None)
 
         edit_gsize = Gtk.ToggleAction('EditGsize', 'Choose the grid size', None, None)
         edit_gsize.connect('toggled', self.set_gsize)
@@ -245,6 +247,8 @@ class Genxinterface(Gtk.Window):
         self.textview.set_show_line_numbers(edit)
         self.buff.set_highlight_syntax(edit)
         self.action_sort.set_sensitive(edit)
+        self.action_incgsize.set_sensitive(not edit)
+        self.action_save.set_sensitive(not edit)
 
     def new_wlist(self, button):
         self.text_edit_numbers(True)
@@ -279,21 +283,6 @@ class Genxinterface(Gtk.Window):
         output = '\n'.join([' '.join(word) for word in valid])
         self.buff.set_text(output)
 
-    def calc_xword(self):
-        save_recalc = ('\n\nIf you want to save this crossword, press the Save button.\n'
-        'If you want to recalculate the crossword with the same grid size,\n'
-        'press the Calculate crossword button again.\n'
-        'To increase the grid size and then recalculate the crossword,\n'
-        'press the Increase grid size button.')
-        calc = calculate.Crossword(self.nrow, self.ncol, ' ', self.wlist)
-        self.buff.set_text(calc.compute_crossword())
-        self.buff.apply_tag(self.tag_mono, self.buff.get_start_iter(), self.buff.get_end_iter())
-        self.text_edit_numbers(False)
-        self.buff.insert_at_cursor(save_recalc)
-        self.choose_gsize.set_text(str(self.nrow) + ',' + str(self.ncol))
-        self.best_word_list = calc.best_word_list
-        self.best_grid = calc.best_grid
-
     def create_xword(self, button):
         if self.calc_first_time:
             self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
@@ -306,9 +295,24 @@ class Genxinterface(Gtk.Window):
                 gen.check_grid_size(self.choose_gsize.get_text())
             self.nrow, self.ncol = gen.nrow, gen.ncol
             self.calc_xword()
+            self.text_edit_numbers(False)
             self.calc_first_time = False
         else:
             self.calc_xword()
+
+    def calc_xword(self):
+        save_recalc = ('\n\nIf you want to save this crossword, press the Save button.\n'
+        'If you want to recalculate the crossword with the same grid size,\n'
+        'press the Calculate crossword button again.\n'
+        'To increase the grid size and then recalculate the crossword,\n'
+        'press the Increase grid size button.')
+        calc = calculate.Crossword(self.nrow, self.ncol, ' ', self.wlist)
+        self.buff.set_text(calc.compute_crossword())
+        self.buff.apply_tag(self.tag_mono, self.buff.get_start_iter(), self.buff.get_end_iter())
+        self.buff.insert_at_cursor(save_recalc)
+        self.choose_gsize.set_text(str(self.nrow) + ',' + str(self.ncol))
+        self.best_word_list = calc.best_word_list
+        self.best_grid = calc.best_grid
 
     def incgsize(self, button):
         self.nrow += 2;self.ncol += 2
@@ -363,7 +367,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword3-gtk')
-        about.set_version('0.9.0')
+        about.set_version('0.9.1')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')
