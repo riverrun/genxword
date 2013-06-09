@@ -79,9 +79,7 @@ class Genxinterface(Gtk.Window):
         self.grid.set_column_spacing(6)
 
         action_group = Gtk.ActionGroup('gui_actions')
-        self.file_menu_actions(action_group)
-        self.xword_menu_actions(action_group)
-        self.help_menu_actions(action_group)
+        self.add_actions(action_group)
         uimanager = self.create_ui_manager()
         uimanager.insert_action_group(action_group)
         menubar = uimanager.get_widget('/MenuBar')
@@ -89,66 +87,36 @@ class Genxinterface(Gtk.Window):
         toolbar = uimanager.get_widget('/ToolBar')
         self.grid.attach(toolbar, 0, 1, 6, 1)
 
+        self.list_clickable_buttons(uimanager)
+        self.set_sensitivities(True)
+
         self.textview_win()
         self.save_buttons()
         self.option_buttons()
 
-    def file_menu_actions(self, action_group):
-        action_filemenu = Gtk.Action('FileMenu', '_Word list', None, None)
-        action_group.add_action(action_filemenu)
-
-        action_new = Gtk.Action('New', 'New word list',
-                'Create a new word list or go back to the already open word list', Gtk.STOCK_NEW)
-        action_new.connect('activate', self.new_wlist)
-        action_group.add_action_with_accel(action_new, None)
-
-        action_open = Gtk.Action('Open', 'Open word list', 'Open a word list', Gtk.STOCK_OPEN)
-        action_open.connect('activate', self.open_wlist)
-        action_group.add_action_with_accel(action_open, None)
-
-        self.action_sort = Gtk.Action('Sort', 'Sort word list', 
-                'Sort the word list and remove words with non-alphabetic characters', None)
-        self.action_sort.connect('activate', self.sort_wlist)
-        action_group.add_action(self.action_sort)
-
-        action_quit = Gtk.Action('Quit', 'Quit', None, Gtk.STOCK_QUIT)
-        action_quit.connect('activate', self.quit_app)
-        action_group.add_action_with_accel(action_quit, None)
-
-    def xword_menu_actions(self, action_group):
-        action_xwordmenu = Gtk.Action('CrosswordMenu', '_Crossword', None, None)
-        action_group.add_action(action_xwordmenu)
-
-        action_create = Gtk.Action('Create', 'Calculate crossword', 'Calculate the crossword', Gtk.STOCK_EXECUTE)
-        action_create.connect('activate', self.create_xword)
-        action_group.add_action_with_accel(action_create, '<control>G')
-
-        self.action_incgsize = Gtk.Action('Incgsize', 'Recalculate',
-            'Increase the grid size and recalculate the crossword', Gtk.STOCK_ADD)
-        self.action_incgsize.connect('activate', self.incgsize)
-        self.action_incgsize.set_sensitive(False)
-        action_group.add_action_with_accel(self.action_incgsize, '<control>R')
-
-        self.action_save = Gtk.Action('Save', 'Save', 'Save crossword', Gtk.STOCK_SAVE)
-        self.action_save.connect('activate', self.save_xword)
-        self.action_save.set_sensitive(False)
-        action_group.add_action_with_accel(self.action_save, None)
+    def add_actions(self, action_group):
+        action_group.add_actions([
+            ('FileMenu', None, '_Word list'),
+            ('New', Gtk.STOCK_NEW, '_New word list', None, 
+                'Create a new word list or go back to the already open word list', self.new_wlist),
+            ('Open', Gtk.STOCK_OPEN, '_Open word list', None, 'Open a word list', self.open_wlist),
+            ('Sort', None, '_Sort word list', None, 
+                'Sort the word list and remove words with non-alphabetic characters', self.sort_wlist),
+            ('Quit', Gtk.STOCK_QUIT, 'Quit', None, 'Quit', self.quit_app),
+            ('CrosswordMenu', None, '_Crossword'),
+            ('Create', Gtk.STOCK_EXECUTE, '_Calculate crossword', '<Ctrl>G', 
+                'Calculate the crossword', self.create_xword),
+            ('Incgsize', Gtk.STOCK_ADD, '_Recalculate', '<Ctrl>R', 
+                'Increase the grid size and recalculate the crossword', self.incgsize),
+            ('Save', Gtk.STOCK_SAVE, '_Save', None, 'Save crossword', self.save_xword),
+            ('HelpMenu', None, '_Help'),
+            ('Help', Gtk.STOCK_HELP, '_Help', 'F1', 'Open the help page in your web browser', self.help_page),
+            ('About', Gtk.STOCK_ABOUT, '_About', None, 'About', self.about_dialog)
+            ])
 
         edit_gsize = Gtk.ToggleAction('EditGsize', 'Choose the grid size', None, None)
         edit_gsize.connect('toggled', self.set_gsize)
         action_group.add_action(edit_gsize)
-
-    def help_menu_actions(self, action_group):
-        action_helpmenu = Gtk.Action('HelpMenu', '_Help', None, None)
-        action_group.add_action(action_helpmenu)
-
-        action_help = Gtk.Action('Help', 'Help', 'Open the help page in your web browser', Gtk.STOCK_HELP)
-        action_help.connect('activate', self.help_page)
-        action_group.add_action_with_accel(action_help, 'F1')
-
-        action_about = Gtk.Action('About', 'About', None, Gtk.STOCK_ABOUT)
-        action_about.connect('activate', self.about_dialog)
-        action_group.add_action(action_about)
 
     def create_ui_manager(self):
         uimanager = Gtk.UIManager()
@@ -231,6 +199,19 @@ class Genxinterface(Gtk.Window):
         self.choose_gsize.set_sensitive(False)
         self.grid.attach(self.choose_gsize, 5, 4, 1, 1)
 
+    def list_clickable_buttons(self, uimanager):
+        self.click_buttons = []
+        self.click_buttons.append(uimanager.get_widget('/MenuBar/FileMenu/Sort'))
+        unclick_list = ['/MenuBar/CrosswordMenu/Incgsize', '/MenuBar/CrosswordMenu/Save', 
+            '/ToolBar/Incgsize', '/ToolBar/Save']
+        self.unclick_buttons = [uimanager.get_widget(name) for name in unclick_list]
+
+    def set_sensitivities(self, value):
+        for button in self.click_buttons:
+            button.set_sensitive(value)
+        for button in self.unclick_buttons:
+            button.set_sensitive(not value)
+
     def entry_cleared(self, entry, position, event):
         self.enter_name.set_text('')
         self.enter_name.grab_focus()
@@ -246,9 +227,7 @@ class Genxinterface(Gtk.Window):
         self.textview.set_cursor_visible(edit)
         self.textview.set_show_line_numbers(edit)
         self.buff.set_highlight_syntax(edit)
-        self.action_sort.set_sensitive(edit)
-        self.action_incgsize.set_sensitive(not edit)
-        self.action_save.set_sensitive(not edit)
+        self.set_sensitivities(edit)
 
     def new_wlist(self, button):
         self.text_edit_numbers(True)
@@ -367,7 +346,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword3-gtk')
-        about.set_version('0.9.1')
+        about.set_version('0.9.2')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')
