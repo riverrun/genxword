@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword3-gtk.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
-import os, webbrowser
+import os
 from gi.repository import Gtk, GtkSource, Pango
 from .control import Genxword
 from . import calculate
@@ -67,9 +67,7 @@ class Genxinterface(Gtk.Window):
 
         self.set_default_size(650, 550)
         self.set_default_icon_name('genxword3-gtk')
-        self.calc_first_time = True
         self.saveformat = ''
-        self.words = ''
         self.gsize = False
 
         self.grid = Gtk.Grid()
@@ -87,12 +85,12 @@ class Genxinterface(Gtk.Window):
         toolbar = uimanager.get_widget('/ToolBar')
         self.grid.attach(toolbar, 0, 1, 6, 1)
 
-        self.list_clickable_buttons(uimanager)
-        self.set_sensitivities(True)
-
-        self.textview_win()
+        self.notebk()
         self.save_buttons()
         self.option_buttons()
+
+        self.list_clickable_buttons(uimanager)
+        self.set_sensitivities(True)
 
     def add_actions(self, action_group):
         action_group.add_actions([
@@ -125,19 +123,31 @@ class Genxinterface(Gtk.Window):
         self.add_accel_group(accelgroup)
         return uimanager
 
-    def textview_win(self):
+    def notebk(self):
+        self.notebk_win = Gtk.Notebook()
+        self.notebk_win.set_show_tabs(False)
         scrolledwindow = Gtk.ScrolledWindow()
         scrolledwindow.set_hexpand(True)
         scrolledwindow.set_vexpand(True)
-        self.grid.attach(scrolledwindow, 0, 2, 6, 1)
+        self.textview_win(scrolledwindow)
+        self.notebk_win.append_page(scrolledwindow, None)
 
+        xwordwindow = Gtk.ScrolledWindow()
+        xwordwindow.set_hexpand(True)
+        xwordwindow.set_vexpand(True)
+        self.xword_label = Gtk.Label()
+        xwordwindow.add_with_viewport(self.xword_label)
+        self.notebk_win.append_page(xwordwindow, None)
+        self.grid.attach(self.notebk_win, 0, 2, 6, 1)
+
+    def textview_win(self, wordlist_win):
         self.textview = GtkSource.View.new()
         self.textview.set_show_line_numbers(True)
         self.textview.set_border_width(6)
         fontdesc = Pango.FontDescription('serif 11')
         self.textview.modify_font(fontdesc)
         self.buff = self.textview.get_buffer()
-        scrolledwindow.add(self.textview)
+        wordlist_win.add(self.textview)
 
         manager = GtkSource.LanguageManager()
         path = manager.get_search_path()
@@ -145,7 +155,6 @@ class Genxinterface(Gtk.Window):
         manager.set_search_path(path)
         lang = manager.get_language('gumby')
         self.buff.set_language(lang)
-        self.tag_mono = self.buff.create_tag('mono', font='monospace', background='#F0F0F0')
 
     def save_buttons(self):
         save_bar = Gtk.ButtonBox()
@@ -206,11 +215,13 @@ class Genxinterface(Gtk.Window):
             '/ToolBar/Incgsize', '/ToolBar/Save']
         self.unclick_buttons = [uimanager.get_widget(name) for name in unclick_list]
 
-    def set_sensitivities(self, value):
+    def set_sensitivities(self, value, page=0):
         for button in self.click_buttons:
             button.set_sensitive(value)
         for button in self.unclick_buttons:
             button.set_sensitive(not value)
+        self.notebk_win.set_current_page(page)
+        self.calc_first_time = value
 
     def entry_cleared(self, entry, position, event):
         self.enter_name.set_text('')
@@ -222,17 +233,8 @@ class Genxinterface(Gtk.Window):
         else:
             self.saveformat = self.saveformat.replace(name, '')
 
-    def text_edit_numbers(self, edit):
-        self.textview.set_editable(edit)
-        self.textview.set_cursor_visible(edit)
-        self.textview.set_show_line_numbers(edit)
-        self.buff.set_highlight_syntax(edit)
-        self.set_sensitivities(edit)
-
     def new_wlist(self, button):
-        self.text_edit_numbers(True)
-        self.buff.set_text(self.words)
-        self.calc_first_time = True
+        self.set_sensitivities(True, 0)
 
     def open_wlist(self, button):
         dialog = Gtk.FileChooserDialog('Please choose a file', self,
@@ -246,8 +248,7 @@ class Genxinterface(Gtk.Window):
                 data = infile.read()
             self.buff.set_text(data)
         dialog.destroy()
-        self.text_edit_numbers(True)
-        self.calc_first_time = True
+        self.set_sensitivities(True, 0)
 
     def add_filters(self, dialog):
         filter_text = Gtk.FileFilter()
@@ -274,21 +275,15 @@ class Genxinterface(Gtk.Window):
                 gen.check_grid_size(self.choose_gsize.get_text())
             self.nrow, self.ncol = gen.nrow, gen.ncol
             self.calc_xword()
-            self.text_edit_numbers(False)
-            self.calc_first_time = False
+            self.set_sensitivities(False, 1)
         else:
             self.calc_xword()
 
     def calc_xword(self):
-        save_recalc = ('\n\nIf you want to save this crossword, press the Save button.\n'
-        'If you want to recalculate the crossword with the same grid size,\n'
-        'press the Calculate crossword button again.\n'
-        'To increase the grid size and then recalculate the crossword,\n'
-        'press the Increase grid size button.')
         calc = calculate.Crossword(self.nrow, self.ncol, ' ', self.wlist)
-        self.buff.set_text(calc.compute_crossword())
-        self.buff.apply_tag(self.tag_mono, self.buff.get_start_iter(), self.buff.get_end_iter())
-        self.buff.insert_at_cursor(save_recalc)
+        display = '<span font="monospace bold 11">' + calc.compute_crossword() + '</span>'
+        self.xword_label.set_markup(display)
+        self.xword_view(False, Gtk.Align.FILL)
         self.choose_gsize.set_text(str(self.nrow) + ',' + str(self.ncol))
         self.best_word_list = calc.best_word_list
         self.best_grid = calc.best_grid
@@ -296,6 +291,11 @@ class Genxinterface(Gtk.Window):
     def incgsize(self, button):
         self.nrow += 2;self.ncol += 2
         self.calc_xword()
+
+    def xword_view(self, value, alignment):
+        self.xword_label.set_line_wrap(value)
+        self.xword_label.set_valign(alignment)
+        self.xword_label.set_halign(alignment)
 
     def set_gsize(self, button):
         self.gsize = button.get_active()
@@ -319,19 +319,26 @@ class Genxinterface(Gtk.Window):
             exp.create_files(self.xwordname, self.saveformat, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
-            self.buff.set_text('Your crossword files have been saved in\n' + os.getcwd())
+            text = 'Your crossword files have been saved in ' + os.getcwd()
             self.enter_name.set_text('Name of crossword')
-            self.words = ''
+            self.buff.set_text('')
         else:
-            text = ('Please fill in the name of the crossword and the format you want it saved in\n'
+            text = ('Please fill in the name of the crossword and the format you want it saved in '
                     '(A4 size pdf, letter size pdf, png or svg).\nThen click on the Save button again.')
-            self.buff.set_text(text)
+        display = '<span font="serif 11">' + text + '</span>'
+        self.xword_label.set_markup(display)
+        self.xword_view(True, Gtk.Align.START)
 
     def help_page(self, button):
         if os.path.isfile('/usr/share/genxword3/help_page.html'):
-            webbrowser.open('/usr/share/genxword3/help_page.html')
+            with open('/usr/share/genxword3/help_page') as help_file:
+                text = help_file.read()
         else:
-            webbrowser.open('/usr/local/share/genxword3/help_page.html')
+            with open('/usr/local/share/genxword3/help_page') as help_file:
+                text = help_file.read()
+        self.xword_label.set_markup(text)
+        self.xword_view(True, Gtk.Align.START)
+        self.notebk_win.set_current_page(1)
 
     def about_dialog(self, button):
         license = ('Genxword3-gtk is free software: you can redistribute it and/or modify'
@@ -346,7 +353,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword3-gtk')
-        about.set_version('0.9.2')
+        about.set_version('0.9.5')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')

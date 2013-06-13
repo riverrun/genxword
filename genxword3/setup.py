@@ -25,13 +25,13 @@ from distutils.core import setup
 
 setup(
     name = 'genxword3',
-    version = '0.9.2',
+    version = '0.9.5',
     packages = ['genxword3'],
     scripts = ['bin/genxword3', 'bin/genxword3-gtk'],
     data_files = [
         ('share/applications', ['genxword3-gtk.desktop']),
         ('share/pixmaps', ['genxword3-gtk.png']),
-        ('share/genxword3', ['gumby.lang', 'help_page.html']),
+        ('share/genxword3', ['gumby.lang', 'help_page']),
         ('share/genxword3/word_lists', ['word_lists/2000ENwords', 'word_lists/pythonwords']),
         ],
     author = 'David Whitlock',
