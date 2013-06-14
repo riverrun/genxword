@@ -333,7 +333,7 @@ class Genxinterface(Gtk.Window):
         self.xword_view(True, Gtk.Align.START)
 
     def help_page(self, button):
-        if os.path.isfile('/usr/share/genxword/help_page.html'):
+        if os.path.isfile('/usr/share/genxword/help_page'):
             with open('/usr/share/genxword/help_page') as help_file:
                 text = help_file.read()
         else:
