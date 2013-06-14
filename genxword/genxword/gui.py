@@ -108,7 +108,7 @@ class Genxinterface(Gtk.Window):
                 'Increase the grid size and recalculate the crossword', self.incgsize),
             ('Save', Gtk.STOCK_SAVE, '_Save', None, 'Save crossword', self.save_xword),
             ('HelpMenu', None, '_Help'),
-            ('Help', Gtk.STOCK_HELP, '_Help', 'F1', 'Open the help page in your web browser', self.help_page),
+            ('Help', Gtk.STOCK_HELP, '_Help', 'F1', 'Open the help page', self.help_page),
             ('About', Gtk.STOCK_ABOUT, '_About', None, 'About', self.about_dialog)
             ])
 
