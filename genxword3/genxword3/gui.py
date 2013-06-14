@@ -136,6 +136,8 @@ class Genxinterface(Gtk.Window):
         xwordwindow.set_hexpand(True)
         xwordwindow.set_vexpand(True)
         self.xword_label = Gtk.Label()
+        self.xword_label.set_margin_left(6)
+        self.xword_label.set_margin_right(6)
         xwordwindow.add_with_viewport(self.xword_label)
         self.notebk_win.append_page(xwordwindow, None)
         self.grid.attach(self.notebk_win, 0, 2, 6, 1)
