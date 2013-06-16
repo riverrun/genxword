@@ -353,7 +353,7 @@ class Genxinterface(Gtk.Window):
         'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the '
         'GNU General Public License for more details.\n\n'
         'You should have received a copy of the GNU General Public License '
-        'along with Genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
+        'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
         about.set_version('0.9.5')
