@@ -22,11 +22,11 @@ are now supported by both the Python2.7 and Python3 versions.
 
 ## Use
 
-Please read the [wiki](https://github.com/riverrun/genxword/wiki) for information about how to use genxword).
+Please read the [wiki](https://github.com/riverrun/genxword/wiki) for information about how to use genxword.
 
 ## Installation
 
-Go to the **Installation** [wiki page](https://github.com/riverrun/genxword/wiki/Install-genxword) for information 
+Go to the [Installation wiki page](https://github.com/riverrun/genxword/wiki/Install-genxword) for information 
 about how to download and install genxword.
 
 ## Authors
