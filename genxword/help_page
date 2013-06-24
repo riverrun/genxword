@@ -44,7 +44,7 @@ For more detailed information, visit the <a href="https://github.com/riverrun/ge
     <span font="serif bold 11">Ctrl + R</span>    <span font="serif 11">Increase the grid size and recalculate the crossword</span>
     <span font="serif bold 11">Ctrl + S</span>    <span font="serif 11">Save the crossword</span>
     <span font="serif bold 11">Ctrl + Q</span>    <span font="serif 11">Quit the program</span>
-    <span font="serif bold 11">F1</span>    <span font="serif 11">Open the help page in your web browser</span>
+    <span font="serif bold 11">F1</span>    <span font="serif 11">Open the help page</span>
 <span font="sans bold 11">Text editing</span>
     <span font="serif bold 11">Ctrl + A</span>    <span font="serif 11">Select all text</span>
     <span font="serif bold 11">Ctrl + C</span>    <span font="serif 11">Copy selected text</span>
