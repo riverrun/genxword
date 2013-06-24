@@ -37,7 +37,7 @@ number of words used). The numbers in the grid size box refer to the number of r
 For more detailed information, visit the <a href="https://github.com/riverrun/genxword/wiki/genxword-gtk">genxword-gtk wiki</a></span>.
 
 <span font="sans bold 12">Keyboard shortcuts</span>
-<span font="sans bold 12">General</span>
+<span font="sans bold 11">General</span>
     <span font="serif bold 11">Ctrl + N</span>    <span font="serif 11">Create a new word list</span>
     <span font="serif bold 11">Ctrl + O</span>    <span font="serif 11">Open an existing word list</span>
     <span font="serif bold 11">Ctrl + G</span>    <span font="serif 11">Calculate the crossword or recalculate the crossword with the existing grid size</span>
