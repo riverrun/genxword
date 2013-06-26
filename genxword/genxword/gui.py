@@ -310,7 +310,7 @@ class Genxinterface(Gtk.Window):
             dialog = Gtk.FileChooserDialog('Please choose a folder', self,
                 Gtk.FileChooserAction.SELECT_FOLDER,
                 (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                 'Select', Gtk.ResponseType.OK))
+                 '_Select', Gtk.ResponseType.OK))
             response = dialog.run()
             if response == Gtk.ResponseType.OK:
                 os.chdir(dialog.get_filename())
