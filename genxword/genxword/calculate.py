@@ -81,7 +81,7 @@ class Crossword(object):
         if coordlist:
             return max(coordlist, key=itemgetter(3))
         else:
-            return 0
+            return
  
     def first_word(self, word):
         """Place the first word at a random position in the grid."""
@@ -98,7 +98,7 @@ class Crossword(object):
         """Add the rest of the words to the grid."""
         coordlist = self.get_coords(word)
         if not coordlist:
-            return 0
+            return
         row, col, vertical = coordlist[0], coordlist[1], coordlist[2]
         self.set_word(word, row, col, vertical) 
  

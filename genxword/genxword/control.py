@@ -68,7 +68,7 @@ class Genxword(object):
             print(calc.compute_crossword())
             if self.auto:
                 if float(len(calc.best_word_list))/len(self.word_list) < 0.9:
-                    self.nrow += 2;self.ncol += 2
+                    self.nrow += 2; self.ncol += 2
                 else:
                     break
             else:

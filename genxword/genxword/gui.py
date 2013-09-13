@@ -65,7 +65,7 @@ class Genxinterface(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title='genxword-gtk')
 
-        self.set_default_size(650, 550)
+        self.set_default_size(650, 600)
         self.set_default_icon_name('genxword-gtk')
         self.saveformat = ''
         self.gsize = False
@@ -316,7 +316,7 @@ class Genxinterface(Gtk.Window):
                 os.chdir(dialog.get_filename())
             else:
                 dialog.destroy()
-                return 0
+                return
             dialog.destroy()
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
             exp.create_files(self.xwordname, self.saveformat, True)
@@ -333,15 +333,9 @@ class Genxinterface(Gtk.Window):
         self.xword_view(True, Gtk.Align.START)
 
     def help_page(self, button):
-        if os.path.isfile('/usr/share/genxword/help_page'):
-            with open('/usr/share/genxword/help_page') as help_file:
-                text = help_file.read()
-        else:
-            with open('/usr/local/share/genxword/help_page') as help_file:
-                text = help_file.read()
-        self.xword_label.set_markup(text)
-        self.xword_view(True, Gtk.Align.START)
-        self.notebk_win.set_current_page(1)
+        dialog = HelpDialog(self)
+        dialog.run()
+        dialog.destroy()
 
     def about_dialog(self, button):
         license = ('Genxword-gtk is free software: you can redistribute it and/or modify '
@@ -369,6 +363,47 @@ class Genxinterface(Gtk.Window):
 
     def quit_app(self, widget):
         Gtk.main_quit()
+
+class HelpDialog(Gtk.Dialog):
+    def __init__(self, parent):
+        Gtk.Dialog.__init__(self, 'Help page', parent, 0,
+            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
+
+        self.set_default_size(650, 500)
+        self.set_default_response(Gtk.ResponseType.CLOSE)
+
+        try:
+            with open('/usr/share/genxword/help_page') as help_file:
+                text = help_file.read()
+        except:
+            with open('/usr/local/share/genxword/help_page') as help_file:
+                text = help_file.read()
+
+        self.set_textview(text)
+        scrolledwindow = Gtk.ScrolledWindow()
+        scrolledwindow.add(self.textview)
+        box = self.get_content_area()
+        box.pack_start(scrolledwindow, True, True, 0)
+        self.show_all()
+
+    def set_textview(self, text):
+        self.textview = Gtk.TextView()
+        fontdesc = Pango.FontDescription('serif')
+        self.textview.modify_font(fontdesc)
+        self.textview.set_editable(False)
+        self.textview.set_wrap_mode(Gtk.WrapMode.WORD)
+        buff = self.textview.get_buffer()
+        buff.set_text(text)
+        tag_title = buff.create_tag('title', font='sans bold 12')
+        tag_subtitle = buff.create_tag('subtitle', font='sans bold')
+        self.add_tag(buff, tag_title, 0, 1)
+        for startline in (4, 24, 29, 33, 38, 55, 58):
+            self.add_tag(buff, tag_subtitle, startline, startline+1)
+
+    def add_tag(self, buffer_name, tag_name, startline, endline):
+        start = buffer_name.get_iter_at_line(startline)
+        end = buffer_name.get_iter_at_line(endline)
+        buffer_name.apply_tag(tag_name, start, end)
 
 def main():
     win = Genxinterface()
