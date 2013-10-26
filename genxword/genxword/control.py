@@ -43,7 +43,7 @@ class Genxword(object):
 
     def word_mixer(self, word):
         word = orig_word = list(word)
-        for i in range(2):
+        for i in range(3):
             random.shuffle(word)
             if word != orig_word:
                 break
@@ -99,9 +99,9 @@ def main():
     parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file.')
     parser.add_argument('saveformat', help='Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s).')
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
+    parser.add_argument('-m', '--mix', dest='mixmode', action='store_true', help='Create anagrams for the clues')
     parser.add_argument('-n', '--number', dest='nwords', type=int, default=50, help='Number of words to be used.')
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
-    parser.add_argument('-m', '--mix', dest='mixmode', action='store_true', help='Create anagrams for the clues')
     args = parser.parse_args()
     gen = Genxword(args.auto, args.mixmode)
     gen.wlist(args.infile, args.nwords)

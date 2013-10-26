@@ -40,6 +40,7 @@ ui_info = """
       <menuitem action='Incgsize'/>
       <menuitem action='Save'/>
       <separator/>
+      <menuitem action='MixClue'/>
       <menuitem action='EditGsize'/>
     </menu>
     <menu action='HelpMenu'>
@@ -68,6 +69,7 @@ class Genxinterface(Gtk.Window):
         self.set_default_size(650, 600)
         self.set_default_icon_name('genxword-gtk')
         self.saveformat = ''
+        self.mixwords = False
         self.gsize = False
 
         self.grid = Gtk.Grid()
@@ -112,9 +114,10 @@ class Genxinterface(Gtk.Window):
             ('About', Gtk.STOCK_ABOUT, '_About', None, 'About', self.about_dialog)
             ])
 
-        edit_gsize = Gtk.ToggleAction('EditGsize', 'Choose the grid size', None, None)
-        edit_gsize.connect('toggled', self.set_gsize)
-        action_group.add_action(edit_gsize)
+        action_group.add_toggle_actions([
+            ('MixClue', None, 'Anagram clues', None, None, self.set_mixwords),
+            ('EditGsize', None, 'Choose the grid size', None, None, self.set_gsize)
+            ])
 
     def create_ui_manager(self):
         uimanager = Gtk.UIManager()
@@ -270,7 +273,7 @@ class Genxinterface(Gtk.Window):
         if self.calc_first_time:
             self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
             nwords = self.choose_nwords.get_value_as_int()
-            gen = Genxword()
+            gen = Genxword(False, self.mixwords)
             gen.wlist(self.words.splitlines(), nwords)
             self.wlist = gen.word_list
             gen.grid_size(True)
@@ -299,6 +302,9 @@ class Genxinterface(Gtk.Window):
         self.xword_label.set_line_wrap(value)
         self.xword_label.set_valign(alignment)
         self.xword_label.set_halign(alignment)
+
+    def set_mixwords(self, button):
+        self.mixwords = button.get_active()
 
     def set_gsize(self, button):
         self.gsize = button.get_active()
@@ -350,7 +356,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('0.9.5')
+        about.set_version('0.9.6')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments('A crossword generator')
@@ -379,31 +385,14 @@ class HelpDialog(Gtk.Dialog):
             with open('/usr/local/share/genxword/help_page') as help_file:
                 text = help_file.read()
 
-        self.set_textview(text)
+        label = Gtk.Label()
+        label.set_markup(text)
+        label.set_line_wrap(True)
         scrolledwindow = Gtk.ScrolledWindow()
-        scrolledwindow.add(self.textview)
+        scrolledwindow.add_with_viewport(label)
         box = self.get_content_area()
         box.pack_start(scrolledwindow, True, True, 0)
         self.show_all()
-
-    def set_textview(self, text):
-        self.textview = Gtk.TextView()
-        fontdesc = Pango.FontDescription('serif')
-        self.textview.modify_font(fontdesc)
-        self.textview.set_editable(False)
-        self.textview.set_wrap_mode(Gtk.WrapMode.WORD)
-        buff = self.textview.get_buffer()
-        buff.set_text(text)
-        tag_title = buff.create_tag('title', font='sans bold 12')
-        tag_subtitle = buff.create_tag('subtitle', font='sans bold')
-        self.add_tag(buff, tag_title, 0, 1)
-        for startline in (4, 24, 29, 33, 38, 55, 58):
-            self.add_tag(buff, tag_subtitle, startline, startline+1)
-
-    def add_tag(self, buffer_name, tag_name, startline, endline):
-        start = buffer_name.get_iter_at_line(startline)
-        end = buffer_name.get_iter_at_line(endline)
-        buffer_name.apply_tag(tag_name, start, end)
 
 def main():
     win = Genxinterface()

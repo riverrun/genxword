@@ -1,8 +1,8 @@
-.TH GENXWORD3 1 "14/6/2013" "Version 0.9.5" "User Commands"
+.TH GENXWORD3 1 "26/10/2013" "Version 0.9.6" "User Commands"
 .SH NAME
 genxword3 \- a crossword generator
 .SH SYNOPSIS
-genxword3 [\-a] [\-n] [\-o] [\-m] infile saveformat
+genxword3 [\-a] [\-m] [\-n] [\-o] infile saveformat
 .SH DESCRIPTION
 genxword3 is a crossword generator which runs from the command line. There is 
 also a version with a graphical user interface, which is called genxword3-gtk.
@@ -38,8 +38,8 @@ of words. The default number is 50.
 \-o, \-\-output
 The name of the crossword. If you save the crossword as a pdf file, this name will be used as the title of the crossword.
 .TP
-\-m, \-\-mix-mode
-In this mode the clues will contain the answer in mixed format.
+\-m, \-\-mix
+In this mode each clue will be an anagram of the word.
 .TP
 \-h, \-\-help
 Print basic information about how to use the program.

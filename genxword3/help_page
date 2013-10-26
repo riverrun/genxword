@@ -1,9 +1,9 @@
-genxword3-gtk
-Genxword3-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, or png / svg versions of the crossword grid, together with a text file containing the words and clues. The word list that is used to create the crossword is also saved as a text file.
-Many different foreign languages, including right-to-left languages, such as Hebrew and Arabic, are also supported.
+<span font="sans bold 12">genxword3-gtk</span>
+<span font="serif 10">Genxword3-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, or png / svg versions of the crossword grid, together with a text file containing the words and clues. The word list that is used to create the crossword is also saved as a text file.
+Many different foreign languages, including right-to-left languages, such as Hebrew and Arabic, are also supported.</span>
 
-Creating a word list
-You can create a new word list by clicking on the 'New word list' button, or by pressing Control + N.
+<span font="sans bold 11">Creating a word list</span>
+<span font="serif 10">You can create a new word list by clicking on the 'New word list' button, or by pressing Control + N.
 The word list can be just a list of words, like this:
 
     parrot
@@ -21,40 +21,41 @@ Clicking the 'Open word list' button, or pressing Control + O, lets you open, an
 If you want to edit the word list more after you have calculated the crossword, you can return to this word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.
 You can also sort the word list, from shortest to longest, by clicking on 
 'Sort word list' in the 'Word list' dropdown menu. As well as sorting the word list, this also removes any words that contain non-alphabetic characters.
+There is also an option to generate an anagram of each word for the clues. Enable this by clicking on 'Anagram clues' in the 'Crossword' dropdown menu.</span>
 
-Calculating the crossword
-Click on the 'Create crossword' button, or press Control + G, to create the 
+<span font="sans bold 11">Calculating the crossword</span>
+<span font="serif 10">Click on the 'Create crossword' button, or press Control + G, to create the 
 crossword. If you click on it a second time, the crossword will be recalculated with the same grid size.
-If you want to increase the grid size before recalculating the crossword, you need to click on the 'Recalculate' button or press Control + R.
+If you want to increase the grid size before recalculating the crossword, you need to click on the 'Recalculate' button or press Control + R.</span>
 
-Saving the crossword
-This button, or Control + S, lets you choose where you save the crossword files.
-You can save the crossword in pdf, png and / or svg format. Just click on the appropriate entries on the 'Save the crossword as' bar.
+<span font="sans bold 11">Saving the crossword</span>
+<span font="serif 10">This button, or Control + S, lets you choose where you save the crossword files.
+You can save the crossword in pdf, png and / or svg format. Just click on the appropriate entries on the 'Save the crossword as' bar.</span>
 
-Further options
-On the bottom row of the main window, there are boxes in which you can write the name of the crossword, choose the number of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' menu first (normally, the grid size will be automatically calculated based on the 
+<span font="sans bold 11">Further options</span>
+<span font="serif 10">On the bottom row of the main window, there are boxes in which you can write the name of the crossword, choose the number of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' menu first (normally, the grid size will be automatically calculated based on the 
 number of words used). The numbers in the grid size box refer to the number of rows and columns, and they need to be separated by a comma.
-For more detailed information, visit https://github.com/riverrun/genxword/wiki/genxword-gtk.
+For more detailed information, visit the <a href="https://github.com/riverrun/genxword/wiki/genxword-gtk">genxword-gtk wiki</a></span>. 
 
-Keyboard shortcuts
-General
-    Ctrl + N    Create a new word list
+<span font="sans bold 11">Keyboard shortcuts</span>
+<span font="sans bold 10">General</span>
+    <span font="serif 10">Ctrl + N    Create a new word list
     Ctrl + O    Open an existing word list
     Ctrl + G    Calculate the crossword or recalculate the crossword with the existing grid size
     Ctrl + R    Increase the grid size and recalculate the crossword
     Ctrl + S    Save the crossword
     Ctrl + Q    Quit the program
-    F1    Open the help page
-Text editing
-    Ctrl + A    Select all text
+    F1    Open the help page</span>
+<span font="sans bold 10">Text editing</span>
+    <span font="serif 10">Ctrl + A    Select all text
     Ctrl + C    Copy selected text
     Ctrl + V    Paste text
     Ctrl + X    Cut selected text
     Ctrl + Z    Undo
-    Ctrl + Shift + Z    Redo
+    Ctrl + Shift + Z    Redo</span>
 
-Authors
-This program has been developed by David Whitlock, and it is based on a program originally written by Bryan Helmig.
+<span font="sans bold 11">Authors</span>
+<span font="serif 10">This program has been developed by David Whitlock, and it is based on a program originally written by Bryan Helmig.</span>
 
-License
-Genxword3-gtk is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+<span font="sans bold 11">License</span>
+<span font="serif 10">Genxword3-gtk is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</span>
