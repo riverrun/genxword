@@ -27,36 +27,27 @@ For further information on how to format the word list file and about the other 
 """
 
 class Genxword(object):
-    def __init__(self, auto=False):
+    def __init__(self, auto=False, mixmode=False):
         self.auto = auto
-
-    def word_mixer(self, word=""):
-        word = list(word)
-        for x in xrange(len(word)):
-            word_old = word[:]
-            while word == word_old:
-                if word == "" or len(word) == 1:
-                    break
-                a = 0
-                b = 0
-                while a == b:
-                    a = random.randint(0,len(word) - 1)
-                    b = random.randint(0,len(word) - 1)
-                    word[a] = word_old[b]
-                    word[b] = word_old[a]
-        return "".join(word)
-
-    def wlist_mixer(self, mixwords=False):
-        if mixwords:
-            for line in self.word_list:
-                line[1] = self.word_mixer(line[0].lower())
+        self.mixmode = mixmode
 
     def wlist(self, infile, nwords=50):
         word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
-        self.word_list = [[word[0].upper(), word[-1]] for word in word_list]
+        self.word_list = [[line[0].upper(), line[-1]] for line in word_list]
         self.word_list.sort(key=lambda i: len(i[0]), reverse=True)
+        if self.mixmode:
+            for line in self.word_list:
+                line[1] = self.word_mixer(line[0].lower())
+
+    def word_mixer(self, word):
+        word = orig_word = list(word)
+        for i in range(2):
+            random.shuffle(word)
+            if word != orig_word:
+                break
+        return ''.join(word)
 
     def grid_size(self, gtkmode=False):
         if len(self.word_list) <= 20:
@@ -110,10 +101,9 @@ def main():
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
     parser.add_argument('-n', '--number', dest='nwords', type=int, default=50, help='Number of words to be used.')
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
-    parser.add_argument('-m', '--mix-mode', dest='mixmode', action='store_true', help='Mix words in legend')
+    parser.add_argument('-m', '--mix', dest='mixmode', action='store_true', help='Create anagrams for the clues')
     args = parser.parse_args()
-    gen = Genxword(args.auto)
+    gen = Genxword(args.auto, args.mixmode)
     gen.wlist(args.infile, args.nwords)
-    gen.wlist_mixer(args.mixmode)
     gen.grid_size()
     gen.gengrid(args.output, args.saveformat)
