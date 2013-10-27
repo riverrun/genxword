@@ -227,7 +227,7 @@ class Exportfiles(object):
             context.show_page()
             surface.finish()
 
-    def export_pdf(self, xwname, filetype, RTL, width=595, height=842):
+    def export_pdf(self, xwname, filetype, lang, RTL, width=595, height=842):
         px, xoffset, yoffset = 28, 36, 72
         name = xwname + filetype
         surface = cairo.PDFSurface(name, width, height)
@@ -245,17 +245,17 @@ class Exportfiles(object):
         context.set_source_rgb(0, 0, 0)
         self.draw_letters(xwname, context, round((width-len(xwname)*10)/2), yoffset/2, 'Sans 18 bold')
         x, y = 36, yoffset+5+(self.rows*px*sc_ratio)
-        self.draw_letters('Across', context, x, y, 'Sans 14 bold')
-        clues = self.wrap(self.legend())
+        clues = self.wrap(self.legend(lang))
+        self.draw_letters(lang[0], context, x, y, 'Sans 14 bold')
         for line in clues.splitlines()[3:]:
             if y >= height-(yoffset/2)-15:
                 context.show_page()
                 y = yoffset/2
-            if line.strip() == 'Down':
+            if line.strip() == lang[1]:
                 if self.cols > 17 and y > 700:
                     context.show_page()
                     y = yoffset/2
-                self.draw_letters('Down', context, x, y+15, 'Sans 14 bold')
+                self.draw_letters(lang[1], context, x, y+15, 'Sans 14 bold')
                 y += 16
                 continue
             self.draw_letters(line, context, x, y+18, 'Serif 9')
@@ -263,18 +263,18 @@ class Exportfiles(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_format, gtkmode=False, RTL=False):
+    def create_files(self, name, save_format, lang, gtkmode=False, RTL=False):
         if Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
             [i.reverse() for i in self.grid]
             RTL = True
         img_files = ''
         if 'p' in save_format:
-            self.export_pdf(name, '_grid.pdf', RTL)
-            self.export_pdf(name, '_key.pdf', RTL)
+            self.export_pdf(name, '_grid.pdf', lang, RTL)
+            self.export_pdf(name, '_key.pdf', lang, RTL)
             img_files += name + '_grid.pdf ' + name + '_key.pdf '
         if 'l' in save_format:
-            self.export_pdf(name, 'l_grid.pdf', RTL, 612, 792)
-            self.export_pdf(name, 'l_key.pdf', RTL, 612, 792)
+            self.export_pdf(name, 'l_grid.pdf', lang, RTL, 612, 792)
+            self.export_pdf(name, 'l_key.pdf', lang, RTL, 612, 792)
             img_files += name + 'l_grid.pdf ' + name + 'l_key.pdf '
         if 'n' in save_format:
             self.create_img(name + '_grid.png', RTL)
@@ -285,7 +285,7 @@ class Exportfiles(object):
             self.create_img(name + '_key.svg', RTL)
             img_files += name + '_grid.svg ' + name + '_key.svg '
         if 'n' in save_format or 's' in save_format:
-            self.clues_txt(name + '_clues.txt')
+            self.clues_txt(name + '_clues.txt', lang)
             img_files += name + '_clues.txt'
         if not gtkmode:
             print('The following files have been saved to your current working directory:\n' + img_files)
@@ -313,8 +313,8 @@ class Exportfiles(object):
         words = 'Word bank\n' + ''.join([u'{}\n'.format(word[0]) for word in temp_list])
         return words.encode('utf-8')
  
-    def legend(self):
-        outStrA, outStrD = '\nClues\nAcross\n', 'Down\n'
+    def legend(self, lang):
+        outStrA, outStrD = '\nClues\n{}\n'.format(lang[0]), '{}\n'.format(lang[1])
         for word in self.wordlist:
             if word[4]:
                 outStrD += u'{:d}. {}\n'.format(word[5], word[1])
@@ -323,7 +323,7 @@ class Exportfiles(object):
         string = outStrA + outStrD
         return string.encode('utf-8')
  
-    def clues_txt(self, name):
+    def clues_txt(self, name, lang):
         with open(name, 'w') as clues_file:
             clues_file.write(self.word_bank())
-            clues_file.write(self.legend())
+            clues_file.write(self.legend(lang))
