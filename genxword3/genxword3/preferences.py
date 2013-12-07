@@ -1,0 +1,118 @@
+# -*- coding: utf-8 -*-
+
+# Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
+# Crossword generator that outputs the grid and clues as a pdf file and/or
+# the grid in png/svg format with a text file containing the words and clues.
+# Copyright (C) 2010-2011 Bryan Helmig
+# Copyright (C) 2011-2013 David Whitlock
+
+from gi.repository import Gtk
+from gettext import gettext as _
+
+license = _("""
+Genxword3-gtk is free software: you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version.\n\n
+Genxword3-gtk is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+GNU General Public License for more details.\n\n'
+You should have received a copy of the GNU General Public License 
+along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html
+""")
+
+help_text = _("""
+<span font="sans bold 12">genxword3-gtk</span>
+<span font="serif 10">Genxword3-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, or png / svg versions of the crossword grid, together with a text file containing the words and clues. The word list that is used to create the crossword is also saved as a text file.
+Many different foreign languages, including right-to-left languages, such as Hebrew and Arabic, are also supported.</span>
+
+<span font="sans bold 11">Creating a word list</span>
+<span font="serif 10">You can create a new word list by clicking on the 'New word list' button, or by pressing Control + N.
+The word list can be just a list of words, like this:
+
+    parrot
+    spam
+    vikings
+
+or it can be a list or words and clues, like this:
+
+    excalibur A sword that a moistened bint lobbed at Arthur.
+    duck An animal that weighs the same as a witch.
+    coconut A fruit that possibly migrates.
+
+As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. The clue is everything after the first space, and when you write the words and clues, the words are automatically highlighted. You can find some example word lists in either the /usr/share/genxword3/word_lists or /usr/local/share/genxword3/word_lists directory.
+Clicking the 'Open word list' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be formatted as written above. The word list can be thousands of words long, and the crossword will be created with a set amount of words randomly selected from it. You can select the number of words in the box below.
+If you want to edit the word list more after you have calculated the crossword, you can return to this word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.
+You can also sort the word list, from shortest to longest, by clicking on 
+'Sort word list' in the 'Word list' dropdown menu. As well as sorting the word list, this also removes any words that contain non-alphabetic characters.
+There is also an option to generate an anagram of each word for the clues. Enable this by clicking on 'Anagram clues' in the 'Crossword' dropdown menu.</span>
+
+<span font="sans bold 11">Calculating the crossword</span>
+<span font="serif 10">Click on the 'Create crossword' button, or press Control + G, to create the 
+crossword. If you click on it a second time, the crossword will be recalculated with the same grid size.
+If you want to increase the grid size before recalculating the crossword, you need to click on the 'Recalculate' button or press Control + R.</span>
+
+<span font="sans bold 11">Saving the crossword</span>
+<span font="serif 10">This button, or Control + S, lets you choose where you save the crossword files.
+You can save the crossword in pdf, png and / or svg format. Just click on the appropriate entries on the 'Save the crossword as' bar.</span>
+
+<span font="sans bold 11">Further options</span>
+<span font="serif 10">On the bottom row of the main window, there are boxes in which you can write the name of the crossword, choose the number of words used, and choose the grid size. To change the grid size, you will need to enable this option in the 'Crossword' menu first (normally, the grid size will be automatically calculated based on the 
+number of words used). The numbers in the grid size box refer to the number of rows and columns, and they need to be separated by a comma.
+For more detailed information, visit the <a href="https://github.com/riverrun/genxword/wiki/genxword-gtk">genxword-gtk wiki</a></span>. 
+
+<span font="sans bold 11">Keyboard shortcuts</span>
+<span font="sans bold 10">General</span>
+    <span font="serif 10">Ctrl + N    Create a new word list
+    Ctrl + O    Open an existing word list
+    Ctrl + G    Calculate the crossword or recalculate the crossword with the existing grid size
+    Ctrl + R    Increase the grid size and recalculate the crossword
+    Ctrl + S    Save the crossword
+    Ctrl + Q    Quit the program
+    F1    Open the help page</span>
+<span font="sans bold 10">Text editing</span>
+    <span font="serif 10">Ctrl + A    Select all text
+    Ctrl + C    Copy selected text
+    Ctrl + V    Paste text
+    Ctrl + X    Cut selected text
+    Ctrl + Z    Undo
+    Ctrl + Shift + Z    Redo</span>
+
+<span font="sans bold 11">Authors</span>
+<span font="serif 10">This program has been developed by David Whitlock, and it is based on a program originally written by Bryan Helmig.</span>
+
+<span font="sans bold 11">License</span>
+<span font="serif 10">Genxword3-gtk is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</span>
+""")
+
+class AboutDialog(Gtk.AboutDialog):
+    def __init__(self, parent):
+        Gtk.AboutDialog.__init__(self)
+
+        self.set_program_name('genxword3-gtk')
+        self.set_version('0.9.6')
+        self.set_license(license)
+        self.set_wrap_license(True)
+        self.set_comments(_('A crossword generator'))
+        self.set_authors(['David Whitlock <alovedalongthe@gmail.com>', 'Bryan Helmig'])
+        self.set_website('https://github.com/riverrun/genxword/wiki/genxword-gtk')
+        self.set_website_label('genxword3-gtk wiki')
+        self.set_logo_icon_name('genxword3-gtk')
+
+class HelpDialog(Gtk.Dialog):
+    def __init__(self, parent):
+        Gtk.Dialog.__init__(self, _('Help page'), parent, 0,
+            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
+
+        self.set_default_size(650, 500)
+        self.set_default_response(Gtk.ResponseType.CLOSE)
+
+        label = Gtk.Label()
+        label.set_markup(help_text)
+        label.set_line_wrap(True)
+        scrolledwindow = Gtk.ScrolledWindow()
+        scrolledwindow.add_with_viewport(label)
+        box = self.get_content_area()
+        box.pack_start(scrolledwindow, True, True, 0)
+        self.show_all()

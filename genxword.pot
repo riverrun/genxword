@@ -1,0 +1,282 @@
+# SOME DESCRIPTIVE TITLE translation for genxword.
+# Copyright (C) 2010-2011 Bryan Helmig
+# Copyright (C) 2011-2013 David Whitlock
+# This file is distributed under the same license as the genxword package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: genxword\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-06 16:05+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: gui.py:101
+msgid "_Word list"
+msgstr ""
+
+#: gui.py:102
+msgid "_New word list"
+msgstr ""
+
+#: gui.py:103
+msgid "Create a new word list or go back to the already open word list"
+msgstr ""
+
+#: gui.py:104
+msgid "_Open word list"
+msgstr ""
+
+#: gui.py:104
+msgid "Open a word list"
+msgstr ""
+
+#: gui.py:105
+msgid "_Sort word list"
+msgstr ""
+
+#: gui.py:106
+msgid "Sort the word list and remove words with non-alphabetic characters"
+msgstr ""
+
+#: gui.py:107
+msgid "Quit"
+msgstr ""
+
+#: gui.py:108
+msgid "_Crossword"
+msgstr ""
+
+#: gui.py:109
+msgid "_Calculate crossword"
+msgstr ""
+
+#: gui.py:110
+msgid "Calculate the crossword"
+msgstr ""
+
+#: gui.py:111
+msgid "_Recalculate"
+msgstr ""
+
+#: gui.py:112
+msgid "Increase the grid size and recalculate the crossword"
+msgstr ""
+
+#: gui.py:113
+msgid "_Save"
+msgstr ""
+
+#: gui.py:113
+msgid "Save crossword"
+msgstr ""
+
+#: gui.py:114 gui.py:115
+msgid "_Help"
+msgstr ""
+
+#: gui.py:115
+msgid "Open the help page"
+msgstr ""
+
+#: gui.py:116
+msgid "_About"
+msgstr ""
+
+#: gui.py:116
+msgid "About"
+msgstr ""
+
+#: gui.py:120
+msgid "Anagram clues"
+msgstr ""
+
+#: gui.py:121
+msgid "Choose the grid size"
+msgstr ""
+
+#: gui.py:199
+msgid "Choose the output language"
+msgstr ""
+
+#: gui.py:209
+msgid "Name of crossword"
+msgstr ""
+
+#: gui.py:210
+msgid "Choose the name of your crossword"
+msgstr ""
+
+#: gui.py:215
+msgid "Number of words"
+msgstr ""
+
+#: gui.py:222
+msgid "Choose the number of words you want to use"
+msgstr ""
+
+#: gui.py:225
+msgid "Grid size"
+msgstr ""
+
+#: gui.py:231
+msgid ""
+"Choose the crossword grid size\n"
+"Go to the Crossword menu to enable this option"
+msgstr ""
+
+#: gui.py:265
+msgid "Please choose a file"
+msgstr ""
+
+#: gui.py:341
+msgid "Please choose a folder"
+msgstr ""
+
+#: gui.py:357
+msgid "Your crossword files have been saved in "
+msgstr ""
+
+#: gui.py:361
+msgid ""
+"Please fill in the name of the crossword and the format you want it saved in "
+"(A4 size pdf, letter size pdf, png or svg).\n"
+"Then click on the Save button again."
+msgstr ""
+
+#: preferences.py:12
+msgid ""
+"\n"
+"Genxword3-gtk is free software: you can redistribute it and/or modify \n"
+"it under the terms of the GNU General Public License as published by \n"
+"the Free Software Foundation, either version 3 of the License, or \n"
+"(at your option) any later version.\n"
+"\n"
+"\n"
+"Genxword3-gtk is distributed in the hope that it will be useful, \n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of \n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the \n"
+"GNU General Public License for more details.\n"
+"\n"
+"'\n"
+"You should have received a copy of the GNU General Public License \n"
+"along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html\n"
+msgstr ""
+
+#: preferences.py:25
+msgid ""
+"\n"
+"<span font=\"sans bold 12\">genxword3-gtk</span>\n"
+"<span font=\"serif 10\">Genxword3-gtk is a crossword generator, which "
+"produces pdf (A4 or letter size) versions of the grid and clues, or png / "
+"svg versions of the crossword grid, together with a text file containing the "
+"words and clues. The word list that is used to create the crossword is also "
+"saved as a text file.\n"
+"Many different foreign languages, including right-to-left languages, such as "
+"Hebrew and Arabic, are also supported.</span>\n"
+"\n"
+"<span font=\"sans bold 11\">Creating a word list</span>\n"
+"<span font=\"serif 10\">You can create a new word list by clicking on the "
+"'New word list' button, or by pressing Control + N.\n"
+"The word list can be just a list of words, like this:\n"
+"\n"
+"    parrot\n"
+"    spam\n"
+"    vikings\n"
+"\n"
+"or it can be a list or words and clues, like this:\n"
+"\n"
+"    excalibur A sword that a moistened bint lobbed at Arthur.\n"
+"    duck An animal that weighs the same as a witch.\n"
+"    coconut A fruit that possibly migrates.\n"
+"\n"
+"As you can see, each word needs to be on a separate line, and there should "
+"be a space between each word and its clue. The clue is everything after the "
+"first space, and when you write the words and clues, the words are "
+"automatically highlighted. You can find some example word lists in either "
+"the /usr/share/genxword3/word_lists or /usr/local/share/genxword3/word_lists "
+"directory.\n"
+"Clicking the 'Open word list' button, or pressing Control + O, lets you "
+"open, and edit, a word list, which needs to be formatted as written above. "
+"The word list can be thousands of words long, and the crossword will be "
+"created with a set amount of words randomly selected from it. You can select "
+"the number of words in the box below.\n"
+"If you want to edit the word list more after you have calculated the "
+"crossword, you can return to this word list by clicking on the 'new' button "
+"again. The word list will be kept in memory until the crossword is saved.\n"
+"You can also sort the word list, from shortest to longest, by clicking on \n"
+"'Sort word list' in the 'Word list' dropdown menu. As well as sorting the "
+"word list, this also removes any words that contain non-alphabetic "
+"characters.\n"
+"There is also an option to generate an anagram of each word for the clues. "
+"Enable this by clicking on 'Anagram clues' in the 'Crossword' dropdown menu."
+"</span>\n"
+"\n"
+"<span font=\"sans bold 11\">Calculating the crossword</span>\n"
+"<span font=\"serif 10\">Click on the 'Create crossword' button, or press "
+"Control + G, to create the \n"
+"crossword. If you click on it a second time, the crossword will be "
+"recalculated with the same grid size.\n"
+"If you want to increase the grid size before recalculating the crossword, "
+"you need to click on the 'Recalculate' button or press Control + R.</span>\n"
+"\n"
+"<span font=\"sans bold 11\">Saving the crossword</span>\n"
+"<span font=\"serif 10\">This button, or Control + S, lets you choose where "
+"you save the crossword files.\n"
+"You can save the crossword in pdf, png and / or svg format. Just click on "
+"the appropriate entries on the 'Save the crossword as' bar.</span>\n"
+"\n"
+"<span font=\"sans bold 11\">Further options</span>\n"
+"<span font=\"serif 10\">On the bottom row of the main window, there are "
+"boxes in which you can write the name of the crossword, choose the number of "
+"words used, and choose the grid size. To change the grid size, you will need "
+"to enable this option in the 'Crossword' menu first (normally, the grid size "
+"will be automatically calculated based on the \n"
+"number of words used). The numbers in the grid size box refer to the number "
+"of rows and columns, and they need to be separated by a comma.\n"
+"For more detailed information, visit the <a href=\"https://github.com/"
+"riverrun/genxword/wiki/genxword-gtk\">genxword-gtk wiki</a></span>. \n"
+"\n"
+"<span font=\"sans bold 11\">Keyboard shortcuts</span>\n"
+"<span font=\"sans bold 10\">General</span>\n"
+"    <span font=\"serif 10\">Ctrl + N    Create a new word list\n"
+"    Ctrl + O    Open an existing word list\n"
+"    Ctrl + G    Calculate the crossword or recalculate the crossword with "
+"the existing grid size\n"
+"    Ctrl + R    Increase the grid size and recalculate the crossword\n"
+"    Ctrl + S    Save the crossword\n"
+"    Ctrl + Q    Quit the program\n"
+"    F1    Open the help page</span>\n"
+"<span font=\"sans bold 10\">Text editing</span>\n"
+"    <span font=\"serif 10\">Ctrl + A    Select all text\n"
+"    Ctrl + C    Copy selected text\n"
+"    Ctrl + V    Paste text\n"
+"    Ctrl + X    Cut selected text\n"
+"    Ctrl + Z    Undo\n"
+"    Ctrl + Shift + Z    Redo</span>\n"
+"\n"
+"<span font=\"sans bold 11\">Authors</span>\n"
+"<span font=\"serif 10\">This program has been developed by David Whitlock, "
+"and it is based on a program originally written by Bryan Helmig.</span>\n"
+"\n"
+"<span font=\"sans bold 11\">License</span>\n"
+"<span font=\"serif 10\">Genxword3-gtk is free software: you can redistribute "
+"it and/or modify it under the terms of the GNU General Public License as "
+"published by the Free Software Foundation, either version 3 of the License, "
+"or (at your option) any later version.</span>\n"
+msgstr ""
+
+#: preferences.py:97
+msgid "A crossword generator"
+msgstr ""
+
+#: preferences.py:105
+msgid "Help page"
+msgstr ""
