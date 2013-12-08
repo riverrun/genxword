@@ -23,7 +23,7 @@ import os
 from gi.repository import Gtk, GtkSource, Pango
 from gettext import gettext as _
 from .control import Genxword
-from . import calculate, preferences
+from . import calculate
 
 ui_info = """
 <ui>
@@ -72,7 +72,7 @@ class Genxinterface(Gtk.Window):
         self.saveformat = ''
         self.mixwords = False
         self.gsize = False
-        self.default_lang = 'En Across/Down'
+        self.default_lang = _('En Across/Down')
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -190,10 +190,13 @@ class Genxinterface(Gtk.Window):
         self.grid.attach(lang_combo, 4, 3, 2, 1)
 
     def set_lang_combo(self):
-        lang_list = [[self.default_lang], ['Fr Horizontalement/Verticalement'],
+        lang_list = [[self.default_lang], ['En Across/Down'], ['Fr Horizontalement/Verticalement'],
                 ['Sp Horizontal/Vertical'], ['De Horizontal/Vertikal']]
         lang_store = Gtk.ListStore(str)
+        lang_store.append([self.default_lang])
         for lang in lang_list:
+            if lang == self.default_lang:
+                continue
             lang_store.append(lang)
         lang_combo = Gtk.ComboBox.new_with_model(lang_store)
         lang_combo.set_tooltip_text(_('Choose the output language'))
@@ -365,17 +368,60 @@ class Genxinterface(Gtk.Window):
         self.xword_view(True, Gtk.Align.START)
 
     def help_page(self, button):
-        dialog = preferences.HelpDialog(self)
+        dialog = HelpDialog(self)
         dialog.run()
         dialog.destroy()
 
     def about_dialog(self, button):
-        about = preferences.AboutDialog(self)
+        license = ('Genxword3-gtk is free software: you can redistribute it and/or modify '
+        'it under the terms of the GNU General Public License as published by '
+        'the Free Software Foundation, either version 3 of the License, or '
+        '(at your option) any later version.\n\n'
+        'Genxword3-gtk is distributed in the hope that it will be useful, '
+        'but WITHOUT ANY WARRANTY; without even the implied warranty of '
+        'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the '
+        'GNU General Public License for more details.\n\n'
+        'You should have received a copy of the GNU General Public License '
+        'along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
+        about = Gtk.AboutDialog()
+        about.set_program_name('genxword3-gtk')
+        about.set_version('0.9.6')
+        about.set_license(license)
+        about.set_wrap_license(True)
+        about.set_comments(_('A crossword generator'))
+        about.set_authors(['David Whitlock <alovedalongthe@gmail.com>', 'Bryan Helmig'])
+        about.set_website('https://github.com/riverrun/genxword/wiki/genxword-gtk')
+        about.set_website_label('genxword3-gtk wiki')
+        about.set_logo_icon_name('genxword3-gtk')
         about.run()
         about.destroy()
 
     def quit_app(self, widget):
         Gtk.main_quit()
+
+class HelpDialog(Gtk.Dialog):
+    def __init__(self, parent):
+        Gtk.Dialog.__init__(self, 'Help page', parent, 0,
+            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
+
+        self.set_default_size(650, 500)
+        self.set_default_response(Gtk.ResponseType.CLOSE)
+
+        try:
+            with open('/usr/share/genxword3/help_page') as help_file:
+                text = help_file.read()
+        except:
+            with open('/usr/local/share/genxword3/help_page') as help_file:
+                text = help_file.read()
+
+        label = Gtk.Label()
+        label.set_markup(text)
+        label.set_line_wrap(True)
+        scrolledwindow = Gtk.ScrolledWindow()
+        scrolledwindow.add_with_viewport(label)
+        box = self.get_content_area()
+        box.pack_start(scrolledwindow, True, True, 0)
+        self.show_all()
 
 def main():
     win = Genxinterface()
