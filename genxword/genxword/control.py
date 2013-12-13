@@ -20,11 +20,12 @@
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import random
+from gettext import gettext as _
 from . import calculate
 
-usage_info = """The word list file contains the words and clues, or just words, that you want in your crossword. 
+usage_info = _("""The word list file contains the words and clues, or just words, that you want in your crossword. 
 For further information on how to format the word list file and about the other options, please consult the man page.
-"""
+""")
 
 class Genxword(object):
     def __init__(self, auto=False, mixmode=False):
@@ -32,7 +33,7 @@ class Genxword(object):
         self.mixmode = mixmode
 
     def wlist(self, infile, nwords=50):
-        word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
+        word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
         self.word_list = [[line[0].upper(), line[-1]] for line in word_list]
@@ -60,7 +61,7 @@ class Genxword(object):
             self.nrow = self.ncol = len(self.word_list[0][0]) + 2
         if not gtkmode and not self.auto:
             gsize = str(self.nrow) + ', ' + str(self.ncol)
-            grid_size = raw_input('Enter grid size (' + gsize + ' is the default): ')
+            grid_size = raw_input(_('Enter grid size (') + gsize + _(' is the default): '))
             if grid_size:
                 self.check_grid_size(grid_size)
 
@@ -75,7 +76,7 @@ class Genxword(object):
 
     def gengrid(self, name, saveformat):
         while 1:
-            print('Calculating your crossword...')
+            print(_('Calculating your crossword...'))
             calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
             print(calc.compute_crossword())
             if self.auto:
@@ -84,25 +85,25 @@ class Genxword(object):
                 else:
                     break
             else:
-                h = raw_input('Are you happy with this solution? [Y/n] ')
-                if h.strip() != 'n':
+                h = raw_input(_('Are you happy with this solution? [Y/n] '))
+                if h.strip() != _('n'):
                     break
-                inc_gsize = raw_input('And increase the grid size? [Y/n] ')
-                if inc_gsize.strip() != 'n':
+                inc_gsize = raw_input(_('And increase the grid size? [Y/n] '))
+                if inc_gsize.strip() != _('n'):
                     self.nrow += 2;self.ncol += 2
-        lang = 'Across/Down'
+        lang = _('Across/Down')
         exp = calculate.Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list, '-')
         exp.create_files(name, saveformat, lang)
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description='Crossword generator.', prog='genxword', epilog=usage_info)
-    parser.add_argument('infile', type=argparse.FileType('r'), help='Name of word list file.')
-    parser.add_argument('saveformat', help='Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s).')
-    parser.add_argument('-a', '--auto', dest='auto', action='store_true', help='Automated (non-interactive) option.')
-    parser.add_argument('-m', '--mix', dest='mixmode', action='store_true', help='Create anagrams for the clues')
-    parser.add_argument('-n', '--number', dest='nwords', type=int, default=50, help='Number of words to be used.')
-    parser.add_argument('-o', '--output', dest='output', default='Gumby', help='Name of crossword.')
+    parser = argparse.ArgumentParser(description=_('Crossword generator.'), prog='genxword', epilog=usage_info)
+    parser.add_argument('infile', type=argparse.FileType('r'), help=_('Name of word list file.'))
+    parser.add_argument('saveformat', help=_('Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s).'))
+    parser.add_argument('-a', '--auto', dest='auto', action='store_true', help=_('Automated (non-interactive) option.'))
+    parser.add_argument('-m', '--mix', dest='mixmode', action='store_true', help=_('Create anagrams for the clues'))
+    parser.add_argument('-n', '--number', dest='nwords', type=int, default=50, help=_('Number of words to be used.'))
+    parser.add_argument('-o', '--output', dest='output', default='Gumby', help=_('Name of crossword.'))
     args = parser.parse_args()
     gen = Genxword(args.auto, args.mixmode)
     gen.wlist(args.infile, args.nwords)

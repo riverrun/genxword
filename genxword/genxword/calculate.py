@@ -54,7 +54,7 @@ class Crossword(object):
                 self.best_grid = list(self.grid)
             if len(self.best_word_list) == wordlist_length:
                 break
-        answer = '\n'.join([''.join([u'{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
+        answer = u'\n'.join([''.join([u'{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
         return answer + '\n\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
  
     def get_coords(self, word):

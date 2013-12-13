@@ -21,11 +21,21 @@
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import os
+import subprocess
 from distutils.core import setup
+
+lang_files = []
+os.mkdir('mo')
+for pofile in os.listdir('po'):
+    lang = pofile.strip('.po')
+    os.mkdir(os.path.join('mo', lang))
+    mofile = os.path.join('mo', lang, '/genxword.mo')
+    subprocess.call('msgfmt {} -o {}'.format(os.path.join('po', pofile), mofile), shell=True)
+    lang_files.append(['share/locale/{}/LC_MESSAGES/'.format(lang), [mofile]])
 
 setup(
     name = 'genxword',
-    version = '0.9.6',
+    version = '0.9.7',
     packages = ['genxword'],
     scripts = ['bin/genxword', 'bin/genxword-gtk'],
     data_files = [
@@ -33,7 +43,7 @@ setup(
         ('share/pixmaps', ['genxword-gtk.png']),
         ('share/genxword', ['gumby.lang', 'help_page']),
         ('share/genxword/word_lists', ['word_lists/2000ENwords', 'word_lists/pythonwords']),
-        ],
+        ] + lang_files,
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',

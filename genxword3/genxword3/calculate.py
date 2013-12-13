@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Calculate the crossword and export image and text files."""
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig

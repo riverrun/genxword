@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs the grid and clues as a pdf file and/or
@@ -21,11 +20,21 @@
 # along with genxword3.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import os
+import subprocess
 from distutils.core import setup
+
+lang_files = []
+os.mkdir('mo')
+for pofile in os.listdir('po'):
+    lang = pofile.strip('.po')
+    os.mkdir(os.path.join('mo', lang))
+    mofile = os.path.join('mo', lang, '/genxword3.mo')
+    subprocess.call('msgfmt {} -o {}'.format(os.path.join('po', pofile), mofile), shell=True)
+    lang_files.append(['share/locale/{}/LC_MESSAGES/'.format(lang), [mofile]])
 
 setup(
     name = 'genxword3',
-    version = '0.9.6',
+    version = '0.9.7',
     packages = ['genxword3'],
     scripts = ['bin/genxword3', 'bin/genxword3-gtk'],
     data_files = [
@@ -33,7 +42,7 @@ setup(
         ('share/pixmaps', ['genxword3-gtk.png']),
         ('share/genxword3', ['gumby.lang', 'help_page']),
         ('share/genxword3/word_lists', ['word_lists/2000ENwords', 'word_lists/pythonwords']),
-        ],
+        ] + lang_files,
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',

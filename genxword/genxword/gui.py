@@ -21,6 +21,7 @@
 
 import os
 from gi.repository import Gtk, GtkSource, Pango
+from gettext import gettext as _
 from .control import Genxword
 from . import calculate
 
@@ -71,7 +72,7 @@ class Genxinterface(Gtk.Window):
         self.saveformat = ''
         self.mixwords = False
         self.gsize = False
-        self.default_lang = 'En Across/Down'
+        self.default_lang = _('En Across/Down')
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -97,27 +98,27 @@ class Genxinterface(Gtk.Window):
 
     def add_actions(self, action_group):
         action_group.add_actions([
-            ('FileMenu', None, '_Word list'),
-            ('New', Gtk.STOCK_NEW, '_New word list', None, 
-                'Create a new word list or go back to the already open word list', self.new_wlist),
-            ('Open', Gtk.STOCK_OPEN, '_Open word list', None, 'Open a word list', self.open_wlist),
-            ('Sort', None, '_Sort word list', None, 
-                'Sort the word list and remove words with non-alphabetic characters', self.sort_wlist),
-            ('Quit', Gtk.STOCK_QUIT, 'Quit', None, 'Quit', self.quit_app),
-            ('CrosswordMenu', None, '_Crossword'),
-            ('Create', Gtk.STOCK_EXECUTE, '_Calculate crossword', '<Ctrl>G', 
-                'Calculate the crossword', self.create_xword),
-            ('Incgsize', Gtk.STOCK_ADD, '_Recalculate', '<Ctrl>R', 
-                'Increase the grid size and recalculate the crossword', self.incgsize),
-            ('Save', Gtk.STOCK_SAVE, '_Save', None, 'Save crossword', self.save_xword),
-            ('HelpMenu', None, '_Help'),
-            ('Help', Gtk.STOCK_HELP, '_Help', 'F1', 'Open the help page', self.help_page),
-            ('About', Gtk.STOCK_ABOUT, '_About', None, 'About', self.about_dialog)
+            ('FileMenu', None, _('_Word list')),
+            ('New', Gtk.STOCK_NEW, _('_New word list'), None, 
+                _('Create a new word list or go back to the already open word list'), self.new_wlist),
+            ('Open', Gtk.STOCK_OPEN, _('_Open word list'), None, _('Open a word list'), self.open_wlist),
+            ('Sort', None, _('_Sort word list'), None, 
+                _('Sort the word list and remove words with non-alphabetic characters'), self.sort_wlist),
+            ('Quit', Gtk.STOCK_QUIT, _('Quit'), None, _('Quit'), self.quit_app),
+            ('CrosswordMenu', None, _('_Crossword')),
+            ('Create', Gtk.STOCK_EXECUTE, _('_Calculate crossword'), '<Ctrl>G', 
+                _('Calculate the crossword'), self.create_xword),
+            ('Incgsize', Gtk.STOCK_ADD, _('_Recalculate'), '<Ctrl>R', 
+                _('Increase the grid size and recalculate the crossword'), self.incgsize),
+            ('Save', Gtk.STOCK_SAVE, _('_Save'), None, _('Save crossword'), self.save_xword),
+            ('HelpMenu', None, _('_Help')),
+            ('Help', Gtk.STOCK_HELP, _('_Help'), 'F1', _('Open the help page'), self.help_page),
+            ('About', Gtk.STOCK_ABOUT, _('_About'), None, _('About'), self.about_dialog)
             ])
 
         action_group.add_toggle_actions([
-            ('MixClue', None, 'Anagram clues', None, None, self.set_mixwords),
-            ('EditGsize', None, 'Choose the grid size', None, None, self.set_gsize)
+            ('MixClue', None, _('Anagram clues'), None, None, self.set_mixwords),
+            ('EditGsize', None, _('Choose the grid size'), None, None, self.set_gsize)
             ])
 
     def create_ui_manager(self):
@@ -189,13 +190,16 @@ class Genxinterface(Gtk.Window):
         self.grid.attach(lang_combo, 4, 3, 2, 1)
 
     def set_lang_combo(self):
-        lang_list = [[self.default_lang], ['Fr Horizontalement/Verticalement'],
-                ['Sp Horizontal/Vertical'], ['De Horizontal/Vertikal']]
+        lang_list = [['Ca Horitzontal/Vertical'], ['De Horizontal/Vertikal'], ['En Across/Down'],
+                ['Fr Horizontalement/Verticalement'], ['Sp Horizontal/Vertical']]
         lang_store = Gtk.ListStore(str)
+        lang_store.append([self.default_lang])
         for lang in lang_list:
+            if lang[0] == self.default_lang:
+                continue
             lang_store.append(lang)
         lang_combo = Gtk.ComboBox.new_with_model(lang_store)
-        lang_combo.set_tooltip_text('Choose the output language')
+        lang_combo.set_tooltip_text(_('Choose the output language'))
         lang_combo.set_active(0)
         lang_combo.connect('changed', self.lang_changed)
         renderer = Gtk.CellRendererText()
@@ -205,29 +209,29 @@ class Genxinterface(Gtk.Window):
 
     def option_buttons(self):
         self.enter_name = Gtk.Entry()
-        self.enter_name.set_text('Name of crossword')
-        self.enter_name.set_tooltip_text('Choose the name of your crossword')
+        self.enter_name.set_text(_('Name of crossword'))
+        self.enter_name.set_tooltip_text(_('Choose the name of your crossword'))
         self.enter_name.set_icon_from_stock(Gtk.EntryIconPosition.SECONDARY, Gtk.STOCK_CLEAR)
         self.enter_name.connect('icon-press', self.entry_cleared)
         self.grid.attach(self.enter_name, 0, 4, 2, 1)
 
-        nwords_label = Gtk.Label('Number of words')
+        nwords_label = Gtk.Label(_('Number of words'))
         self.grid.attach(nwords_label, 2, 4, 1, 1)
 
         adjustment = Gtk.Adjustment(50, 10, 500, 5, 10, 0)
         self.choose_nwords = Gtk.SpinButton()
         self.choose_nwords.set_adjustment(adjustment)
         self.choose_nwords.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
-        self.choose_nwords.set_tooltip_text('Choose the number of words you want to use')
+        self.choose_nwords.set_tooltip_text(_('Choose the number of words you want to use'))
         self.grid.attach(self.choose_nwords, 3, 4, 1, 1)
 
-        gsize_label = Gtk.Label('Grid size')
+        gsize_label = Gtk.Label(_('Grid size'))
         self.grid.attach(gsize_label, 4, 4, 1, 1)
 
         self.choose_gsize = Gtk.Entry()
         self.choose_gsize.set_text('17,17')
         self.choose_gsize.set_width_chars(8)
-        gsize_tip = 'Choose the crossword grid size\nGo to the Crossword menu to enable this option'
+        gsize_tip = _('Choose the crossword grid size\nGo to the Crossword menu to enable this option')
         self.choose_gsize.set_tooltip_text(gsize_tip)
         self.choose_gsize.set_sensitive(False)
         self.grid.attach(self.choose_gsize, 5, 4, 1, 1)
@@ -261,7 +265,7 @@ class Genxinterface(Gtk.Window):
         self.set_sensitivities(True, 0)
 
     def open_wlist(self, button):
-        dialog = Gtk.FileChooserDialog('Please choose a file', self,
+        dialog = Gtk.FileChooserDialog(_('Please choose a file'), self,
             Gtk.FileChooserAction.OPEN,
             (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
              Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
@@ -338,7 +342,7 @@ class Genxinterface(Gtk.Window):
     def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()
         if self.xwordname != 'Name of crossword' and self.saveformat:
-            dialog = Gtk.FileChooserDialog('Please choose a folder', self,
+            dialog = Gtk.FileChooserDialog(_('Please choose a folder'), self,
                 Gtk.FileChooserAction.SELECT_FOLDER,
                 (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                  '_Select', Gtk.ResponseType.OK))
@@ -354,12 +358,12 @@ class Genxinterface(Gtk.Window):
             exp.create_files(self.xwordname, self.saveformat, lang, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
-            text = 'Your crossword files have been saved in ' + os.getcwd()
+            text = _('Your crossword files have been saved in ') + os.getcwd()
             self.enter_name.set_text('Name of crossword')
             self.buff.set_text('')
         else:
-            text = ('Please fill in the name of the crossword and the format you want it saved in '
-                    '(A4 size pdf, letter size pdf, png or svg).\nThen click on the Save button again.')
+            text = (_('Please fill in the name of the crossword and the format you want it saved in '
+                    '(A4 size pdf, letter size pdf, png or svg).\nThen click on the Save button again.'))
         display = '<span font="serif 11">' + text + '</span>'
         self.xword_label.set_markup(display)
         self.xword_view(True, Gtk.Align.START)
@@ -382,10 +386,10 @@ class Genxinterface(Gtk.Window):
         'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('0.9.6')
+        about.set_version('0.9.7')
         about.set_license(license)
         about.set_wrap_license(True)
-        about.set_comments('A crossword generator')
+        about.set_comments(_('A crossword generator'))
         about.set_authors(['David Whitlock <alovedalongthe@gmail.com>', 'Bryan Helmig'])
         about.set_website('https://github.com/riverrun/genxword/wiki/genxword-gtk')
         about.set_website_label('genxword-gtk wiki')

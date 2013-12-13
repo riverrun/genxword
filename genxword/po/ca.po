@@ -1,150 +1,155 @@
 # SOME DESCRIPTIVE TITLE translation for genxword.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the genxword package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# Miguel Anxo Bouzada <mbouzada@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: genxword\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-08 10:24+0700\n"
-"PO-Revision-Date: 2013-12-08 08:34+0100\n"
-"Last-Translator: GALPon MiniNo <minino@galpon.org>\n"
-"Language-Team: GALPon MiniNo <minino@galpon.org>\n"
+"PO-Revision-Date: 2013-12-10 15:28+0700\n"
+"Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
+"Language-Team: Galician <proxecto@trasno.net>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #: gui.py:75
 msgid "En Across/Down"
-msgstr ""
+msgstr "Ca Horitzontal/Vertical"
 
 #: gui.py:101
 msgid "_Word list"
-msgstr ""
+msgstr "_Llista de paraules"
 
 #: gui.py:102
 msgid "_New word list"
-msgstr ""
+msgstr "_Nova llista"
 
 #: gui.py:103
 msgid "Create a new word list or go back to the already open word list"
-msgstr ""
+msgstr "Creï una nova llista de paraules o torni a la llista ja oberta"
 
 #: gui.py:104
 msgid "_Open word list"
-msgstr ""
+msgstr "_Obrir llista de paraules"
 
 #: gui.py:104
 msgid "Open a word list"
-msgstr ""
+msgstr "Obrir una llista de paraules"
 
 #: gui.py:105
 msgid "_Sort word list"
-msgstr ""
+msgstr "_Ordenar una llista"
 
 #: gui.py:106
 msgid "Sort the word list and remove words with non-alphabetic characters"
 msgstr ""
+"Ordenar la llista de paraules i esborrar paraules amb caràcters no "
+"alfanumèrics"
 
 #: gui.py:107
 msgid "Quit"
-msgstr ""
+msgstr "Sortir"
 
 #: gui.py:108
 msgid "_Crossword"
-msgstr ""
+msgstr "_Mots encreuats"
 
 #: gui.py:109
 msgid "_Calculate crossword"
-msgstr ""
+msgstr "_Calcular mots encreuats"
 
 #: gui.py:110
 msgid "Calculate the crossword"
-msgstr ""
+msgstr "Calcula els mots encreuats"
 
 #: gui.py:111
 msgid "_Recalculate"
-msgstr ""
+msgstr "_Recalcular"
 
 #: gui.py:112
 msgid "Increase the grid size and recalculate the crossword"
-msgstr ""
+msgstr "Incrementar la mida de la quadrícula i recalcular els mots encreuats"
 
 #: gui.py:113
 msgid "_Save"
-msgstr ""
+msgstr "_Guardar"
 
 #: gui.py:113
 msgid "Save crossword"
-msgstr ""
+msgstr "Guardar els mots encreuats"
 
 #: gui.py:114 gui.py:115
 msgid "_Help"
-msgstr ""
+msgstr "_Ajuda"
 
 #: gui.py:115
 msgid "Open the help page"
-msgstr ""
+msgstr "Obrir la pàgina d'ajuda"
 
 #: gui.py:116
 msgid "_About"
-msgstr ""
+msgstr "_Sobre"
 
 #: gui.py:116
 msgid "About"
-msgstr ""
+msgstr "Sobre"
 
 #: gui.py:120
 msgid "Anagram clues"
-msgstr ""
+msgstr "Definicions d'anagrames"
 
 #: gui.py:121
 msgid "Choose the grid size"
-msgstr ""
+msgstr "Escollir la mida de la quadrícula"
 
 #: gui.py:202
 msgid "Choose the output language"
-msgstr ""
+msgstr "Esculli l'idioma"
 
 #: gui.py:212
 msgid "Name of crossword"
-msgstr ""
+msgstr "Nom dels mots encreuats"
 
 #: gui.py:213
 msgid "Choose the name of your crossword"
-msgstr ""
+msgstr "Esculli el nom dels seus mots encreuats"
 
 #: gui.py:218
 msgid "Number of words"
-msgstr ""
+msgstr "Nombre de paraules"
 
 #: gui.py:225
 msgid "Choose the number of words you want to use"
-msgstr ""
+msgstr "Esculli el nombre de paraules que vol utilitzar"
 
 #: gui.py:228
 msgid "Grid size"
-msgstr ""
+msgstr "Mida de la quadrícula"
 
 #: gui.py:234
 msgid ""
 "Choose the crossword grid size\n"
 "Go to the Crossword menu to enable this option"
 msgstr ""
+"Esculli la mida de la quadrícula de mots encreuats\n"
+"Anar al menú «Mots encreuats» per permetre aquesta opció"
 
 #: gui.py:268
 msgid "Please choose a file"
-msgstr ""
+msgstr "Esculli un arxiu"
 
 #: gui.py:344
 msgid "Please choose a folder"
-msgstr ""
+msgstr "Esculli una carpeta"
 
 #: gui.py:360
 msgid "Your crossword files have been saved in "
-msgstr ""
+msgstr "Els arxius dels seus mots encreuats s'han guardat a "
 
 #: gui.py:364
 msgid ""
@@ -152,10 +157,13 @@ msgid ""
 "(A4 size pdf, letter size pdf, png or svg).\n"
 "Then click on the Save button again."
 msgstr ""
+"Si us plau, esculli un nom pels seus noms encreuats i el seu format de "
+"sortida (mida A4 pdf, mida carta pdf, png o svg).\n"
+"Després torneu a clicar guardar."
 
 #: gui.py:391
 msgid "A crossword generator"
-msgstr ""
+msgstr "Un generador de mots encreuats"
 
 #: control.py:26
 msgid ""
@@ -164,59 +172,64 @@ msgid ""
 "For further information on how to format the word list file and about the "
 "other options, please consult the man page.\n"
 msgstr ""
+"La llista de paraules conté les paraules i les definicions, o només les "
+"paraules, que vulgui en els seus mots encreuats. \n"
+"Per a més informació sobre com formatar l'arxiu de llistes de paraules i "
+"sobre altres opcions, si us plau, consulti el manual.\n"
 
 #: control.py:64
 msgid "Enter grid size ("
-msgstr ""
+msgstr "Introdueixi la mida de la quadrícula ("
 
 #: control.py:64
 msgid " is the default): "
-msgstr ""
+msgstr "és el predeterminat): "
 
 #: control.py:79
 msgid "Calculating your crossword..."
-msgstr ""
+msgstr "Calculant els seus mots encreuats..."
 
 #: control.py:88
 msgid "Are you happy with this solution? [Y/n] "
-msgstr ""
+msgstr "T'agrada aquesta solució? [S/n] "
 
 #: control.py:89 control.py:92
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: control.py:91
 msgid "And increase the grid size? [Y/n] "
-msgstr ""
+msgstr "I augmentar la mida de la quadrícula? [S/n] "
 
 #: control.py:94
 msgid "Across/Down"
-msgstr ""
+msgstr "Horitzontal/Vertical"
 
 #: control.py:100
 msgid "Crossword generator."
-msgstr ""
+msgstr "Generador de mots encreuats."
 
 #: control.py:101
 msgid "Name of word list file."
-msgstr ""
+msgstr "Nom de l'arxiu de la lista de paraules."
 
 #: control.py:102
 msgid "Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s)."
 msgstr ""
+"Guardar els arxius com pdf en A4 (p), pdf en mida carta, png (n) i/o svg (s)."
 
 #: control.py:103
 msgid "Automated (non-interactive) option."
-msgstr ""
+msgstr "Opció automàtica (no interactiva)."
 
 #: control.py:104
 msgid "Create anagrams for the clues"
-msgstr ""
+msgstr "Crear anagrames per a les definicions"
 
 #: control.py:105
 msgid "Number of words to be used."
-msgstr ""
+msgstr "Nombre de paraules a utilitzar."
 
 #: control.py:106
 msgid "Name of crossword."
-msgstr ""
+msgstr "Nom dels mots encreuats."

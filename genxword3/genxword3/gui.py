@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
@@ -190,12 +188,12 @@ class Genxinterface(Gtk.Window):
         self.grid.attach(lang_combo, 4, 3, 2, 1)
 
     def set_lang_combo(self):
-        lang_list = [[self.default_lang], ['En Across/Down'], ['Fr Horizontalement/Verticalement'],
-                ['Sp Horizontal/Vertical'], ['De Horizontal/Vertikal']]
+        lang_list = [['Ca Horitzontal/Vertical'], ['De Horizontal/Vertikal'], ['En Across/Down'],
+                ['Fr Horizontalement/Verticalement'], ['Sp Horizontal/Vertical']]
         lang_store = Gtk.ListStore(str)
         lang_store.append([self.default_lang])
         for lang in lang_list:
-            if lang == self.default_lang:
+            if lang[0] == self.default_lang:
                 continue
             lang_store.append(lang)
         lang_combo = Gtk.ComboBox.new_with_model(lang_store)
@@ -385,7 +383,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword3-gtk')
-        about.set_version('0.9.6')
+        about.set_version('0.9.7')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments(_('A crossword generator'))
