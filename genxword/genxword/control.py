@@ -19,9 +19,13 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
+import os
 import random
-from gettext import gettext as _
+import gettext
 from . import calculate
+
+base_url = '/usr/share' if os.path.isdir('/usr/share/genxword') else '/usr/local/share'
+_ = gettext.translation('genxword', os.path.join(base_url, 'locale'), fallback=True).ugettext
 
 usage_info = _("""The word list file contains the words and clues, or just words, that you want in your crossword. 
 For further information on how to format the word list file and about the other options, please consult the man page.

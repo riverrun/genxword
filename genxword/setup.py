@@ -29,7 +29,7 @@ os.mkdir('mo')
 for pofile in os.listdir('po'):
     lang = pofile.strip('.po')
     os.mkdir(os.path.join('mo', lang))
-    mofile = os.path.join('mo', lang, '/genxword.mo')
+    mofile = os.path.join('mo', lang, 'genxword.mo')
     subprocess.call('msgfmt {} -o {}'.format(os.path.join('po', pofile), mofile), shell=True)
     lang_files.append(['share/locale/{}/LC_MESSAGES/'.format(lang), [mofile]])
 

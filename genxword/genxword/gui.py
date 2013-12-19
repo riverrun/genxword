@@ -21,9 +21,12 @@
 
 import os
 from gi.repository import Gtk, GtkSource, Pango
-from gettext import gettext as _
+import gettext
 from .control import Genxword
 from . import calculate
+
+base_url = '/usr/share' if os.path.isdir('/usr/share/genxword') else '/usr/local/share'
+_ = gettext.translation('genxword', os.path.join(base_url, 'locale'), fallback=True).ugettext
 
 ui_info = """
 <ui>
@@ -167,7 +170,7 @@ class Genxinterface(Gtk.Window):
         save_bar = Gtk.ButtonBox()
         self.grid.attach(save_bar, 0, 3, 4, 1)
 
-        save_label = Gtk.Label('Save the crossword as')
+        save_label = Gtk.Label(_('Save the crossword as'))
         save_bar.add(save_label)
 
         save_A4 = Gtk.CheckButton('A4 pdf')
@@ -209,7 +212,8 @@ class Genxinterface(Gtk.Window):
 
     def option_buttons(self):
         self.enter_name = Gtk.Entry()
-        self.enter_name.set_text(_('Name of crossword'))
+        self.name_xword = _('Name of crossword')
+        self.enter_name.set_text(self.name_xword)
         self.enter_name.set_tooltip_text(_('Choose the name of your crossword'))
         self.enter_name.set_icon_from_stock(Gtk.EntryIconPosition.SECONDARY, Gtk.STOCK_CLEAR)
         self.enter_name.connect('icon-press', self.entry_cleared)
@@ -341,7 +345,7 @@ class Genxinterface(Gtk.Window):
 
     def save_xword(self, button):
         self.xwordname = self.enter_name.get_text()
-        if self.xwordname != 'Name of crossword' and self.saveformat:
+        if self.xwordname != self.name_xword and self.saveformat:
             dialog = Gtk.FileChooserDialog(_('Please choose a folder'), self,
                 Gtk.FileChooserAction.SELECT_FOLDER,
                 (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
@@ -359,7 +363,7 @@ class Genxinterface(Gtk.Window):
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
             text = _('Your crossword files have been saved in ') + os.getcwd()
-            self.enter_name.set_text('Name of crossword')
+            self.enter_name.set_text(self.name_xword)
             self.buff.set_text('')
         else:
             text = (_('Please fill in the name of the crossword and the format you want it saved in '
@@ -408,12 +412,8 @@ class HelpDialog(Gtk.Dialog):
         self.set_default_size(650, 500)
         self.set_default_response(Gtk.ResponseType.CLOSE)
 
-        try:
-            with open('/usr/share/genxword/help_page') as help_file:
-                text = help_file.read()
-        except:
-            with open('/usr/local/share/genxword/help_page') as help_file:
-                text = help_file.read()
+        with open(os.path.join(base_url, 'genxword', 'help_page')) as help_file:
+            text = help_file.read()
 
         label = Gtk.Label()
         label.set_markup(text)
