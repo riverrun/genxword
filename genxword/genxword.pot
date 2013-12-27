@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-19 17:53+0700\n"
+"POT-Creation-Date: 2013-12-27 11:27+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -171,6 +171,14 @@ msgstr ""
 
 #: gui.py:173
 msgid "Save the crossword as"
+msgstr ""
+
+#: gui.py:176
+msgid "A4 pdf"
+msgstr ""
+
+#: gui.py:180
+msgid "letter pdf"
 msgstr ""
 
 #: gui.py:205

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: genxword\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-19 17:57+0700\n"
-"PO-Revision-Date: 2013-12-19 18:04+0700\n"
+"POT-Creation-Date: 2013-12-27 11:27+0700\n"
+"PO-Revision-Date: 2013-12-27 11:33+0700\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: ca\n"
@@ -35,7 +35,7 @@ msgstr "Introdueixi la mida de la quadrícula ("
 
 #: control.py:66
 msgid " is the default): "
-msgstr "és el predeterminat): "
+msgstr " és el predeterminat): "
 
 #: control.py:81
 msgid "Calculating your crossword..."
@@ -68,7 +68,8 @@ msgstr "Nom de l'arxiu de la lista de paraules."
 #: control.py:104
 msgid "Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s)."
 msgstr ""
-"Guardar els arxius com pdf en A4 (p), pdf en mida carta, png (n) i/o svg (s)."
+"Guardar els arxius com pdf en A4 (p), pdf en mida carta (l), png (n) i/o svg "
+"(s)."
 
 #: control.py:105
 msgid "Automated (non-interactive) option."
@@ -177,9 +178,16 @@ msgid "Choose the grid size"
 msgstr "Escollir la mida de la quadrícula"
 
 #: gui.py:171
-#, fuzzy
 msgid "Save the crossword as"
-msgstr "Guardar els mots encreuats"
+msgstr "Guardar els mots encreuats com"
+
+#: gui.py:174
+msgid "A4 pdf"
+msgstr "pdf en A4"
+
+#: gui.py:178
+msgid "letter pdf"
+msgstr "pdf en mida carta"
 
 #: gui.py:203
 msgid "Choose the output language"

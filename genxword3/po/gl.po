@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: genxword\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-19 17:57+0700\n"
-"PO-Revision-Date: 2013-12-19 18:05+0700\n"
+"POT-Creation-Date: 2013-12-27 11:27+0700\n"
+"PO-Revision-Date: 2013-12-27 11:35+0700\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -178,9 +178,16 @@ msgid "Choose the grid size"
 msgstr "Escolla o tamaño da gradicela"
 
 #: gui.py:171
-#, fuzzy
 msgid "Save the crossword as"
-msgstr "Gardar o encrucillado"
+msgstr "Gardar o encrucillado como"
+
+#: gui.py:174
+msgid "A4 pdf"
+msgstr "pdf en A4"
+
+#: gui.py:178
+msgid "letter pdf"
+msgstr "pdf en tamaño carta"
 
 #: gui.py:203
 msgid "Choose the output language"
@@ -234,7 +241,7 @@ msgid ""
 msgstr ""
 "Encha o nome do encrucillado e o formato no que quere gardalo (pdf tamaño "
 "A4, pdf tamaño carta, png ou svg).\n"
-"A seguir prema no botón Gardar de nuevo."
+"A seguir prema no botón Gardar de novo."
 
 #: gui.py:393
 msgid "A crossword generator"

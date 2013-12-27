@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: genxword\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-19 17:53+0700\n"
-"PO-Revision-Date: 2013-12-19 18:06+0700\n"
+"POT-Creation-Date: 2013-12-27 11:27+0700\n"
+"PO-Revision-Date: 2013-12-27 11:36+0700\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -178,9 +178,16 @@ msgid "Choose the grid size"
 msgstr "Elija el tamaño de la cuadrícula"
 
 #: gui.py:173
-#, fuzzy
 msgid "Save the crossword as"
-msgstr "Guardar el crucigrama"
+msgstr "Guardar el crucigrama como"
+
+#: gui.py:176
+msgid "A4 pdf"
+msgstr "pdf en A4"
+
+#: gui.py:180
+msgid "letter pdf"
+msgstr "pdf en tamaño carta"
 
 #: gui.py:205
 msgid "Choose the output language"

@@ -171,11 +171,11 @@ class Genxinterface(Gtk.Window):
         save_label = Gtk.Label(_('Save the crossword as'))
         save_bar.add(save_label)
 
-        save_A4 = Gtk.CheckButton('A4 pdf')
+        save_A4 = Gtk.CheckButton(_('A4 pdf'))
         save_A4.connect('toggled', self.save_options, 'p')
         save_bar.add(save_A4)
 
-        save_letter = Gtk.CheckButton('letter pdf')
+        save_letter = Gtk.CheckButton(_('letter pdf'))
         save_letter.connect('toggled', self.save_options, 'l')
         save_bar.add(save_letter)
 
@@ -192,7 +192,7 @@ class Genxinterface(Gtk.Window):
 
     def set_lang_combo(self):
         lang_list = [['Ca Horitzontal/Vertical'], ['De Horizontal/Vertikal'], ['En Across/Down'],
-                ['Fr Horizontalement/Verticalement'], ['Sp Horizontal/Vertical']]
+                ['Es Horizontal/Vertical'], ['Fr Horizontalement/Verticalement'], ['Gl Horizontal/Vertical']]
         lang_store = Gtk.ListStore(str)
         lang_store.append([self.default_lang])
         for lang in lang_list:
