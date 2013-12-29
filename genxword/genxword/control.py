@@ -26,8 +26,10 @@ import gettext
 from . import calculate
 
 base_url = '/usr/share' if os.path.isdir('/usr/share/genxword') else '/usr/local/share'
-#_ = gettext.translation('genxword', os.path.join(base_url, 'locale'), fallback=True).ugettext
-gettext.install('genxword', os.path.join(base_url, 'locale'), unicode=True)
+gettext.bindtextdomain('genxword', os.path.join(base_url, 'locale'))
+gettext.bind_textdomain_codeset('genxword', codeset='utf-8')
+gettext.textdomain('genxword')
+_ = gettext.gettext
 
 usage_info = _("""The word list file contains the words and clues, or just words, that you want in your crossword. 
 For further information on how to format the word list file and about the other options, please consult the man page.
