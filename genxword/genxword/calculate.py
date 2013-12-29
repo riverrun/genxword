@@ -243,10 +243,10 @@ class Exportfiles(object):
         self.draw_img(name, context, 28, xoffset, 80, RTL)
         context.restore()
         context.set_source_rgb(0, 0, 0)
-        self.draw_letters(xwname, context, round((width-len(xwname)*10)/2), yoffset/2, 'Sans 18 bold')
+        self.draw_letters(xwname, context, round((width-len(xwname)*10)/2), yoffset/2, 'Sans 14 bold')
         x, y = 36, yoffset+5+(self.rows*px*sc_ratio)
         clues = self.wrap(self.legend(lang))
-        self.draw_letters(lang[0], context, x, y, 'Sans 14 bold')
+        self.draw_letters(lang[0], context, x, y, 'Sans 12 bold')
         for line in clues.splitlines()[3:]:
             if y >= height-(yoffset/2)-15:
                 context.show_page()
@@ -255,7 +255,7 @@ class Exportfiles(object):
                 if self.cols > 17 and y > 700:
                     context.show_page()
                     y = yoffset/2
-                self.draw_letters(lang[1], context, x, y+15, 'Sans 14 bold')
+                self.draw_letters(lang[1], context, x, y+15, 'Sans 12 bold')
                 y += 16
                 continue
             self.draw_letters(line, context, x, y+18, 'Serif 9')
@@ -263,7 +263,7 @@ class Exportfiles(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_format, lang, gtkmode=False, RTL=False):
+    def create_files(self, name, save_format, lang, message='', gtkmode=False, RTL=False):
         if Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
             [i.reverse() for i in self.grid]
             RTL = True
@@ -288,7 +288,7 @@ class Exportfiles(object):
             self.clues_txt(name + '_clues.txt', lang)
             img_files += name + '_clues.txt'
         if not gtkmode:
-            print('The following files have been saved to your current working directory:\n' + img_files)
+            print(message + img_files)
 
     def wrap(self, text, width=80):
         lines = []

@@ -24,7 +24,9 @@ from .control import Genxword
 from . import calculate
 
 base_url = '/usr/share' if os.path.isdir('/usr/share/genxword3') else '/usr/local/share'
-gettext.install('genxword3', os.path.join(base_url, 'locale'))
+gettext.bindtextdomain('genxword3', os.path.join(base_url, 'locale'))
+gettext.textdomain('genxword3')
+_ = gettext.gettext
 
 ui_info = """
 <ui>
@@ -73,7 +75,7 @@ class Genxinterface(Gtk.Window):
         self.saveformat = ''
         self.mixwords = False
         self.gsize = False
-        self.default_lang = _('En Across/Down')
+        self.default_lang = _('Across/Down').split('/')
 
         self.grid = Gtk.Grid()
         self.add(self.grid)
@@ -166,7 +168,7 @@ class Genxinterface(Gtk.Window):
 
     def save_buttons(self):
         save_bar = Gtk.ButtonBox()
-        self.grid.attach(save_bar, 0, 3, 4, 1)
+        self.grid.attach(save_bar, 0, 3, 6, 1)
 
         save_label = Gtk.Label(_('Save the crossword as'))
         save_bar.add(save_label)
@@ -187,27 +189,6 @@ class Genxinterface(Gtk.Window):
         save_svg.connect('toggled', self.save_options, 's')
         save_bar.add(save_svg)
         
-        lang_combo = self.set_lang_combo()
-        self.grid.attach(lang_combo, 4, 3, 2, 1)
-
-    def set_lang_combo(self):
-        lang_list = [['Ca Horitzontal/Vertical'], ['De Horizontal/Vertikal'], ['En Across/Down'],
-                ['Es Horizontal/Vertical'], ['Fr Horizontalement/Verticalement'], ['Gl Horizontal/Vertical']]
-        lang_store = Gtk.ListStore(str)
-        lang_store.append([self.default_lang])
-        for lang in lang_list:
-            if lang[0] == self.default_lang:
-                continue
-            lang_store.append(lang)
-        lang_combo = Gtk.ComboBox.new_with_model(lang_store)
-        lang_combo.set_tooltip_text(_('Choose the output language'))
-        lang_combo.set_active(0)
-        lang_combo.connect('changed', self.lang_changed)
-        renderer = Gtk.CellRendererText()
-        lang_combo.pack_start(renderer, True)
-        lang_combo.add_attribute(renderer, 'text', 0)
-        return lang_combo
-
     def option_buttons(self):
         self.enter_name = Gtk.Entry()
         self.name_xword = _('Name of crossword')
@@ -327,12 +308,6 @@ class Genxinterface(Gtk.Window):
         self.xword_label.set_valign(alignment)
         self.xword_label.set_halign(alignment)
 
-    def lang_changed(self, combo):
-        tree_iter = combo.get_active_iter()
-        if tree_iter:
-            model = combo.get_model()
-            self.default_lang = model[tree_iter][0]
-
     def set_mixwords(self, button):
         self.mixwords = button.get_active()
 
@@ -355,8 +330,7 @@ class Genxinterface(Gtk.Window):
                 return
             dialog.destroy()
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
-            lang = self.default_lang[3:].split('/')
-            exp.create_files(self.xwordname, self.saveformat, lang, True)
+            exp.create_files(self.xwordname, self.saveformat, self.default_lang, True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
             text = _('Your crossword files have been saved in ') + os.getcwd()
@@ -387,7 +361,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword3-gtk')
-        about.set_version('0.9.7')
+        about.set_version('0.9.8')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments(_('A crossword generator'))

@@ -23,7 +23,9 @@ import gettext
 from . import calculate
 
 base_url = '/usr/share' if os.path.isdir('/usr/share/genxword3') else '/usr/local/share'
-gettext.install('genxword3', os.path.join(base_url, 'locale'))
+gettext.bindtextdomain('genxword3', os.path.join(base_url, 'locale'))
+gettext.textdomain('genxword3')
+_ = gettext.gettext
 
 usage_info = _("""The word list file contains the words and clues, or just words, that you want in your crossword. 
 For further information on how to format the word list file and about the other options, please consult the man page.
@@ -93,9 +95,10 @@ class Genxword(object):
                 inc_gsize = input(_('And increase the grid size? [Y/n] '))
                 if inc_gsize.strip() != _('n'):
                     self.nrow += 2;self.ncol += 2
-        lang = _('Across/Down')
+        lang = _('Across/Down').split('/')
+        message = _('The following files have been saved to your current working directory:\n')
         exp = calculate.Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list, '-')
-        exp.create_files(name, saveformat, lang)
+        exp.create_files(name, saveformat, lang, message)
 
 def main():
     import argparse

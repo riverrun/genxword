@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-27 11:27+0700\n"
+"POT-Creation-Date: 2013-12-29 10:38+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: control.py:28
+#: control.py:30
 msgid ""
 "The word list file contains the words and clues, or just words, that you "
 "want in your crossword. \n"
@@ -25,211 +25,208 @@ msgid ""
 "other options, please consult the man page.\n"
 msgstr ""
 
-#: control.py:66
+#: control.py:68
 msgid "Enter grid size ("
 msgstr ""
 
-#: control.py:66
+#: control.py:68
 msgid " is the default): "
 msgstr ""
 
-#: control.py:81
+#: control.py:83
 msgid "Calculating your crossword..."
 msgstr ""
 
-#: control.py:90
+#: control.py:92
 msgid "Are you happy with this solution? [Y/n] "
 msgstr ""
 
-#: control.py:91 control.py:94
+#: control.py:93 control.py:96
 msgid "n"
 msgstr ""
 
-#: control.py:93
+#: control.py:95
 msgid "And increase the grid size? [Y/n] "
 msgstr ""
 
-#: control.py:96
+#: control.py:98 gui.py:78
 msgid "Across/Down"
 msgstr ""
 
-#: control.py:102
-msgid "Crossword generator."
-msgstr ""
-
-#: control.py:103
-msgid "Name of word list file."
-msgstr ""
-
-#: control.py:104
-msgid "Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s)."
+#: control.py:99
+msgid ""
+"The following files have been saved to your current working directory:\n"
 msgstr ""
 
 #: control.py:105
-msgid "Automated (non-interactive) option."
+msgid "Crossword generator."
 msgstr ""
 
 #: control.py:106
-msgid "Create anagrams for the clues"
+msgid "Name of word list file."
 msgstr ""
 
 #: control.py:107
-msgid "Number of words to be used."
+msgid "Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s)."
 msgstr ""
 
 #: control.py:108
+msgid "Automated (non-interactive) option."
+msgstr ""
+
+#: control.py:109
+msgid "Create anagrams for the clues"
+msgstr ""
+
+#: control.py:110
+msgid "Number of words to be used."
+msgstr ""
+
+#: control.py:111
 msgid "Name of crossword."
 msgstr ""
 
-#: gui.py:76
-msgid "En Across/Down"
-msgstr ""
-
-#: gui.py:102
+#: gui.py:104
 msgid "_Word list"
 msgstr ""
 
-#: gui.py:103
+#: gui.py:105
 msgid "_New word list"
 msgstr ""
 
-#: gui.py:104
+#: gui.py:106
 msgid "Create a new word list or go back to the already open word list"
 msgstr ""
 
-#: gui.py:105
+#: gui.py:107
 msgid "_Open word list"
 msgstr ""
 
-#: gui.py:105
+#: gui.py:107
 msgid "Open a word list"
 msgstr ""
 
-#: gui.py:106
+#: gui.py:108
 msgid "_Sort word list"
 msgstr ""
 
-#: gui.py:107
+#: gui.py:109
 msgid "Sort the word list and remove words with non-alphabetic characters"
 msgstr ""
 
-#: gui.py:108
+#: gui.py:110
 msgid "Quit"
 msgstr ""
 
-#: gui.py:109
+#: gui.py:111
 msgid "_Crossword"
 msgstr ""
 
-#: gui.py:110
+#: gui.py:112
 msgid "_Calculate crossword"
 msgstr ""
 
-#: gui.py:111
+#: gui.py:113
 msgid "Calculate the crossword"
 msgstr ""
 
-#: gui.py:112
+#: gui.py:114
 msgid "_Recalculate"
 msgstr ""
 
-#: gui.py:113
+#: gui.py:115
 msgid "Increase the grid size and recalculate the crossword"
 msgstr ""
 
-#: gui.py:114
+#: gui.py:116
 msgid "_Save"
 msgstr ""
 
-#: gui.py:114
+#: gui.py:116
 msgid "Save crossword"
 msgstr ""
 
-#: gui.py:115 gui.py:116
+#: gui.py:117 gui.py:118
 msgid "_Help"
 msgstr ""
 
-#: gui.py:116
+#: gui.py:118
 msgid "Open the help page"
 msgstr ""
 
-#: gui.py:117
+#: gui.py:119
 msgid "_About"
 msgstr ""
 
-#: gui.py:117
+#: gui.py:119
 msgid "About"
 msgstr ""
 
-#: gui.py:121
+#: gui.py:123
 msgid "Anagram clues"
 msgstr ""
 
-#: gui.py:122
+#: gui.py:124
 msgid "Choose the grid size"
 msgstr ""
 
-#: gui.py:171
+#: gui.py:173
 msgid "Save the crossword as"
 msgstr ""
 
-#: gui.py:174
+#: gui.py:176
 msgid "A4 pdf"
 msgstr ""
 
-#: gui.py:178
+#: gui.py:180
 msgid "letter pdf"
 msgstr ""
 
-#: gui.py:203
-msgid "Choose the output language"
-msgstr ""
-
-#: gui.py:213
+#: gui.py:194
 msgid "Name of crossword"
 msgstr ""
 
-#: gui.py:215
+#: gui.py:196
 msgid "Choose the name of your crossword"
 msgstr ""
 
-#: gui.py:220
+#: gui.py:201
 msgid "Number of words"
 msgstr ""
 
-#: gui.py:227
+#: gui.py:208
 msgid "Choose the number of words you want to use"
 msgstr ""
 
-#: gui.py:230
+#: gui.py:211
 msgid "Grid size"
 msgstr ""
 
-#: gui.py:236
+#: gui.py:217
 msgid ""
 "Choose the crossword grid size\n"
 "Go to the Crossword menu to enable this option"
 msgstr ""
 
-#: gui.py:270
+#: gui.py:251
 msgid "Please choose a file"
 msgstr ""
 
-#: gui.py:346
+#: gui.py:321
 msgid "Please choose a folder"
 msgstr ""
 
-#: gui.py:362
+#: gui.py:336
 msgid "Your crossword files have been saved in "
 msgstr ""
 
-#: gui.py:366
+#: gui.py:340
 msgid ""
 "Please fill in the name of the crossword and the format you want it saved in "
 "(A4 size pdf, letter size pdf, png or svg).\n"
 "Then click on the Save button again."
 msgstr ""
 
-#: gui.py:393
+#: gui.py:367
 msgid "A crossword generator"
 msgstr ""

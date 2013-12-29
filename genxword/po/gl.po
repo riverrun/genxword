@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: genxword\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-27 11:27+0700\n"
-"PO-Revision-Date: 2013-12-27 11:37+0700\n"
+"POT-Creation-Date: 2013-12-29 10:37+0700\n"
+"PO-Revision-Date: 2013-12-29 10:44+0700\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: control.py:30
+#: control.py:32
 msgid ""
 "The word list file contains the words and clues, or just words, that you "
 "want in your crossword. \n"
@@ -29,191 +29,188 @@ msgstr ""
 "Para obter máis información de como formatar o ficheiro de listas de "
 "palabras e sobre outras opcións, consulte o manual.\n"
 
-#: control.py:68
+#: control.py:70
 msgid "Enter grid size ("
 msgstr "Escriba o tamaño da gradicela ("
 
-#: control.py:68
+#: control.py:70
 msgid " is the default): "
 msgstr " é o predeterminado): "
 
-#: control.py:83
+#: control.py:85
 msgid "Calculating your crossword..."
 msgstr "Calculando o seu encrucillado..."
 
-#: control.py:92
+#: control.py:94
 msgid "Are you happy with this solution? [Y/n] "
 msgstr "Gústache esta solución? [S/n] "
 
-#: control.py:93 control.py:96
+#: control.py:95 control.py:98
 msgid "n"
 msgstr "n"
 
-#: control.py:95
+#: control.py:97
 msgid "And increase the grid size? [Y/n] "
 msgstr "E aumentar o tamaño da gradicela? [S,n] "
 
-#: control.py:98
+#: control.py:100 gui.py:79
 msgid "Across/Down"
 msgstr "Horizontal/Vertical"
 
-#: control.py:104
+#: control.py:101
+msgid ""
+"The following files have been saved to your current working directory:\n"
+msgstr "Os ficheiros do seu encrucillado foron gardados en :\n"
+
+#: control.py:107
 msgid "Crossword generator."
 msgstr "Xerador de encrucillados."
 
-#: control.py:105
+#: control.py:108
 msgid "Name of word list file."
 msgstr "Nome do ficheiro da lista de palabras."
 
-#: control.py:106
+#: control.py:109
 msgid "Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s)."
 msgstr ""
 "Gardar os ficheiros como pdf en A4 (p), pdf en tamaño carta (l), png (n) e/"
 "ou svg (s)."
 
-#: control.py:107
+#: control.py:110
 msgid "Automated (non-interactive) option."
 msgstr "Opción automática (non interactiva)."
 
-#: control.py:108
+#: control.py:111
 msgid "Create anagrams for the clues"
 msgstr "Crear anagramas para as definicións"
 
-#: control.py:109
+#: control.py:112
 msgid "Number of words to be used."
 msgstr "Número de palabras a usar."
 
-#: control.py:110
+#: control.py:113
 msgid "Name of crossword."
 msgstr "Nome do encrucillado."
 
-#: gui.py:78
-msgid "En Across/Down"
-msgstr "Gl Horizontal/Vertical"
-
-#: gui.py:104
+#: gui.py:105
 msgid "_Word list"
 msgstr "_Lista de palabras"
 
-#: gui.py:105
+#: gui.py:106
 msgid "_New word list"
 msgstr "_Nova lista"
 
-#: gui.py:106
+#: gui.py:107
 msgid "Create a new word list or go back to the already open word list"
 msgstr "Cree unha nova lista de palabras ou volva á lista xa aberta"
 
-#: gui.py:107
+#: gui.py:108
 msgid "_Open word list"
 msgstr "_Abrir lista"
 
-#: gui.py:107
+#: gui.py:108
 msgid "Open a word list"
 msgstr "Abrir unha lista de palabras"
 
-#: gui.py:108
+#: gui.py:109
 msgid "_Sort word list"
 msgstr "_Ordenar unha lista"
 
-#: gui.py:109
+#: gui.py:110
 msgid "Sort the word list and remove words with non-alphabetic characters"
 msgstr ""
 "Ordenar a lista de palabras e retirar as palabras con caracteres non "
 "alfanuméricos"
 
-#: gui.py:110
+#: gui.py:111
 msgid "Quit"
 msgstr "Saír"
 
-#: gui.py:111
+#: gui.py:112
 msgid "_Crossword"
 msgstr "_Encrucillado"
 
-#: gui.py:112
+#: gui.py:113
 msgid "_Calculate crossword"
 msgstr "_Calcular o encrucillado"
 
-#: gui.py:113
+#: gui.py:114
 msgid "Calculate the crossword"
 msgstr "Calcula o encrucillado"
 
-#: gui.py:114
+#: gui.py:115
 msgid "_Recalculate"
 msgstr "_Volver calcular"
 
-#: gui.py:115
+#: gui.py:116
 msgid "Increase the grid size and recalculate the crossword"
 msgstr "Incrementar o tamaño da gradicela e volver calcular o encrucillado"
 
-#: gui.py:116
+#: gui.py:117
 msgid "_Save"
 msgstr "_Gardar"
 
-#: gui.py:116
+#: gui.py:117
 msgid "Save crossword"
 msgstr "Gardar o encrucillado"
 
-#: gui.py:117 gui.py:118
+#: gui.py:118 gui.py:119
 msgid "_Help"
 msgstr "_Axuda"
 
-#: gui.py:118
+#: gui.py:119
 msgid "Open the help page"
 msgstr "Abrir a páxina de axuda"
 
-#: gui.py:119
+#: gui.py:120
 msgid "_About"
 msgstr "_Sobre"
 
-#: gui.py:119
+#: gui.py:120
 msgid "About"
 msgstr "Sobre"
 
-#: gui.py:123
+#: gui.py:124
 msgid "Anagram clues"
 msgstr "Definicións do anagrama"
 
-#: gui.py:124
+#: gui.py:125
 msgid "Choose the grid size"
 msgstr "Escolla o tamaño da gradicela"
 
-#: gui.py:173
+#: gui.py:174
 msgid "Save the crossword as"
 msgstr "Gardar o encrucillado como"
 
-#: gui.py:176
+#: gui.py:177
 msgid "A4 pdf"
 msgstr "pdf en A4"
 
-#: gui.py:180
+#: gui.py:181
 msgid "letter pdf"
 msgstr "pdf en tamaño carta"
 
-#: gui.py:205
-msgid "Choose the output language"
-msgstr "Escolla o idioma"
-
-#: gui.py:215
+#: gui.py:195
 msgid "Name of crossword"
 msgstr "Nome do encrucillado"
 
-#: gui.py:217
+#: gui.py:197
 msgid "Choose the name of your crossword"
 msgstr "Escolla o nome do seu encrucillado"
 
-#: gui.py:222
+#: gui.py:202
 msgid "Number of words"
 msgstr "Número de palabras"
 
-#: gui.py:229
+#: gui.py:209
 msgid "Choose the number of words you want to use"
 msgstr "Escolla o número de palabras que quere usar"
 
-#: gui.py:232
+#: gui.py:212
 msgid "Grid size"
 msgstr "Tamaño da gradicela"
 
-#: gui.py:238
+#: gui.py:218
 msgid ""
 "Choose the crossword grid size\n"
 "Go to the Crossword menu to enable this option"
@@ -221,19 +218,19 @@ msgstr ""
 "Escolla o tamaño de gradicela do encrucillado\n"
 "Vaia ao menú «Encrucillado» para activar esta opción"
 
-#: gui.py:272
+#: gui.py:252
 msgid "Please choose a file"
 msgstr "Escolla un ficheiro"
 
-#: gui.py:349
+#: gui.py:323
 msgid "Please choose a folder"
 msgstr "Escolla un cartafol"
 
-#: gui.py:365
+#: gui.py:338
 msgid "Your crossword files have been saved in "
 msgstr "Os ficheiros do seu encrucillado foron gardados en "
 
-#: gui.py:369
+#: gui.py:342
 msgid ""
 "Please fill in the name of the crossword and the format you want it saved in "
 "(A4 size pdf, letter size pdf, png or svg).\n"
@@ -243,6 +240,12 @@ msgstr ""
 "A4, pdf tamaño carta, png ou svg).\n"
 "A seguir prema no botón Gardar de novo."
 
-#: gui.py:396
+#: gui.py:369
 msgid "A crossword generator"
 msgstr "Un xerador de encrucillados"
+
+#~ msgid "En Across/Down"
+#~ msgstr "Gl Horizontal/Vertical"
+
+#~ msgid "Choose the output language"
+#~ msgstr "Escolla o idioma"
