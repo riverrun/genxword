@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: genxword\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-29 10:38+0700\n"
-"PO-Revision-Date: 2013-12-29 10:42+0700\n"
+"PO-Revision-Date: 2014-01-01 12:28+0700\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -60,7 +60,8 @@ msgstr "Horizontal/Vertical"
 #: control.py:99
 msgid ""
 "The following files have been saved to your current working directory:\n"
-msgstr "Os ficheiros do seu encrucillado foron gardados en :\n"
+msgstr ""
+"Os seguintes ficheiro foron gardados no seu directorio de traballo actual:\n"
 
 #: control.py:105
 msgid "Crossword generator."
@@ -184,11 +185,11 @@ msgstr "Gardar o encrucillado como"
 
 #: gui.py:176
 msgid "A4 pdf"
-msgstr "pdf en A4"
+msgstr "A4 pdf"
 
 #: gui.py:180
 msgid "letter pdf"
-msgstr "pdf en tamaño carta"
+msgstr "carta pdf"
 
 #: gui.py:194
 msgid "Name of crossword"
