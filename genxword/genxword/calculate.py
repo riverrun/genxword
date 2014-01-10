@@ -263,7 +263,7 @@ class Exportfiles(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_format, lang, message='', gtkmode=False, RTL=False):
+    def create_files(self, name, save_format, lang, message, gtkmode=False, RTL=False):
         if Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
             [i.reverse() for i in self.grid]
             RTL = True

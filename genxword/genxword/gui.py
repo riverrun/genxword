@@ -334,7 +334,7 @@ class Genxinterface(Gtk.Window):
                 return
             dialog.destroy()
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
-            exp.create_files(self.xwordname, self.saveformat, self.default_lang, True)
+            exp.create_files(self.xwordname, self.saveformat, self.default_lang, '', True)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
             text = _('Your crossword files have been saved in ') + os.getcwd()
@@ -365,7 +365,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('0.9.8')
+        about.set_version('0.9.9')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments(_('A crossword generator'))
