@@ -1,16 +1,16 @@
 # SOME DESCRIPTIVE TITLE translation for genxword.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the genxword package.
-# Miguel Anxo Bouzada <mbouzada@gmail.com>, 2013.
+# David Whitlock <alovedalongthe@gmail.com>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: genxword\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-29 10:37+0700\n"
-"PO-Revision-Date: 2014-01-03 19:22+0700\n"
-"Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
-"Language-Team: Galician <proxecto@trasno.net>\n"
-"Language: ca\n"
+"PO-Revision-Date: 2014-01-07 18:52+0700\n"
+"Last-Translator: David Whitlock <alovedalongthe@gmail.com>\n"
+"Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: gui.py:108
 msgid "_Open word list"
-msgstr "_Ouvrir liste de mots"
+msgstr "_Ouvrir une liste de mots"
 
 #: gui.py:108
 msgid "Open a word list"
