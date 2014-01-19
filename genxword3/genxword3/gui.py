@@ -281,6 +281,7 @@ class Genxinterface(Gtk.Window):
             gen = Genxword(False, self.mixwords)
             gen.wlist(self.words.splitlines(), nwords)
             self.wlist = gen.word_list
+            self.Thai = gen.Thai
             gen.grid_size(True)
             if self.gsize:
                 gen.check_grid_size(self.choose_gsize.get_text())
@@ -330,7 +331,7 @@ class Genxinterface(Gtk.Window):
                 return
             dialog.destroy()
             exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
-            exp.create_files(self.xwordname, self.saveformat, self.default_lang, '', True)
+            exp.create_files(self.xwordname, self.saveformat, self.default_lang, '', self.Thai)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
             text = _('Your crossword files have been saved in ') + os.getcwd()

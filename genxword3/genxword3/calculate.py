@@ -253,6 +253,7 @@ class Exportfiles(object):
                 if self.cols > 17 and y > 700:
                     context.show_page()
                     y = yoffset/2
+                y += 8
                 self.draw_letters(lang[1], context, x, y+15, 'Sans 12 bold')
                 y += 16
                 continue
@@ -261,10 +262,12 @@ class Exportfiles(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_format, lang, message, gtkmode=False, RTL=False):
-        if Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
+    def create_files(self, name, save_format, lang, message, Thai=False):
+        if not Thai and Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
             [i.reverse() for i in self.grid]
             RTL = True
+        else:
+            RTL = False
         img_files = ''
         if 'p' in save_format:
             self.export_pdf(name, '_grid.pdf', lang, RTL)
@@ -283,9 +286,9 @@ class Exportfiles(object):
             self.create_img(name + '_key.svg', RTL)
             img_files += name + '_grid.svg ' + name + '_key.svg '
         if 'n' in save_format or 's' in save_format:
-            self.clues_txt(name + '_clues.txt', lang)
+            self.clues_txt(name + '_clues.txt', lang, Thai)
             img_files += name + '_clues.txt'
-        if not gtkmode:
+        if message:
             print(message + img_files)
 
     def wrap(self, text, width=80):
@@ -305,10 +308,13 @@ class Exportfiles(object):
             lines.append(' '.join(line))
         return '\n'.join(lines)
 
-    def word_bank(self): 
+    def word_bank(self, Thai): 
         temp_list = list(self.wordlist)
         random.shuffle(temp_list)
-        return 'Word bank\n' + ''.join(['{}\n'.format(word[0]) for word in temp_list])
+        if Thai:
+            return 'Word bank\n' + ''.join(['{}\n'.format(''.join(word[0])) for word in temp_list])
+        else:
+            return 'Word bank\n' + ''.join(['{}\n'.format(word[0]) for word in temp_list])
  
     def legend(self, lang):
         outStrA, outStrD = '\nClues\n{}\n'.format(lang[0]), '{}\n'.format(lang[1])
@@ -319,7 +325,7 @@ class Exportfiles(object):
                 outStrA += '{:d}. {}\n'.format(word[5], word[1])
         return outStrA + outStrD
  
-    def clues_txt(self, name, lang):
+    def clues_txt(self, name, lang, Thai):
         with open(name, 'w') as clues_file:
-            clues_file.write(self.word_bank())
+            clues_file.write(self.word_bank(Thai))
             clues_file.write(self.legend(lang))

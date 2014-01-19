@@ -19,7 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
-#from __future__ import unicode_literals
 import os
 import random
 import gettext
@@ -39,12 +38,29 @@ class Genxword(object):
     def __init__(self, auto=False, mixmode=False):
         self.auto = auto
         self.mixmode = mixmode
+        self.Thai = False
+
+    def thai_set(self):
+        self.Thai = True
+        code_list = [3633, 3636, 3637, 3638, 3639, 3640, 3641, 3655, 3656, 3657, 3658,
+                3659, 3660, 3661, 3662]
+        chars = {unichr(n) for n in code_list}
+        for line in self.word_list:
+            skip = []
+            for letter in line[0]:
+                if letter in chars:
+                    skip[-1] += letter
+                    continue
+                skip.append(letter)
+            line[0] = skip
 
     def wlist(self, infile, nwords=50):
         word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
         self.word_list = [[line[0].upper(), line[-1]] for line in word_list]
+        if 3584 < ord(self.word_list[0][0][0]) < 3676:
+            self.thai_set()
         self.word_list.sort(key=lambda i: len(i[0]), reverse=True)
         if self.mixmode:
             for line in self.word_list:
@@ -83,13 +99,15 @@ class Genxword(object):
                 self.nrow, self.ncol = nrow, ncol
 
     def gengrid(self, name, saveformat):
+        i = 0
         while 1:
             print(_('Calculating your crossword...'))
             calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
             print(calc.compute_crossword())
             if self.auto:
-                if float(len(calc.best_word_list))/len(self.word_list) < 0.9:
+                if float(len(calc.best_word_list))/len(self.word_list) < 0.9 and i < 5:
                     self.nrow += 2; self.ncol += 2
+                    i += 1
                 else:
                     break
             else:
@@ -102,7 +120,7 @@ class Genxword(object):
         lang = _('Across/Down').split('/')
         message = _('The following files have been saved to your current working directory:\n')
         exp = calculate.Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list, '-')
-        exp.create_files(name, saveformat, lang, message)
+        exp.create_files(name, saveformat, lang, message, self.Thai)
 
 def main():
     import argparse
