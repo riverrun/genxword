@@ -34,7 +34,7 @@ for pofile in os.listdir('po'):
 
 setup(
     name = 'genxword3',
-    version = '0.9.9',
+    version = '1.0.1',
     packages = ['genxword3'],
     scripts = ['bin/genxword3', 'bin/genxword3-gtk'],
     data_files = [
