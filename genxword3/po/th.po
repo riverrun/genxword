@@ -1,0 +1,249 @@
+# SOME DESCRIPTIVE TITLE translation for genxword3.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the genxword3 package.
+# David Whitlock <alovedalongthe@gmail.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: genxword3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-29 10:38+0700\n"
+"PO-Revision-Date: 2014-01-21 14:40+0700\n"
+"Last-Translator: David Whitlock <alovedalongthe@gmail.com>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: control.py:30
+msgid ""
+"The word list file contains the words and clues, or just words, that you "
+"want in your crossword. \n"
+"For further information on how to format the word list file and about the "
+"other options, please consult the man page.\n"
+msgstr ""
+"เอกสารรายการคำศัพท์บรรจุคำศัพท์และคำใบ้หรือแค่คำศัพท์ที่คุณต้องการสำหรับปริศนาอักษรไขว้ของคุณ\n"
+" สำหรับข้อมูลที่นอกเหนือจากนี้เกี่ยวกับรูปแบบของเอกสารรายการคำศัพท์หรือเกี่ยวกับตัวเลือกอื่นๆ "
+"กรุณาปรึกษาผู้สร้างเพจ\n"
+
+#: control.py:68
+msgid "Enter grid size ("
+msgstr "ใส่ขนาดอนุกรมของจุดที่จะช่วยวางภาพหรือข้อความในตำแหน่งที่เป็นแนวเดียวกัน ("
+
+#: control.py:68
+msgid " is the default): "
+msgstr "คือค่าที่เลือกอัตโนมัติ):"
+
+#: control.py:83
+msgid "Calculating your crossword..."
+msgstr "กำลังคำนวณปริศนาอักษรไขว้ของคุณ..."
+
+#: control.py:92
+msgid "Are you happy with this solution? [Y/n] "
+msgstr "คุณพึงพอใจกับผลลัพธ์นี้หรือไม่? [ใช่/ไม่]"
+
+#: control.py:93 control.py:96
+msgid "n"
+msgstr "n"
+
+#: control.py:95
+msgid "And increase the grid size? [Y/n] "
+msgstr ""
+"และเพิ่มขนาดอนุกรมของจุดที่จะช่วยวางภาพหรือข้อความในตำแหน่งที่เป็นแนวเดียวกัน? [ใช่/ไม่]"
+
+#: control.py:98 gui.py:78
+msgid "Across/Down"
+msgstr "แนวขวาง/แนวลง"
+
+#: control.py:99
+msgid ""
+"The following files have been saved to your current working directory:\n"
+msgstr "เอกสารเหล่านี้ได้ถูกบันทึกไว้ที่สมุดรายชื่อการทำงานปัจจุบันของคุณแล้ว:\n"
+
+#: control.py:105
+msgid "Crossword generator."
+msgstr "การสร้างปริษนาอักษรไขว้"
+
+#: control.py:106
+msgid "Name of word list file."
+msgstr "ชื่อของรายการเอกสารคำศัพท์"
+
+#: control.py:107
+msgid "Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s)."
+msgstr ""
+"บันทึกเอกสารในรูปแบบของ เอสี่ พีดีเอฟ (p), ขนาดจดหมด พีดีเอฟ (l), พีเอ็นจี (n) และ/หรือ "
+"เอสวีจี (s)"
+
+#: control.py:108
+msgid "Automated (non-interactive) option."
+msgstr "ตัวเลือก ไม่เข้าสู่ระบบ แบบอัตโนมัติ"
+
+#: control.py:109
+msgid "Create anagrams for the clues"
+msgstr "การสร้างการสับเปลี่ยนพยัญชนะของคำหรือวลีเพื่อให้ได้คำหรือวลีใหม่สำหรับใช้ในการบอกใบ้"
+
+#: control.py:110
+msgid "Number of words to be used."
+msgstr "จำนวนของคำศัพท์ที่ถูกใช้"
+
+#: control.py:111
+msgid "Name of crossword."
+msgstr "ชื่อของปริศนาอักษรไขว้"
+
+#: gui.py:104
+msgid "_Word list"
+msgstr "_รายการคำศัพท์"
+
+#: gui.py:105
+msgid "_New word list"
+msgstr "_รายการคำศัพท์ใหม่"
+
+#: gui.py:106
+msgid "Create a new word list or go back to the already open word list"
+msgstr "สร้างรายการคำศัพท์ใหม่หรือกลับไปที่รายการคำศัพท์ที่ได้เปิดไว้อยู่แล้วก่อนหน้านี้"
+
+#: gui.py:107
+msgid "_Open word list"
+msgstr "_เปิดรายการคำศัพท์"
+
+#: gui.py:107
+msgid "Open a word list"
+msgstr "เปิดรายการคำศัพท์หนึ่งคำศัพท์"
+
+#: gui.py:108
+msgid "_Sort word list"
+msgstr "_ประเภทรายการคำศัพท์"
+
+#: gui.py:109
+msgid "Sort the word list and remove words with non-alphabetic characters"
+msgstr "ประเภทรายการคำศัพท์และย้ายคำศัพท์โดยการไม่ใช้สัญลักษณ์ตัวอักษร"
+
+#: gui.py:110
+msgid "Quit"
+msgstr "ล้มเลิก"
+
+#: gui.py:111
+msgid "_Crossword"
+msgstr "_ปริศนาอักษรไขว้"
+
+#: gui.py:112
+msgid "_Calculate crossword"
+msgstr "_คำนวณปริศนาอักษรไขว้"
+
+#: gui.py:113
+msgid "Calculate the crossword"
+msgstr "_คำนวณปริศนาอักษรไขว้นั้น"
+
+#: gui.py:114
+msgid "_Recalculate"
+msgstr "_คำนวนอีกครั้ง"
+
+#: gui.py:115
+msgid "Increase the grid size and recalculate the crossword"
+msgstr "เพิ่มขนาดอนุกรมของจุดที่จะช่วยวางภาพหรือข้อความในตำแหน่งที่เป็นแนวเดียวกันและคำนวณปริศนาอักษรไขว้นั้นอีกครั้ง"
+
+#: gui.py:116
+msgid "_Save"
+msgstr "_บันทึก"
+
+#: gui.py:116
+msgid "Save crossword"
+msgstr "บันทึกปริศนาอักษรไขว้"
+
+#: gui.py:117 gui.py:118
+msgid "_Help"
+msgstr "_ช่วยเหลือ"
+
+#: gui.py:118
+msgid "Open the help page"
+msgstr "เปิดหน้าช่วยเหลือ"
+
+#: gui.py:119
+msgid "_About"
+msgstr "_เกี่ยวกับ"
+
+#: gui.py:119
+msgid "About"
+msgstr "เกี่ยวกับ"
+
+#: gui.py:123
+msgid "Anagram clues"
+msgstr "การสับเปลี่ยนพยัญชนะของคำหรือวลีเพื่อให้ได้คำหรือวลีใหม่สำหรับใช้ในการบอกใบ้"
+
+#: gui.py:124
+msgid "Choose the grid size"
+msgstr "เลือกขนาดของการสับเปลี่ยนพยัญชนะของคำหรือวลีเพื่อให้ได้คำหรือวลีใหม่"
+
+#: gui.py:173
+msgid "Save the crossword as"
+msgstr "บันทึกปริศนาอักษรไขว้ในรูปแบบของ"
+
+#: gui.py:176
+msgid "A4 pdf"
+msgstr "a4 pdf"
+
+#: gui.py:180
+msgid "letter pdf"
+msgstr "letter pdf"
+
+#: gui.py:194
+msgid "Name of crossword"
+msgstr "ชื่อของปริศนาอักษรไขว้"
+
+#: gui.py:196
+msgid "Choose the name of your crossword"
+msgstr "เลือกชื่อสำหรับปริศนาอักษรไขว้ของคุณ"
+
+#: gui.py:201
+msgid "Number of words"
+msgstr "จำนวนของคำศัพท์"
+
+#: gui.py:208
+msgid "Choose the number of words you want to use"
+msgstr "เลือกจำนวนของคำที่คุณต้องการใช้"
+
+#: gui.py:211
+msgid "Grid size"
+msgstr "ขนาดอนุกรมของจุดที่จะช่วยวางภาพหรือข้อความในตำแหน่งที่เป็นแนวเดียวกัน"
+
+#: gui.py:217
+msgid ""
+"Choose the crossword grid size\n"
+"Go to the Crossword menu to enable this option"
+msgstr ""
+"เลือกขนาดอนุกรมของจุดที่จะช่วยวางภาพหรือข้อความในตำแหน่งที่เป็นแนวเดียวกันของปริศนาอักษรไขว้นั้น\n"
+"ไปที่รายการปริศนาอักษรไขว้เพื่อที่จะสามารถใช้ตัวเลือกนี้"
+
+#: gui.py:251
+msgid "Please choose a file"
+msgstr "กรุณาเลือกเอกสาร"
+
+#: gui.py:321
+msgid "Please choose a folder"
+msgstr "กรุณาเลือกแฟ้มเอกสาร"
+
+#: gui.py:336
+msgid "Your crossword files have been saved in "
+msgstr "เอกสารของปริศนาอักษรไขว้ของคุณได้ถูกบันทึกไว้ใน"
+
+#: gui.py:340
+msgid ""
+"Please fill in the name of the crossword and the format you want it saved in "
+"(A4 size pdf, letter size pdf, png or svg).\n"
+"Then click on the Save button again."
+msgstr ""
+"กรุณาใส่ชื่อของปริศนาอักษรไขว้และรูปแบบที่คุณต้องการที่จะบันทึกใน (ขนาดเอสี่ พีดีเอฟ, ขนาดจดหมาย "
+"พีดีเอฟ, พีเอ็นจี หรือ เอสวีจี)\n"
+"หลังจากนั้นให้กดที่ปุ่มบันทึกอีกครั้ง"
+
+#: gui.py:367
+msgid "A crossword generator"
+msgstr "การสร้างปริศนาอักษรไว้"
+
+#~ msgid "En Across/Down"
+#~ msgstr "Fr Horizontalement/Verticalement"
+
+#~ msgid "Choose the output language"
+#~ msgstr "Choisir la langue du mots croisés"
