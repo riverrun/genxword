@@ -41,6 +41,7 @@ class Genxword(object):
         self.Thai = False
 
     def thai_set(self):
+        """Handle Thai (superscript / subscript) characters."""
         self.Thai = True
         code_list = [3633, 3636, 3637, 3638, 3639, 3640, 3641, 3655, 3656, 3657, 3658,
                 3659, 3660, 3661, 3662]
@@ -55,6 +56,7 @@ class Genxword(object):
             line[0] = skip
 
     def wlist(self, infile, nwords=50):
+        """Create a list of words and clues."""
         word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
@@ -67,6 +69,7 @@ class Genxword(object):
                 line[1] = self.word_mixer(line[0].lower())
 
     def word_mixer(self, word):
+        """Create anagrams for the clues."""
         word = orig_word = list(word)
         for i in range(3):
             random.shuffle(word)
@@ -75,6 +78,7 @@ class Genxword(object):
         return ''.join(word)
 
     def grid_size(self, gtkmode=False):
+        """Calculate the default grid size."""
         if len(self.word_list) <= 20:
             self.nrow = self.ncol = 17
         elif len(self.word_list) <= 100:

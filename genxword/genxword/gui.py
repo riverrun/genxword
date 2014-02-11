@@ -135,6 +135,7 @@ class Genxinterface(Gtk.Window):
         return uimanager
 
     def notebk(self):
+        """Set up the word list window and the crossword window."""
         self.notebk_win = Gtk.Notebook()
         self.notebk_win.set_show_tabs(False)
         scrolledwindow = Gtk.ScrolledWindow()
@@ -154,6 +155,7 @@ class Genxinterface(Gtk.Window):
         self.grid.attach(self.notebk_win, 0, 2, 6, 1)
 
     def textview_win(self, wordlist_win):
+        """Create the window for editing the word list."""
         self.textview = GtkSource.View.new()
         self.textview.set_show_line_numbers(True)
         self.textview.set_border_width(6)
@@ -170,6 +172,7 @@ class Genxinterface(Gtk.Window):
         self.buff.set_language(lang)
 
     def save_buttons(self):
+        """Create the checkboxes for the 'Save as...' options."""
         save_bar = Gtk.ButtonBox()
         self.grid.attach(save_bar, 0, 3, 6, 1)
 
@@ -193,6 +196,7 @@ class Genxinterface(Gtk.Window):
         save_bar.add(save_svg)
         
     def option_buttons(self):
+        """Create various option buttons."""
         self.enter_name = Gtk.Entry()
         self.name_xword = _('Name of crossword')
         self.enter_name.set_text(self.name_xword)
@@ -230,6 +234,7 @@ class Genxinterface(Gtk.Window):
         self.unclick_buttons = [uimanager.get_widget(name) for name in unclick_list]
 
     def set_sensitivities(self, value, page=0):
+        """Toggle sensitivity of buttons."""
         for button in self.click_buttons:
             button.set_sensitive(value)
         for button in self.unclick_buttons:
