@@ -24,8 +24,8 @@ import random
 import gettext
 from . import calculate
 
-base_url = '/usr/share' if os.path.isdir('/usr/share/genxword') else '/usr/local/share'
-gettext.bindtextdomain('genxword', os.path.join(base_url, 'locale'))
+base_dir = '/usr/local/share' if 'local' in os.path.split(__file__)[0].split('/') else '/usr/share'
+gettext.bindtextdomain('genxword', os.path.join(base_dir, 'locale'))
 gettext.bind_textdomain_codeset('genxword', codeset='utf-8')
 gettext.textdomain('genxword')
 _ = gettext.gettext

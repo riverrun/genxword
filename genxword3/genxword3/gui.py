@@ -23,8 +23,8 @@ import gettext
 from .control import Genxword
 from . import calculate
 
-base_url = '/usr/share' if os.path.isdir('/usr/share/genxword3') else '/usr/local/share'
-gettext.bindtextdomain('genxword3', os.path.join(base_url, 'locale'))
+base_dir = '/usr/local/share' if 'local' in os.path.split(__file__)[0].split('/') else '/usr/share'
+gettext.bindtextdomain('genxword3', os.path.join(base_dir, 'locale'))
 gettext.textdomain('genxword3')
 _ = gettext.gettext
 
@@ -389,7 +389,7 @@ class HelpDialog(Gtk.Dialog):
         self.set_default_size(650, 500)
         self.set_default_response(Gtk.ResponseType.CLOSE)
 
-        with open(os.path.join(base_url, 'genxword3', 'help_page')) as help_file:
+        with open(os.path.join(base_dir, 'genxword3', 'help_page')) as help_file:
             text = help_file.read()
 
         label = Gtk.Label()
