@@ -1,6 +1,0 @@
-#!/usr/bin/python3
-
-from genxword3 import gui
-
-if __name__ == '__main__':
-    gui.main()

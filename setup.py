@@ -1,6 +1,3 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
-
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
@@ -22,31 +19,54 @@
 
 import os
 import subprocess
-from distutils.core import setup
+from setuptools import setup
+
+with open('README.rst') as f:
+    long_description = f.read()
 
 lang_files = []
-os.mkdir('mo')
 for pofile in os.listdir('po'):
     lang = pofile.strip('.po')
-    os.mkdir(os.path.join('mo', lang))
-    mofile = os.path.join('mo', lang, 'genxword.mo')
+    modir = os.path.join('genxword', 'i18n', lang)
+    if not modir:
+        os.mkdir(modir)
+    mofile = os.path.join(modir, 'genxword.mo')
     subprocess.call('msgfmt {} -o {}'.format(os.path.join('po', pofile), mofile), shell=True)
-    lang_files.append(['share/locale/{}/LC_MESSAGES/'.format(lang), [mofile]])
 
 setup(
     name = 'genxword',
-    version = '1.0.1',
-    packages = ['genxword'],
-    scripts = ['bin/genxword', 'bin/genxword-gtk'],
-    data_files = [
-        ('share/applications', ['genxword-gtk.desktop']),
-        ('share/pixmaps', ['genxword-gtk.png']),
-        ('share/genxword', ['gumby.lang', 'help_page']),
-        ('share/genxword/word_lists', ['word_lists/2000ENwords', 'word_lists/pythonwords']),
-        ] + lang_files,
+    version = '1.0.2',
     author = 'David Whitlock',
     author_email = 'alovedalongthe@gmail.com',
     url = 'https://github.com/riverrun/genxword',
     description = 'A crossword generator',
+    long_description = long_description,
     license = 'GPLv3',
+    packages = ['genxword'],
+    include_package_data = True,
+    zip_safe = False,
+    platforms = 'any',
+    classifiers = [
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: Console',
+        'Environment :: X11 Applications :: GTK',
+        'Intended Audience :: End Users/Desktop',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 2 :: Only',
+        'Topic :: Education',
+        'Topic :: Office/Business',
+    ],
+    entry_points = {
+        'console_scripts': [
+            'genxword = genxword.control:main',
+            ],
+        'gui_scripts': [
+            'genxword-gtk = genxword.gui:main',
+            ]
+        },
 )

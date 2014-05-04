@@ -6,18 +6,18 @@
 # Copyright (C) 2010-2011 Bryan Helmig
 # Copyright (C) 2011-2014 David Whitlock
 #
-# Genxword3 is free software: you can redistribute it and/or modify
+# Genxword is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Genxword3 is distributed in the hope that it will be useful,
+# Genxword is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with genxword3.  If not, see <http://www.gnu.org/licenses/gpl.html>.
+# along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 from gi.repository import Pango, PangoCairo
 import random, time, cairo
@@ -163,6 +163,9 @@ class Exportfiles(object):
         self.grid = grid
         self.wordlist = wordlist
         self.empty = empty
+        if PY2:
+            self.word_bank = self.old_word_bank
+            self.legend = self.old_legend
 
     def order_number_words(self):
         self.wordlist.sort(key=itemgetter(2, 3))
@@ -324,6 +327,25 @@ class Exportfiles(object):
             else:
                 outStrA += '{:d}. {}\n'.format(word[5], word[1])
         return outStrA + outStrD
+
+    def old_word_bank(self, Thai): 
+        temp_list = list(self.wordlist)
+        random.shuffle(temp_list)
+        if Thai:
+            words = 'Word bank\n' + ''.join([u'{}\n'.format(''.join(word[0])) for word in temp_list])
+        else:
+            words = 'Word bank\n' + ''.join([u'{}\n'.format(word[0]) for word in temp_list])
+        return words.encode('utf-8')
+ 
+    def old_legend(self, lang):
+        outStrA, outStrD = '\nClues\n{}\n'.format(lang[0]), '{}\n'.format(lang[1])
+        for word in self.wordlist:
+            if word[4]:
+                outStrD += u'{:d}. {}\n'.format(word[5], word[1])
+            else:
+                outStrA += u'{:d}. {}\n'.format(word[5], word[1])
+        string = outStrA + outStrD
+        return string.encode('utf-8')
  
     def clues_txt(self, name, lang, Thai):
         with open(name, 'w') as clues_file:

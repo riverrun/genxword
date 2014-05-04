@@ -4,29 +4,23 @@
 # Copyright (C) 2010-2011 Bryan Helmig
 # Copyright (C) 2011-2014 David Whitlock
 #
-# Genxword3-gtk is free software: you can redistribute it and/or modify
+# Genxword-gtk is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Genxword3-gtk is distributed in the hope that it will be useful,
+# Genxword-gtk is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with genxword3-gtk.  If not, see <http://www.gnu.org/licenses/gpl.html>.
+# along with genxword-gtk.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import os
 from gi.repository import Gtk, GtkSource, Pango
-import gettext
-from .control import Genxword
+from .control import Genxword, _, PY2, base_dir
 from . import calculate
-
-base_dir = '/usr/local/share' if 'local' in os.path.split(__file__)[0].split('/') else '/usr/share'
-gettext.bindtextdomain('genxword3', os.path.join(base_dir, 'locale'))
-gettext.textdomain('genxword3')
-_ = gettext.gettext
 
 ui_info = """
 <ui>
@@ -68,10 +62,10 @@ ui_info = """
 
 class Genxinterface(Gtk.Window):
     def __init__(self):
-        Gtk.Window.__init__(self, title='genxword3-gtk')
+        Gtk.Window.__init__(self, title='genxword-gtk')
 
         self.set_default_size(650, 600)
-        self.set_default_icon_name('genxword3-gtk')
+        self.set_default_icon_name('genxword-gtk')
         self.saveformat = ''
         self.mixwords = False
         self.gsize = False
@@ -163,7 +157,7 @@ class Genxinterface(Gtk.Window):
 
         manager = GtkSource.LanguageManager()
         path = manager.get_search_path()
-        path.extend(['/usr/share/genxword3', '/usr/local/share/genxword3'])
+        path.append(os.path.join(base_dir, 'data'))
         manager.set_search_path(path)
         lang = manager.get_language('gumby')
         self.buff.set_language(lang)
@@ -274,10 +268,13 @@ class Genxinterface(Gtk.Window):
 
     def sort_wlist(self, button):
         data = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
-        valid = [[word for word in line.split(' ', 1)] for line in data.splitlines() if line.split(' ', 1)[0].isalpha()]
+        if PY2:
+            valid = [[word for word in line.split(' ', 1)] for line
+                    in data.splitlines() if line.split(' ', 1)[0].decode('utf-8', 'ignore').isalpha()]
+        else:
+            valid = [[word for word in line.split(' ', 1)] for line in data.splitlines() if line.split(' ', 1)[0].isalpha()]
         valid.sort(key=lambda i: len(i[0]))
-        output = '\n'.join([' '.join(word) for word in valid])
-        self.buff.set_text(output)
+        self.buff.set_text('\n'.join([' '.join(word) for word in valid]))
 
     def create_xword(self, button):
         if self.calc_first_time:
@@ -355,26 +352,26 @@ class Genxinterface(Gtk.Window):
         dialog.destroy()
 
     def about_dialog(self, button):
-        license = ('Genxword3-gtk is free software: you can redistribute it and/or modify '
+        license = ('Genxword-gtk is free software: you can redistribute it and/or modify '
         'it under the terms of the GNU General Public License as published by '
         'the Free Software Foundation, either version 3 of the License, or '
         '(at your option) any later version.\n\n'
-        'Genxword3-gtk is distributed in the hope that it will be useful, '
+        'Genxword-gtk is distributed in the hope that it will be useful, '
         'but WITHOUT ANY WARRANTY; without even the implied warranty of '
         'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the '
         'GNU General Public License for more details.\n\n'
         'You should have received a copy of the GNU General Public License '
-        'along with genxword3-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
+        'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
-        about.set_program_name('genxword3-gtk')
+        about.set_program_name('genxword-gtk')
         about.set_version('1.0.1')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments(_('A crossword generator'))
         about.set_authors(['David Whitlock <alovedalongthe@gmail.com>', 'Bryan Helmig'])
         about.set_website('https://github.com/riverrun/genxword/wiki/genxword-gtk')
-        about.set_website_label('genxword3-gtk wiki')
-        about.set_logo_icon_name('genxword3-gtk')
+        about.set_website_label('genxword-gtk wiki')
+        about.set_logo_icon_name('genxword-gtk')
         about.run()
         about.destroy()
 
@@ -389,7 +386,7 @@ class HelpDialog(Gtk.Dialog):
         self.set_default_size(650, 500)
         self.set_default_response(Gtk.ResponseType.CLOSE)
 
-        with open(os.path.join(base_dir, 'genxword3', 'help_page')) as help_file:
+        with open(os.path.join(base_dir, 'data', 'help_page')) as help_file:
             text = help_file.read()
 
         label = Gtk.Label()

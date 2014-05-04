@@ -1,6 +1,0 @@
-#!/usr/bin/python3
-
-from genxword3 import control
-
-if __name__ == '__main__':
-    control.main()

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
@@ -20,13 +18,20 @@
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import os
-import random
+import sys
 import gettext
+import random
 from . import calculate
 
-base_dir = '/usr/local/share' if 'local' in os.path.split(__file__)[0].split('/') else '/usr/share'
-gettext.bindtextdomain('genxword', os.path.join(base_dir, 'locale'))
-gettext.bind_textdomain_codeset('genxword', codeset='utf-8')
+PY2 = sys.version_info[0] == 2
+if PY2:
+    input = raw_input
+    chr = unichr
+
+base_dir = os.path.abspath(os.path.dirname(__file__))
+gettext.bindtextdomain('genxword', os.path.join(base_dir, 'i18n'))
+if PY2:
+    gettext.bind_textdomain_codeset('genxword', codeset='utf-8')
 gettext.textdomain('genxword')
 _ = gettext.gettext
 
@@ -45,7 +50,7 @@ class Genxword(object):
         self.Thai = True
         code_list = [3633, 3636, 3637, 3638, 3639, 3640, 3641, 3655, 3656, 3657, 3658,
                 3659, 3660, 3661, 3662]
-        chars = {unichr(n) for n in code_list}
+        chars = {chr(n) for n in code_list}
         for line in self.word_list:
             skip = []
             for letter in line[0]:
@@ -57,7 +62,10 @@ class Genxword(object):
 
     def wlist(self, infile, nwords=50):
         """Create a list of words and clues."""
-        word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
+        if PY2:
+            word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
+        else:
+            word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
         self.word_list = [[line[0].upper(), line[-1]] for line in word_list]
@@ -82,14 +90,14 @@ class Genxword(object):
         if len(self.word_list) <= 20:
             self.nrow = self.ncol = 17
         elif len(self.word_list) <= 100:
-            self.nrow = self.ncol = int((round((len(self.word_list) - 20) / 8.0) * 2) + 19)
+            self.nrow = self.ncol = int((round((len(self.word_list) - 20) / 8) * 2) + 19)
         else:
             self.nrow = self.ncol = 41
         if min(self.nrow, self.ncol) <= len(self.word_list[0][0]):
             self.nrow = self.ncol = len(self.word_list[0][0]) + 2
         if not gtkmode and not self.auto:
             gsize = str(self.nrow) + ', ' + str(self.ncol)
-            grid_size = raw_input(_('Enter grid size (') + gsize + _(' is the default): '))
+            grid_size = input(_('Enter grid size (') + gsize + _(' is the default): '))
             if grid_size:
                 self.check_grid_size(grid_size)
 
@@ -109,16 +117,16 @@ class Genxword(object):
             calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
             print(calc.compute_crossword())
             if self.auto:
-                if float(len(calc.best_word_list))/len(self.word_list) < 0.9 and i < 5:
+                if len(calc.best_word_list)/len(self.word_list) < 0.9 and i < 5:
                     self.nrow += 2; self.ncol += 2
                     i += 1
                 else:
                     break
             else:
-                h = raw_input(_('Are you happy with this solution? [Y/n] '))
+                h = input(_('Are you happy with this solution? [Y/n] '))
                 if h.strip() != _('n'):
                     break
-                inc_gsize = raw_input(_('And increase the grid size? [Y/n] '))
+                inc_gsize = input(_('And increase the grid size? [Y/n] '))
                 if inc_gsize.strip() != _('n'):
                     self.nrow += 2;self.ncol += 2
         lang = _('Across/Down').split('/')
