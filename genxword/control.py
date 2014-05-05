@@ -93,7 +93,7 @@ class Genxword(object):
         if len(self.word_list) <= 20:
             self.nrow = self.ncol = 17
         elif len(self.word_list) <= 100:
-            self.nrow = self.ncol = int((round((len(self.word_list) - 20) / 8) * 2) + 19)
+            self.nrow = self.ncol = int((round((len(self.word_list) - 20) / 8.0) * 2) + 19)
         else:
             self.nrow = self.ncol = 41
         if min(self.nrow, self.ncol) <= len(self.word_list[0][0]):
@@ -120,7 +120,7 @@ class Genxword(object):
             calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
             print(calc.compute_crossword())
             if self.auto:
-                if len(calc.best_word_list)/len(self.word_list) < 0.9 and i < 5:
+                if float(len(calc.best_word_list))/len(self.word_list) < 0.9 and i < 5:
                     self.nrow += 2; self.ncol += 2
                     i += 1
                 else:

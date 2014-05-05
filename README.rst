@@ -7,11 +7,15 @@ A crossword generator
 Description
 -----------
 
-Genxword is a crossword generator written in Python. There are now two
-versions,
+Genxword is a crossword generator written in Python. It works with Python
+2.7 and Python 3. At the moment, it has only been tested on Linux.
+
+There are two versions,
 `genxword-gtk <https://github.com/riverrun/genxword/wiki/genxword-gtk>`__,
 which has a graphical user interface, and genxword, which runs from the
-command line. Both versions create a crossword from a list of words and
+command line.
+
+Both versions create a crossword from a list of words and
 clues. You can save the crossword, with clues, as a pdf file, or you can
 save the empty grid and key in png and/or svg format, together with the
 word bank and clues in a text file.
@@ -30,8 +34,7 @@ Features
 -  When editing the word list, there is an option to sort it, from the
    shortest to the longest word, and remove non-alphabetic characters.
 -  Multiple languages, including right-to-left languages, such as Hebrew
-   and Arabic, are now supported by both the Python2.7 and Python3
-   versions.
+   and Arabic, are now supported.
 
 Use
 ---
@@ -42,9 +45,24 @@ information about how to use genxword.
 Installation
 ------------
 
-Go to the `Installation wiki
-page <https://github.com/riverrun/genxword/wiki/Install-genxword>`__ for
-information about how to download and install genxword.
+To install genxword for Python 3:
+
+::
+
+    pip3 install genxword
+
+To install genxword for Python 2.7:
+
+::
+
+    pip install genxword
+
+Dependencies
+------------
+
+Genxword depends on pycairo (python-cairo), pygobject (python-gobject or python-gi),
+python-gi-cairo (if you are using a Debian-based system) and gtksourceview3
+(gir1.2-gtksource-3.0).
 
 Authors
 -------

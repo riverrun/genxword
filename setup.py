@@ -24,8 +24,9 @@ from setuptools import setup
 with open('README.rst') as f:
     long_description = f.read()
 
-def add_translate():
-    lang_files = []
+def add_data():
+    data_files = [('share/applications', ['extra/genxword-gtk.desktop']),
+            ('share/pixmaps', ['extra/genxword-gtk.png'])]
     if not os.path.isdir('mo'):
         os.mkdir('mo')
     try:
@@ -37,15 +38,15 @@ def add_translate():
                     os.mkdir(modir)
                 mofile = os.path.join(modir, 'genxword.mo')
                 subprocess.call('msgfmt {} -o {}'.format(os.path.join('po', pofile), mofile), shell=True)
-                lang_files.append(['share/locale/{}/LC_MESSAGES/'.format(lang), [mofile]])
-        return lang_files
+                data_files.append(['share/locale/{}/LC_MESSAGES/'.format(lang), [mofile]])
+        return data_files
     except:
         return
 
 if os.name == 'posix':
-    lang_files = add_translate()
+    data_files = add_data()
 else:
-    lang_files = None
+    data_files = None
 
 setup(
     name='genxword',
@@ -58,9 +59,8 @@ setup(
     license='GPLv3',
     packages=['genxword'],
     include_package_data=True,
-    data_files=lang_files,
+    data_files=data_files,
     zip_safe=False,
-    platforms='any',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -69,7 +69,7 @@ setup(
         'Intended Audience :: Developers',
         'Intended Audience :: Education',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Operating System :: OS Independent',
+        'Operating System :: POSIX',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
