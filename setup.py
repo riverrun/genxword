@@ -24,29 +24,44 @@ from setuptools import setup
 with open('README.rst') as f:
     long_description = f.read()
 
-lang_files = []
-for pofile in os.listdir('po'):
-    lang = pofile.strip('.po')
-    modir = os.path.join('genxword', 'i18n', lang)
-    if not modir:
-        os.mkdir(modir)
-    mofile = os.path.join(modir, 'genxword.mo')
-    subprocess.call('msgfmt {} -o {}'.format(os.path.join('po', pofile), mofile), shell=True)
+def add_translate():
+    lang_files = []
+    if not os.path.isdir('mo'):
+        os.mkdir('mo')
+    try:
+        for pofile in os.listdir('po'):
+            if pofile.endswith('po'):
+                lang = pofile.strip('.po')
+                modir = os.path.join('mo', lang)
+                if not os.path.isdir(modir):
+                    os.mkdir(modir)
+                mofile = os.path.join(modir, 'genxword.mo')
+                subprocess.call('msgfmt {} -o {}'.format(os.path.join('po', pofile), mofile), shell=True)
+                lang_files.append(['share/locale/{}/LC_MESSAGES/'.format(lang), [mofile]])
+        return lang_files
+    except:
+        return
+
+if os.name == 'posix':
+    lang_files = add_translate()
+else:
+    lang_files = None
 
 setup(
-    name = 'genxword',
-    version = '1.0.2',
-    author = 'David Whitlock',
-    author_email = 'alovedalongthe@gmail.com',
-    url = 'https://github.com/riverrun/genxword',
-    description = 'A crossword generator',
-    long_description = long_description,
-    license = 'GPLv3',
-    packages = ['genxword'],
-    include_package_data = True,
-    zip_safe = False,
-    platforms = 'any',
-    classifiers = [
+    name='genxword',
+    version='1.0.2',
+    author='David Whitlock',
+    author_email='alovedalongthe@gmail.com',
+    url='https://github.com/riverrun/genxword',
+    description='A crossword generator',
+    long_description=long_description,
+    license='GPLv3',
+    packages=['genxword'],
+    include_package_data=True,
+    data_files=lang_files,
+    zip_safe=False,
+    platforms='any',
+    classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Environment :: X11 Applications :: GTK',
@@ -57,11 +72,11 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 2 :: Only',
+        'Programming Language :: Python :: 3',
         'Topic :: Education',
         'Topic :: Office/Business',
     ],
-    entry_points = {
+    entry_points={
         'console_scripts': [
             'genxword = genxword.control:main',
             ],

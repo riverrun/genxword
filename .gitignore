@@ -1,6 +1,3 @@
-genxword/MANIFEST
-genxword3/MANIFEST
-genxword/dist/
-genxword3/dist/
-genxword/build/
-genxword3/build/
+dist/
+genxword.egg-info/
+mo/

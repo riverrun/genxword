@@ -163,9 +163,6 @@ class Exportfiles(object):
         self.grid = grid
         self.wordlist = wordlist
         self.empty = empty
-        if PY2:
-            self.word_bank = self.old_word_bank
-            self.legend = self.old_legend
 
     def order_number_words(self):
         self.wordlist.sort(key=itemgetter(2, 3))

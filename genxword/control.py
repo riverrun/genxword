@@ -27,9 +27,12 @@ PY2 = sys.version_info[0] == 2
 if PY2:
     input = raw_input
     chr = unichr
+    calculate.Exportfiles.word_bank = calculate.Exportfiles.old_word_bank
+    calculate.Exportfiles.legend = calculate.Exportfiles.old_legend
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
-gettext.bindtextdomain('genxword', os.path.join(base_dir, 'i18n'))
+d = '/usr/local/share' if 'local' in base_dir.split('/') else '/usr/share'
+gettext.bindtextdomain('genxword', os.path.join(d, 'locale'))
 if PY2:
     gettext.bind_textdomain_codeset('genxword', codeset='utf-8')
 gettext.textdomain('genxword')
