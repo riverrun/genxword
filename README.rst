@@ -8,7 +8,7 @@ Description
 -----------
 
 Genxword is a crossword generator written in Python. It works with Python
-2.7 and Python 3. At the moment, it has only been tested on Linux.
+2.7 and Python 3.
 
 There are two versions,
 `genxword-gtk <https://github.com/riverrun/genxword/wiki/genxword-gtk>`__,
@@ -61,8 +61,13 @@ Dependencies
 ------------
 
 Genxword depends on pycairo (python-cairo), pygobject (python-gobject or python-gi),
-python-gi-cairo (if you are using a Debian-based system) and gtksourceview3
-(gir1.2-gtksource-3.0).
+python-gi-cairo (if you are using a Debian-based system), pango (gir1.2-pango-1.0)
+and gtksourceview3 (gir1.2-gtksource-3.0).
+
+Windows users can download theses dependencies from 
+`here <http://sourceforge.net/projects/pygobjectwin32/files/?source=navbar>`__
+When installing python-gobject, you also need to install gtk3, pango, gdk-pixbuf
+and gtksourceview3.
 
 Authors
 -------

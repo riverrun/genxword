@@ -50,7 +50,7 @@ else:
 
 setup(
     name='genxword',
-    version='1.0.2',
+    version='1.0.3',
     author='David Whitlock',
     author_email='alovedalongthe@gmail.com',
     url='https://github.com/riverrun/genxword',
@@ -61,6 +61,7 @@ setup(
     include_package_data=True,
     data_files=data_files,
     zip_safe=False,
+    platforms='any',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -69,7 +70,7 @@ setup(
         'Intended Audience :: Developers',
         'Intended Audience :: Education',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Operating System :: POSIX',
+        'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
