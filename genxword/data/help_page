@@ -1,5 +1,5 @@
-<span font="sans bold 12">genxword3-gtk</span>
-<span font="serif 10">Genxword3-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, or png / svg versions of the crossword grid, together with a text file containing the words and clues. The word list that is used to create the crossword is also saved as a text file.
+<span font="sans bold 12">genxword-gtk</span>
+<span font="serif 10">Genxword-gtk is a crossword generator, which produces pdf (A4 or letter size) versions of the grid and clues, or png / svg versions of the crossword grid, together with a text file containing the words and clues. The word list that is used to create the crossword is also saved as a text file.
 Many different foreign languages, including right-to-left languages, such as Hebrew and Arabic, are also supported.</span>
 
 <span font="sans bold 11">Creating a word list</span>
@@ -16,7 +16,7 @@ or it can be a list or words and clues, like this:
     duck An animal that weighs the same as a witch.
     coconut A fruit that possibly migrates.
 
-As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. The clue is everything after the first space, and when you write the words and clues, the words are automatically highlighted. You can find some example word lists in either the /usr/share/genxword3/word_lists or /usr/local/share/genxword3/word_lists directory.
+As you can see, each word needs to be on a separate line, and there should be a space between each word and its clue. The clue is everything after the first space, and when you write the words and clues, the words are automatically highlighted. You can find some example word lists <a href="https://github.com/riverrun/genxword/tree/master/examples/word_lists">here</a>.
 Clicking the 'Open word list' button, or pressing Control + O, lets you open, and edit, a word list, which needs to be formatted as written above. The word list can be thousands of words long, and the crossword will be created with a set amount of words randomly selected from it. You can select the number of words in the box below.
 If you want to edit the word list more after you have calculated the crossword, you can return to this word list by clicking on the 'new' button again. The word list will be kept in memory until the crossword is saved.
 You can also sort the word list, from shortest to longest, by clicking on 
@@ -58,4 +58,4 @@ For more detailed information, visit the <a href="https://github.com/riverrun/ge
 <span font="serif 10">This program has been developed by David Whitlock, and it is based on a program originally written by Bryan Helmig.</span>
 
 <span font="sans bold 11">License</span>
-<span font="serif 10">Genxword3-gtk is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</span>
+<span font="serif 10">Genxword-gtk is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</span>

@@ -25,11 +25,11 @@ with open('README.rst') as f:
     long_description = f.read()
 
 def add_data():
-    data_files = [('share/applications', ['extra/genxword-gtk.desktop']),
-            ('share/pixmaps', ['extra/genxword-gtk.png'])]
-    if not os.path.isdir('mo'):
-        os.mkdir('mo')
     try:
+        data_files = [('share/applications', ['extra/genxword-gtk.desktop']),
+                ('share/pixmaps', ['extra/genxword-gtk.png'])]
+        if not os.path.isdir('mo'):
+            os.mkdir('mo')
         for pofile in os.listdir('po'):
             if pofile.endswith('po'):
                 lang = pofile.strip('.po')
@@ -50,7 +50,7 @@ else:
 
 setup(
     name='genxword',
-    version='1.0.3',
+    version='1.0.4',
     author='David Whitlock',
     author_email='alovedalongthe@gmail.com',
     url='https://github.com/riverrun/genxword',

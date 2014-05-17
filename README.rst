@@ -64,7 +64,7 @@ Genxword depends on pycairo (python-cairo), pygobject (python-gobject or python-
 python-gi-cairo (if you are using a Debian-based system), pango (gir1.2-pango-1.0)
 and gtksourceview3 (gir1.2-gtksource-3.0).
 
-Windows users can download theses dependencies from 
+Windows users can download these dependencies from 
 `here <http://sourceforge.net/projects/pygobjectwin32/files/?source=navbar>`__
 When installing python-gobject, you also need to install gtk3, pango, gdk-pixbuf
 and gtksourceview3.
