@@ -1,10 +1,10 @@
-# SOME DESCRIPTIVE TITLE translation for genxword3.
+# SOME DESCRIPTIVE TITLE translation for genxword.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the genxword3 package.
+# This file is distributed under the same license as the genxword package.
 # David Whitlock <alovedalongthe@gmail.com>, 2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: genxword3\n"
+"Project-Id-Version: genxword\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-29 10:38+0700\n"
 "PO-Revision-Date: 2014-01-21 14:40+0700\n"

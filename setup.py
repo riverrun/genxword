@@ -50,7 +50,7 @@ else:
 
 setup(
     name='genxword',
-    version='1.0.4',
+    version='1.0.5',
     author='David Whitlock',
     author_email='alovedalongthe@gmail.com',
     url='https://github.com/riverrun/genxword',
