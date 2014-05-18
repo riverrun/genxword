@@ -201,6 +201,7 @@ class Genxinterface(Gtk.Window):
 
         adjustment = Gtk.Adjustment(50, 10, 500, 5, 10, 0)
         self.choose_nwords = Gtk.SpinButton()
+        adjustment.set_value(50)
         self.choose_nwords.set_adjustment(adjustment)
         self.choose_nwords.set_update_policy(Gtk.SpinButtonUpdatePolicy.IF_VALID)
         self.choose_nwords.set_tooltip_text(_('Choose the number of words you want to use'))
@@ -364,7 +365,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('1.0.5')
+        about.set_version('1.0.6')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments(_('A crossword generator'))
