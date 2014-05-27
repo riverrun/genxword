@@ -1,20 +1,19 @@
 # SOME DESCRIPTIVE TITLE translation for genxword.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the genxword package.
-# Miguel Anxo Bouzada <mbouzada@gmail.com>, 2013.
+# Koen Wybo <koen.wybo@telenet.be>, 2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: genxword\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-29 10:38+0700\n"
-"PO-Revision-Date: 2014-05-27 17:57+0700\n"
-"Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
-"Language-Team: Galician <proxecto@trasno.net>\n"
-"Language: ca\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Koen Wybo <koen.wybo@telenet.be>\n"
+"Language-Team: \n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #: control.py:30
@@ -24,25 +23,26 @@ msgid ""
 "For further information on how to format the word list file and about the "
 "other options, please consult the man page.\n"
 msgstr ""
-"L'arxiu conté les definicions, per els seus encreuats. \n"
-"Per a més informació sobre com formatar l'arxiu i sobre altres opcions, si "
-"us plau, consulti el manual.\n"
+"De lijst met woorden bevat ofwel de woorden en de sleutels of enkel de "
+"woorden, die je in je kruiswoordraadsel wenst \n"
+"Aanvullende informatie over de indeling van de woordenlijst en andere opties "
+"vind je terug in de hulp(man)-pagina. \n"
 
 #: control.py:68
 msgid "Enter grid size ("
-msgstr "Introdueix la mida de la quadrícula ("
+msgstr "Voer rastergrootte in ("
 
 #: control.py:68
 msgid " is the default): "
-msgstr " és el predeterminat): "
+msgstr "is de standaardwaarde):"
 
 #: control.py:83
 msgid "Calculating your crossword..."
-msgstr "Calculant els seus encreuats..."
+msgstr "Berekenen van het kruiswoordraadsel..."
 
 #: control.py:92
 msgid "Are you happy with this solution? [Y/n] "
-msgstr "T'agrada aquesta solució? [S/n] "
+msgstr "Ben je tevreden met deze oplossing? [Y/n]"
 
 #: control.py:93 control.py:96
 msgid "n"
@@ -50,134 +50,135 @@ msgstr "n"
 
 #: control.py:95
 msgid "And increase the grid size? [Y/n] "
-msgstr "I augmentar la mida de la quadrícula? [S/n] "
+msgstr "Rasterafmetingen groter maken?[Y/n]"
 
 #: control.py:98 gui.py:78
 msgid "Across/Down"
-msgstr "Horitzontal/Vertical"
+msgstr "Verticaal"
 
 #: control.py:99
 msgid ""
 "The following files have been saved to your current working directory:\n"
-msgstr ""
-"Els següents arxius s'han guardat en el seu directori de treball actual:\n"
+msgstr "Deze bestanden werden opgeslagen in je huidige werkmap:\n"
 
 #: control.py:105
 msgid "Crossword generator."
-msgstr "Generador de encreuats."
+msgstr "Kruiswoordraadsel generator."
 
 #: control.py:106
 msgid "Name of word list file."
-msgstr "Nom de l'arxiu amb la lista de paraules."
+msgstr "Naam van het woordenlijstbestand."
 
 #: control.py:107
 msgid "Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s)."
-msgstr "Guardar els arxius com pdf en mida A4 (p), carta, png (n) i/o svg (s)."
+msgstr ""
+"Bestand opslaan als A4 pdf (p), letter us pdf (l), png (n) en/of svg (s)."
 
 #: control.py:108
 msgid "Automated (non-interactive) option."
-msgstr "Opció automàtica (no interactiva)."
+msgstr "Automatische (niet-interactieve) optie. "
 
 #: control.py:109
 msgid "Create anagrams for the clues"
-msgstr "Crear anagrames per a les definicions"
+msgstr "Aanmaken van anagrammen voor de oplossingen. "
 
 #: control.py:110
 msgid "Number of words to be used."
-msgstr "Nombre de paraules a utilitzar."
+msgstr "Aantal te gebruiken woorden."
 
 #: control.py:111
 msgid "Name of crossword."
-msgstr "Nom dels encreuats."
+msgstr "Naam van het kruiswoordraadsel."
 
 #: gui.py:104
 msgid "_Word list"
-msgstr "_Llista de paraules"
+msgstr "_Woordenlijst"
 
 #: gui.py:105
 msgid "_New word list"
-msgstr "_Nova llista"
+msgstr "_Nieuwe woordenlijst"
 
 #: gui.py:106
 msgid "Create a new word list or go back to the already open word list"
-msgstr "Crea una nova llista de paraules o torna a la llista ja creada"
+msgstr "Maak nieuwe woordenlijst aan of terug naar openstaande woordenlijst"
 
 #: gui.py:107
 msgid "_Open word list"
-msgstr "_Crear llista de paraules"
+msgstr "_Open woordenlijst"
 
 #: gui.py:107
 msgid "Open a word list"
-msgstr "Crear una llista de paraules"
+msgstr "Open een nieuwe woordenlijst"
 
 #: gui.py:108
 msgid "_Sort word list"
-msgstr "_Ordenar una llista"
+msgstr "_Sorteer woordenlijst"
 
 #: gui.py:109
 msgid "Sort the word list and remove words with non-alphabetic characters"
 msgstr ""
-"Ordenar la llista de paraules i treure paraules amb caràcters no alfabètics"
+"Sorteer de woordenlijst en verwijder woorden met niet-alfabetische "
+"karakters. "
 
 #: gui.py:110
 msgid "Quit"
-msgstr "Sortir"
+msgstr "Afsluiten"
 
 #: gui.py:111
 msgid "_Crossword"
-msgstr "_Encreuats"
+msgstr "_Kruiswoordraadsel"
 
 #: gui.py:112
 msgid "_Calculate crossword"
-msgstr "_Calcular encreuats"
+msgstr "_Bereken kruiswoordraadsel"
 
 #: gui.py:113
 msgid "Calculate the crossword"
-msgstr "Calcula els encreuats"
+msgstr "Bereken kruiswoordraadsel"
 
 #: gui.py:114
 msgid "_Recalculate"
-msgstr "_Recalcular"
+msgstr "_Herbereken"
 
 #: gui.py:115
 msgid "Increase the grid size and recalculate the crossword"
-msgstr "Incrementar la mida de la quadrícula i recalcular els encreuats"
+msgstr "Vergroot de rastergrootte en herbereken het kruiswoordraadsel"
 
 #: gui.py:116
 msgid "_Save"
-msgstr "_Guardar"
+msgstr "_Opslaan"
 
 #: gui.py:116
 msgid "Save crossword"
-msgstr "Guardar els encreuats"
+msgstr "Sla kruiswoordraadsel op"
 
 #: gui.py:117 gui.py:118
 msgid "_Help"
-msgstr "_Ajuda"
+msgstr "_Help"
 
 #: gui.py:118
 msgid "Open the help page"
-msgstr "Obrir la pàgina d'ajuda"
+msgstr "Open de helppagina"
 
 #: gui.py:119
 msgid "_About"
-msgstr "_Sobre"
+msgstr "_Over"
 
 #: gui.py:119
 msgid "About"
-msgstr "Sobre"
+msgstr "Over..."
 
 #: gui.py:123
 msgid "Anagram clues"
-msgstr "Definicions d'anagrames"
+msgstr "Anagram sleutels"
 
 #: gui.py:124
 msgid "Choose the grid size"
-msgstr "Escollir la mida de la quadrícula"
+msgstr "Kies de rastergrootte"
 
 #: gui.py:173
 msgid "Save the crossword as"
-msgstr "Guardar els encreuats com"
+msgstr "Sla kruiswoordraadsel op als"
 
 #: gui.py:176
 msgid "A4 pdf"
@@ -185,47 +186,47 @@ msgstr "A4 pdf"
 
 #: gui.py:180
 msgid "letter pdf"
-msgstr "carta pdf"
+msgstr "Letter (us) pdf"
 
 #: gui.py:194
 msgid "Name of crossword"
-msgstr "Nom dels encreuats"
+msgstr "Naam kruiswoordraadsel"
 
 #: gui.py:196
 msgid "Choose the name of your crossword"
-msgstr "Escull el nom dels seus encreuats"
+msgstr "Kies de naam van het kruiswoordraadsel"
 
 #: gui.py:201
 msgid "Number of words"
-msgstr "Nombre de paraules"
+msgstr "Aantal woorden"
 
 #: gui.py:208
 msgid "Choose the number of words you want to use"
-msgstr "Escull el nombre de paraules"
+msgstr "Kies het aantal woorden die je wenst te gebruiken"
 
 #: gui.py:211
 msgid "Grid size"
-msgstr "Mida de la quadrícula"
+msgstr "Rastergrootte"
 
 #: gui.py:217
 msgid ""
 "Choose the crossword grid size\n"
 "Go to the Crossword menu to enable this option"
 msgstr ""
-"Escull la mida de la quadrícula dels encreuats\n"
-"Anar al menú «Encreuats» per permetre aquesta opció"
+"Kies de rastergrootte \n"
+"Ga naar het kruiswoordraadselmenu om deze optie te activeren. "
 
 #: gui.py:251
 msgid "Please choose a file"
-msgstr "Escull un arxiu"
+msgstr "Selecteer bestand"
 
 #: gui.py:321
 msgid "Please choose a folder"
-msgstr "Escull una carpeta"
+msgstr "Selecteer een map"
 
 #: gui.py:336
 msgid "Your crossword files have been saved in "
-msgstr "Els arxius dels teus encreuats s'han guardat a "
+msgstr "De kruiswoordraadselbestanden zijn opgeslagen in"
 
 #: gui.py:340
 msgid ""
@@ -233,16 +234,10 @@ msgid ""
 "(A4 size pdf, letter size pdf, png or svg).\n"
 "Then click on the Save button again."
 msgstr ""
-"Si us plau, escull un nom i un format de sortida (pdf mida A4 o carta, png o "
-"svg) pels teus encreuats.\n"
-"Després torna a clicar guardar."
+"Vul de naam van het kruiswoordraadsel in en het bestandstype om in op te "
+"slaan (A4 pdf, letter (us) pdf, png of svg). \n"
+"Klik opnieuw op de opslaan-knop."
 
 #: gui.py:367
 msgid "A crossword generator"
-msgstr "Un generador de mots encreuats"
-
-#~ msgid "En Across/Down"
-#~ msgstr "Ca Horitzontal/Vertical"
-
-#~ msgid "Choose the output language"
-#~ msgstr "Escull l'idioma"
+msgstr "Een kruiswoordraadsel generator"
