@@ -54,7 +54,7 @@ msgstr "Rasterafmetingen groter maken?[Y/n]"
 
 #: control.py:98 gui.py:78
 msgid "Across/Down"
-msgstr "Verticaal"
+msgstr "Horizontaal/Verticaal"
 
 #: control.py:99
 msgid ""
