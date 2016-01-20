@@ -1,3 +1,6 @@
 dist/
 genxword.egg-info/
 mo/
+.DS_Store
+*.pdf
+build/
