@@ -21,6 +21,7 @@ import os
 import sys
 import gettext
 import random
+import re
 from . import calculate
 
 PY2 = sys.version_info[0] == 2
@@ -38,9 +39,46 @@ if PY2:
 gettext.textdomain('genxword')
 _ = gettext.gettext
 
-usage_info = _("""The word list file contains the words and clues, or just words, that you want in your crossword. 
+usage_info = _("""The word list file contains the words and clues, or just words, that you want in your crossword.
 For further information on how to format the word list file and about the other options, please consult the man page.
 """)
+
+class ComplexString(object):
+    def __init__(self, text):
+        self.text = text
+        self.blocks = []
+
+        # include accents and vowel signs of scripts
+        # Latin, Devanagari/Hindi, Burmese/Myanmar, Tamil, Bengali
+        accents_and_vowels = ur"[:\u0300-\u036F\u0902\u093E-\u0944\u0947\u0948\u094B\u094C\u0962\u0963\u0981\u09BC\u09BE-\u09C4\u09C7\u09C8\u09CB\u09CC\u09D7\u09E2\u09E3\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD7\u102B-\u1032\u1036-\u1038\u103A-\u103E\u1056-\u1059\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]"
+
+        combo_characters = ur"[:\u094D\u09CD\u1039]"
+
+        while len(text) > 0:
+            result = re.search(text[0] + "(?:" + accents_and_vowels + "+)?" + "(" + combo_characters + "\\W(" + accents_and_vowels + ")?)?", text)
+            block = text[result.start() : result.end()]
+            self.blocks.append(block)
+            text = text[len(block):]
+
+    def first(self):
+        # return the first character, if this had been a string
+        return self.text[0]
+
+    def upper(self):
+        return self.text.upper()
+
+    def lower(self):
+        return self.text.lower()
+
+    def __str__(self):
+        return self.text
+
+    def __iter__(self):
+        for block in self.blocks:
+            yield block
+
+    def __len__(self):
+        return len(self.blocks)
 
 class Genxword(object):
     def __init__(self, auto=False, mixmode=False):
@@ -71,9 +109,11 @@ class Genxword(object):
             word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
-        self.word_list = [[line[0].upper(), line[-1]] for line in word_list]
-        if 3584 < ord(self.word_list[0][0][0]) < 3676:
+        self.word_list = [[ComplexString(line[0].upper()), line[-1]] for line in word_list]
+        if 3584 < ord(word_list[0][0][0]) < 3676:
             self.thai_set()
+        #elif 4096 < ord(self.word_list[0][0][0])) < 4256:
+        #    self.unicode_set()
         self.word_list.sort(key=lambda i: len(i[0]), reverse=True)
         if self.mixmode:
             for line in self.word_list:

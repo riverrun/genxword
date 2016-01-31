@@ -52,7 +52,7 @@ class Crossword(object):
                 self.best_grid = list(self.grid)
             if len(self.best_word_list) == wordlist_length:
                 break
-        answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
+        answer = '\n'.join([''.join([u"{} ".format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
         return answer + '\n\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
  
     def get_coords(self, word):
@@ -263,7 +263,7 @@ class Exportfiles(object):
         surface.finish()
 
     def create_files(self, name, save_format, lang, message, Thai=False):
-        if not Thai and Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
+        if not Thai and Pango.find_base_dir(self.wordlist[0][0].first(), -1) == Pango.Direction.RTL:
             [i.reverse() for i in self.grid]
             RTL = True
         else:
