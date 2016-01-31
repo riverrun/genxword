@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011-2015 David Whitlock
+# Copyright (C) 2011-2016 David Whitlock
 #
 # Genxword is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,19 +18,23 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
+from __future__ import unicode_literals
 import os
 import sys
 import gettext
 import random
 import re
-from . import calculate
+from .calculate import Crossword, Exportfiles
 
 PY2 = sys.version_info[0] == 2
 if PY2:
     input = raw_input
     chr = unichr
-    calculate.Exportfiles.word_bank = calculate.Exportfiles.old_word_bank
-    calculate.Exportfiles.legend = calculate.Exportfiles.old_legend
+    Exportfiles.word_bank = Exportfiles.old_word_bank
+    Exportfiles.legend = Exportfiles.old_legend
+    from .complexstring2 import ComplexString
+else:
+    from .complexstring import ComplexString
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 d = '/usr/local/share' if 'local' in base_dir.split('/') else '/usr/share'
@@ -43,77 +48,20 @@ usage_info = _("""The word list file contains the words and clues, or just words
 For further information on how to format the word list file and about the other options, please consult the man page.
 """)
 
-class ComplexString(object):
-    def __init__(self, text):
-        self.text = text
-        self.blocks = []
-
-        # include accents and vowel signs of scripts
-        # Latin, Devanagari/Hindi, Burmese/Myanmar, Tamil, Bengali
-        accents_and_vowels = ur"[:\u0300-\u036F\u0902\u093E-\u0944\u0947\u0948\u094B\u094C\u0962\u0963\u0981\u09BC\u09BE-\u09C4\u09C7\u09C8\u09CB\u09CC\u09D7\u09E2\u09E3\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD7\u102B-\u1032\u1036-\u1038\u103A-\u103E\u1056-\u1059\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]"
-
-        combo_characters = ur"[:\u094D\u09CD\u1039]"
-
-        while len(text) > 0:
-            result = re.search(text[0] + "(?:" + accents_and_vowels + "+)?" + "(" + combo_characters + "\\W(" + accents_and_vowels + ")?)?", text)
-            block = text[result.start() : result.end()]
-            self.blocks.append(block)
-            text = text[len(block):]
-
-    def first(self):
-        # return the first character, if this had been a string
-        return self.text[0]
-
-    def upper(self):
-        return self.text.upper()
-
-    def lower(self):
-        return self.text.lower()
-
-    def __str__(self):
-        return self.text
-
-    def __iter__(self):
-        for block in self.blocks:
-            yield block
-
-    def __len__(self):
-        return len(self.blocks)
-
 class Genxword(object):
     def __init__(self, auto=False, mixmode=False):
         self.auto = auto
         self.mixmode = mixmode
-        self.Thai = False
-
-    def thai_set(self):
-        """Handle Thai (superscript / subscript) characters."""
-        self.Thai = True
-        code_list = [3633, 3636, 3637, 3638, 3639, 3640, 3641, 3655, 3656, 3657, 3658,
-                3659, 3660, 3661, 3662]
-        chars = {chr(n) for n in code_list}
-        for line in self.word_list:
-            skip = []
-            for letter in line[0]:
-                if letter in chars:
-                    skip[-1] += letter
-                    continue
-                skip.append(letter)
-            line[0] = skip
 
     def wlist(self, infile, nwords=50):
         """Create a list of words and clues."""
-        if PY2:
-            word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
-        else:
-            word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
+        #if PY2:
+            #word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
+        #else:
+        word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
         self.word_list = [[ComplexString(line[0].upper()), line[-1]] for line in word_list]
-        if 3584 < ord(word_list[0][0][0]) < 3676:
-            self.thai_set()
-        #elif 4096 < ord(self.word_list[0][0][0])) < 4256:
-        #    self.unicode_set()
         self.word_list.sort(key=lambda i: len(i[0]), reverse=True)
         if self.mixmode:
             for line in self.word_list:
@@ -157,7 +105,7 @@ class Genxword(object):
         i = 0
         while 1:
             print(_('Calculating your crossword...'))
-            calc = calculate.Crossword(self.nrow, self.ncol, '-', self.word_list)
+            calc = Crossword(self.nrow, self.ncol, '-', self.word_list)
             print(calc.compute_crossword())
             if self.auto:
                 if float(len(calc.best_word_list))/len(self.word_list) < 0.9 and i < 5:
@@ -174,8 +122,8 @@ class Genxword(object):
                     self.nrow += 2;self.ncol += 2
         lang = _('Across/Down').split('/')
         message = _('The following files have been saved to your current working directory:\n')
-        exp = calculate.Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list, '-')
-        exp.create_files(name, saveformat, lang, message, self.Thai)
+        exp = Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list, '-')
+        exp.create_files(name, saveformat, lang, message)
 
 def main():
     import argparse

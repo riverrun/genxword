@@ -4,7 +4,7 @@
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011-2015 David Whitlock
+# Copyright (C) 2011-2016 David Whitlock
 #
 # Genxword is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -52,7 +52,8 @@ class Crossword(object):
                 self.best_grid = list(self.grid)
             if len(self.best_word_list) == wordlist_length:
                 break
-        answer = '\n'.join([''.join([u"{} ".format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
+        answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
+        #answer = '\n'.join([''.join([u'{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
         return answer + '\n\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
  
     def get_coords(self, word):
@@ -262,8 +263,8 @@ class Exportfiles(object):
         context.show_page()
         surface.finish()
 
-    def create_files(self, name, save_format, lang, message, Thai=False):
-        if not Thai and Pango.find_base_dir(self.wordlist[0][0].first(), -1) == Pango.Direction.RTL:
+    def create_files(self, name, save_format, lang, message):
+        if Pango.find_base_dir(self.wordlist[0][0], -1) == Pango.Direction.RTL:
             [i.reverse() for i in self.grid]
             RTL = True
         else:
@@ -286,7 +287,7 @@ class Exportfiles(object):
             self.create_img(name + '_key.svg', RTL)
             img_files += name + '_grid.svg ' + name + '_key.svg '
         if 'n' in save_format or 's' in save_format:
-            self.clues_txt(name + '_clues.txt', lang, Thai)
+            self.clues_txt(name + '_clues.txt', lang)
             img_files += name + '_clues.txt'
         if message:
             print(message + img_files)
@@ -308,13 +309,10 @@ class Exportfiles(object):
             lines.append(' '.join(line))
         return '\n'.join(lines)
 
-    def word_bank(self, Thai): 
+    def word_bank(self): 
         temp_list = list(self.wordlist)
         random.shuffle(temp_list)
-        if Thai:
-            return 'Word bank\n' + ''.join(['{}\n'.format(''.join(word[0])) for word in temp_list])
-        else:
-            return 'Word bank\n' + ''.join(['{}\n'.format(word[0]) for word in temp_list])
+        return 'Word bank\n' + ''.join(['{}\n'.format(word[0]) for word in temp_list])
  
     def legend(self, lang):
         outStrA, outStrD = '\nClues\n{}\n'.format(lang[0]), '{}\n'.format(lang[1])
@@ -325,13 +323,10 @@ class Exportfiles(object):
                 outStrA += '{:d}. {}\n'.format(word[5], word[1])
         return outStrA + outStrD
 
-    def old_word_bank(self, Thai): 
+    def old_word_bank(self): 
         temp_list = list(self.wordlist)
         random.shuffle(temp_list)
-        if Thai:
-            words = 'Word bank\n' + ''.join([u'{}\n'.format(''.join(word[0])) for word in temp_list])
-        else:
-            words = 'Word bank\n' + ''.join([u'{}\n'.format(word[0]) for word in temp_list])
+        words = 'Word bank\n' + ''.join([u'{}\n'.format(word[0]) for word in temp_list])
         return words.encode('utf-8')
  
     def old_legend(self, lang):
@@ -344,7 +339,7 @@ class Exportfiles(object):
         string = outStrA + outStrD
         return string.encode('utf-8')
  
-    def clues_txt(self, name, lang, Thai):
+    def clues_txt(self, name, lang):
         with open(name, 'w') as clues_file:
-            clues_file.write(self.word_bank(Thai))
+            clues_file.write(self.word_bank())
             clues_file.write(self.legend(lang))
