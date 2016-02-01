@@ -79,7 +79,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'genxword = genxword.control:main',
+            'genxword = genxword.cli:main',
             ],
         'gui_scripts': [
             'genxword-gtk = genxword.gui:main',
