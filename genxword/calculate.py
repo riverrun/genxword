@@ -23,7 +23,7 @@ from gi.repository import Pango, PangoCairo
 import random, time, cairo
 from operator import itemgetter
 from collections import defaultdict
- 
+
 class Crossword(object):
     def __init__(self, rows, cols, empty=' ', available_words=[]):
         self.rows = rows
@@ -52,8 +52,8 @@ class Crossword(object):
                 self.best_grid = list(self.grid)
             if len(self.best_word_list) == wordlist_length:
                 break
-        answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
-        #answer = '\n'.join([''.join([u'{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
+        #answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
+        answer = '\n'.join([''.join([u'{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
         return answer + '\n\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
  
     def get_coords(self, word):
@@ -312,34 +312,24 @@ class Exportfiles(object):
     def word_bank(self): 
         temp_list = list(self.wordlist)
         random.shuffle(temp_list)
-        return 'Word bank\n' + ''.join(['{}\n'.format(word[0]) for word in temp_list])
+        return 'Word bank\n' + ''.join([u'{}\n'.format(word[0]) for word in temp_list])
  
     def legend(self, lang):
-        outStrA, outStrD = '\nClues\n{}\n'.format(lang[0]), '{}\n'.format(lang[1])
-        for word in self.wordlist:
-            if word[4]:
-                outStrD += '{:d}. {}\n'.format(word[5], word[1])
-            else:
-                outStrA += '{:d}. {}\n'.format(word[5], word[1])
-        return outStrA + outStrD
-
-    def old_word_bank(self): 
-        temp_list = list(self.wordlist)
-        random.shuffle(temp_list)
-        words = 'Word bank\n' + ''.join([u'{}\n'.format(word[0]) for word in temp_list])
-        return words.encode('utf-8')
- 
-    def old_legend(self, lang):
-        outStrA, outStrD = '\nClues\n{}\n'.format(lang[0]), '{}\n'.format(lang[1])
+        outStrA, outStrD = u'\nClues\n{}\n'.format(lang[0]), u'{}\n'.format(lang[1])
         for word in self.wordlist:
             if word[4]:
                 outStrD += u'{:d}. {}\n'.format(word[5], word[1])
             else:
                 outStrA += u'{:d}. {}\n'.format(word[5], word[1])
-        string = outStrA + outStrD
-        return string.encode('utf-8')
- 
+        return outStrA + outStrD
+
     def clues_txt(self, name, lang):
         with open(name, 'w') as clues_file:
+            clues_file.write(self.word_bank())
+            clues_file.write(self.legend(lang))
+
+    def old_clues_txt(self, name, lang):
+        import codecs
+        with codecs.open(name, 'w', encoding='utf-8') as clues_file:
             clues_file.write(self.word_bank())
             clues_file.write(self.legend(lang))

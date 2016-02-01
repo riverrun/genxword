@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
@@ -18,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
-from __future__ import unicode_literals
 import os
 import sys
 import gettext
@@ -28,11 +26,12 @@ from .calculate import Crossword, Exportfiles
 
 PY2 = sys.version_info[0] == 2
 if PY2:
-    input = raw_input
-    chr = unichr
-    Exportfiles.word_bank = Exportfiles.old_word_bank
-    Exportfiles.legend = Exportfiles.old_legend
+    import codecs
+    from functools import partial
     from .complexstring2 import ComplexString
+    input = raw_input
+    open = partial(codecs.open, encoding='utf-8')
+    Exportfiles.clues_txt = Exportfiles.old_clues_txt
 else:
     from .complexstring import ComplexString
 
@@ -55,10 +54,8 @@ class Genxword(object):
 
     def wlist(self, infile, nwords=50):
         """Create a list of words and clues."""
-        #if PY2:
-            #word_list = [line.decode('utf-8', 'ignore').strip().split(' ', 1) for line in infile if line.strip()]
-        #else:
-        word_list = [line.strip().split(' ', 1) for line in infile if line.strip()]
+        with open(infile) as f:
+            word_list = [line.strip().split(' ', 1) for line in f if line.strip()]
         if len(word_list) > nwords:
             word_list = random.sample(word_list, nwords)
         self.word_list = [[ComplexString(line[0].upper()), line[-1]] for line in word_list]
@@ -128,7 +125,7 @@ class Genxword(object):
 def main():
     import argparse
     parser = argparse.ArgumentParser(description=_('Crossword generator.'), prog='genxword', epilog=usage_info)
-    parser.add_argument('infile', type=argparse.FileType('r'), help=_('Name of word list file.'))
+    parser.add_argument('infile', help=_('Name of word list file.'))
     parser.add_argument('saveformat', help=_('Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s).'))
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help=_('Automated (non-interactive) option.'))
     parser.add_argument('-m', '--mix', dest='mixmode', action='store_true', help=_('Create anagrams for the clues'))

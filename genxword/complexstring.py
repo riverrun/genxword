@@ -1,3 +1,22 @@
+# Authors: David Whitlock <alovedalongthe@gmail.com>, Bryan Helmig
+# Crossword generator that outputs the grid and clues as a pdf file and/or
+# the grid in png/svg format with a text file containing the words and clues.
+# Copyright (C) 2010-2011 Bryan Helmig
+# Copyright (C) 2011-2016 David Whitlock
+#
+# Genxword is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Genxword is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
+
 class ComplexString(str):
     accents = [768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781,
             782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795,
