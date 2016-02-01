@@ -55,13 +55,13 @@ class Genxword(object):
     def wlist(self, infile, nwords=50):
         """Create a list of words and clues."""
         with open(infile) as f:
-            word_list = [line.strip().split(' ', 1) for line in f if line.strip()]
-        if len(word_list) > nwords:
-            word_list = random.sample(word_list, nwords)
-        self.word_list = [[ComplexString(line[0].upper()), line[-1]] for line in word_list]
-        self.word_list.sort(key=lambda i: len(i[0]), reverse=True)
+            wordlist = [line.strip().split(' ', 1) for line in f if line.strip()]
+        if len(wordlist) > nwords:
+            wordlist = random.sample(wordlist, nwords)
+        self.wordlist = [[ComplexString(line[0].upper()), line[-1]] for line in wordlist]
+        self.wordlist.sort(key=lambda i: len(i[0]), reverse=True)
         if self.mixmode:
-            for line in self.word_list:
+            for line in self.wordlist:
                 line[1] = self.word_mixer(line[0].lower())
 
     def word_mixer(self, word):
@@ -75,14 +75,14 @@ class Genxword(object):
 
     def grid_size(self, gtkmode=False):
         """Calculate the default grid size."""
-        if len(self.word_list) <= 20:
+        if len(self.wordlist) <= 20:
             self.nrow = self.ncol = 17
-        elif len(self.word_list) <= 100:
-            self.nrow = self.ncol = int((round((len(self.word_list) - 20) / 8.0) * 2) + 19)
+        elif len(self.wordlist) <= 100:
+            self.nrow = self.ncol = int((round((len(self.wordlist) - 20) / 8.0) * 2) + 19)
         else:
             self.nrow = self.ncol = 41
-        if min(self.nrow, self.ncol) <= len(self.word_list[0][0]):
-            self.nrow = self.ncol = len(self.word_list[0][0]) + 2
+        if min(self.nrow, self.ncol) <= len(self.wordlist[0][0]):
+            self.nrow = self.ncol = len(self.wordlist[0][0]) + 2
         if not gtkmode and not self.auto:
             gsize = str(self.nrow) + ', ' + str(self.ncol)
             grid_size = input(_('Enter grid size (') + gsize + _(' is the default): '))
@@ -95,17 +95,17 @@ class Genxword(object):
         except:
             pass
         else:
-            if len(self.word_list[0][0]) < min(nrow, ncol):
+            if len(self.wordlist[0][0]) < min(nrow, ncol):
                 self.nrow, self.ncol = nrow, ncol
 
     def gengrid(self, name, saveformat):
         i = 0
         while 1:
             print(_('Calculating your crossword...'))
-            calc = Crossword(self.nrow, self.ncol, '-', self.word_list)
+            calc = Crossword(self.nrow, self.ncol, '-', self.wordlist)
             print(calc.compute_crossword())
             if self.auto:
-                if float(len(calc.best_word_list))/len(self.word_list) < 0.9 and i < 5:
+                if float(len(calc.best_wordlist))/len(self.wordlist) < 0.9 and i < 5:
                     self.nrow += 2; self.ncol += 2
                     i += 1
                 else:
@@ -119,7 +119,7 @@ class Genxword(object):
                     self.nrow += 2;self.ncol += 2
         lang = _('Across/Down').split('/')
         message = _('The following files have been saved to your current working directory:\n')
-        exp = Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_word_list, '-')
+        exp = Exportfiles(self.nrow, self.ncol, calc.best_grid, calc.best_wordlist, '-')
         exp.create_files(name, saveformat, lang, message)
 
 def main():

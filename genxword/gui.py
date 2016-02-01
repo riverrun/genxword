@@ -96,16 +96,16 @@ class Genxinterface(Gtk.Window):
     def add_actions(self, action_group):
         action_group.add_actions([
             ('FileMenu', None, _('_Word list')),
-            ('New', Gtk.STOCK_NEW, _('_New word list'), None, 
+            ('New', Gtk.STOCK_NEW, _('_New word list'), None,
                 _('Create a new word list or go back to the already open word list'), self.new_wlist),
             ('Open', Gtk.STOCK_OPEN, _('_Open word list'), None, _('Open a word list'), self.open_wlist),
-            ('Sort', None, _('_Sort word list'), None, 
+            ('Sort', None, _('_Sort word list'), None,
                 _('Sort the word list and remove words with non-alphabetic characters'), self.sort_wlist),
             ('Quit', Gtk.STOCK_QUIT, _('Quit'), None, _('Quit'), self.quit_app),
             ('CrosswordMenu', None, _('_Crossword')),
-            ('Create', Gtk.STOCK_EXECUTE, _('_Calculate crossword'), '<Ctrl>G', 
+            ('Create', Gtk.STOCK_EXECUTE, _('_Calculate crossword'), '<Ctrl>G',
                 _('Calculate the crossword'), self.create_xword),
-            ('Incgsize', Gtk.STOCK_ADD, _('_Recalculate'), '<Ctrl>R', 
+            ('Incgsize', Gtk.STOCK_ADD, _('_Recalculate'), '<Ctrl>R',
                 _('Increase the grid size and recalculate the crossword'), self.incgsize),
             ('Save', Gtk.STOCK_SAVE, _('_Save'), None, _('Save crossword'), self.save_xword),
             ('HelpMenu', None, _('_Help')),
@@ -185,7 +185,7 @@ class Genxinterface(Gtk.Window):
         save_svg = Gtk.CheckButton('svg')
         save_svg.connect('toggled', self.save_options, 's')
         save_bar.add(save_svg)
-        
+
     def option_buttons(self):
         """Create various option buttons."""
         self.enter_name = Gtk.Entry()
@@ -219,7 +219,7 @@ class Genxinterface(Gtk.Window):
     def list_clickable_buttons(self, uimanager):
         self.click_buttons = []
         self.click_buttons.append(uimanager.get_widget('/MenuBar/FileMenu/Sort'))
-        unclick_list = ['/MenuBar/CrosswordMenu/Incgsize', '/MenuBar/CrosswordMenu/Save', 
+        unclick_list = ['/MenuBar/CrosswordMenu/Incgsize', '/MenuBar/CrosswordMenu/Save',
             '/ToolBar/Incgsize', '/ToolBar/Save']
         self.unclick_buttons = [uimanager.get_widget(name) for name in unclick_list]
 
@@ -281,7 +281,7 @@ class Genxinterface(Gtk.Window):
             nwords = self.choose_nwords.get_value_as_int()
             gen = Genxword(False, self.mixwords)
             gen.wlist(self.words.splitlines(), nwords)
-            self.wlist = gen.word_list
+            self.wlist = gen.wordlist
             self.Thai = gen.Thai
             gen.grid_size(True)
             if self.gsize:
@@ -298,7 +298,7 @@ class Genxinterface(Gtk.Window):
         self.xword_label.set_markup(display)
         self.xword_view(False, Gtk.Align.FILL)
         self.choose_gsize.set_text(str(self.nrow) + ',' + str(self.ncol))
-        self.best_word_list = calc.best_word_list
+        self.best_wordlist = calc.best_wordlist
         self.best_grid = calc.best_grid
 
     def incgsize(self, button):
@@ -331,7 +331,7 @@ class Genxinterface(Gtk.Window):
                 dialog.destroy()
                 return
             dialog.destroy()
-            exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_word_list)
+            exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_wordlist)
             exp.create_files(self.xwordname, self.saveformat, self.default_lang, '', self.Thai)
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)

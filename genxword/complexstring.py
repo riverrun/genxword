@@ -18,6 +18,7 @@
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 class ComplexString(str):
+    """Handle accents and superscript / subscript characters."""
     accents = [768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781,
             782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795,
             796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809,
@@ -36,6 +37,10 @@ class ComplexString(str):
 
     @staticmethod
     def format_word(word):
+        """Join the accent to the character it modifies.
+        This guarantees that the character is correctly displayed when
+        iterating through the string, and that the length is correct.
+        """
         chars = {chr(n) for n in ComplexString.accents}
         formatted = []
         for letter in word:

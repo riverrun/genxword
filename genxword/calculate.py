@@ -31,36 +31,39 @@ class Crossword(object):
         self.empty = empty
         self.available_words = available_words
         self.let_coords = defaultdict(list)
- 
+
     def prep_grid_words(self):
-        self.current_word_list = []
+        self.current_wordlist = []
         self.let_coords.clear()
         self.grid = [[self.empty]*self.cols for i in range(self.rows)]
         self.available_words = [word[:2] for word in self.available_words]
         self.first_word(self.available_words[0])
 
     def compute_crossword(self, time_permitted=1.00):
-        self.best_word_list = []
+        self.best_wordlist = []
         wordlist_length = len(self.available_words)
         time_permitted = float(time_permitted)
         start_full = float(time.time())
         while (float(time.time()) - start_full) < time_permitted:
             self.prep_grid_words()
-            [self.add_words(word) for i in range(2) for word in self.available_words if word not in self.current_word_list]
-            if len(self.current_word_list) > len(self.best_word_list):
-                self.best_word_list = list(self.current_word_list)
+            [self.add_words(word) for i in range(2) for word in self.available_words
+             if word not in self.current_wordlist]
+            if len(self.current_wordlist) > len(self.best_wordlist):
+                self.best_wordlist = list(self.current_wordlist)
                 self.best_grid = list(self.grid)
-            if len(self.best_word_list) == wordlist_length:
+            if len(self.best_wordlist) == wordlist_length:
                 break
         #answer = '\n'.join([''.join(['{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
-        answer = '\n'.join([''.join([u'{} '.format(c) for c in self.best_grid[r]]) for r in range(self.rows)])
-        return answer + '\n\n' + str(len(self.best_word_list)) + ' out of ' + str(wordlist_length)
- 
+        answer = '\n'.join([''.join([u'{} '.format(c) for c in self.best_grid[r]])
+                            for r in range(self.rows)])
+        return answer + '\n\n' + str(len(self.best_wordlist)) + ' out of ' + str(wordlist_length)
+
     def get_coords(self, word):
         """Return possible coordinates for each letter."""
         word_length = len(word[0])
         coordlist = []
-        temp_list =  [(l, v) for l, letter in enumerate(word[0]) for k, v in self.let_coords.items() if k == letter]
+        temp_list =  [(l, v) for l, letter in enumerate(word[0])
+                      for k, v in self.let_coords.items() if k == letter]
         for coord in temp_list:
             letc = coord[0]
             for item in coord[1]:
@@ -81,7 +84,7 @@ class Crossword(object):
             return max(coordlist, key=itemgetter(3))
         else:
             return
- 
+
     def first_word(self, word):
         """Place the first word at a random position in the grid."""
         vertical = random.randrange(0, 2)
@@ -99,13 +102,13 @@ class Crossword(object):
         if not coordlist:
             return
         row, col, vertical = coordlist[0], coordlist[1], coordlist[2]
-        self.set_word(word, row, col, vertical) 
- 
+        self.set_word(word, row, col, vertical)
+
     def check_score_horiz(self, word, row, col, word_length, score=1):
         cell_occupied = self.cell_occupied
         if col and cell_occupied(row, col-1) or col + word_length != self.cols and cell_occupied(row, col + word_length):
             return 0
-        for letter in word[0]:            
+        for letter in word[0]:
             active_cell = self.grid[row][col]
             if active_cell == self.empty:
                 if row + 1 != self.rows and cell_occupied(row+1, col) or row and cell_occupied(row-1, col):
@@ -121,7 +124,7 @@ class Crossword(object):
         cell_occupied = self.cell_occupied
         if row and cell_occupied(row-1, col) or row + word_length != self.rows and cell_occupied(row + word_length, col):
             return 0
-        for letter in word[0]:            
+        for letter in word[0]:
             active_cell = self.grid[row][col]
             if active_cell == self.empty:
                 if col + 1 != self.cols and cell_occupied(row, col+1) or col and cell_occupied(row, col-1):
@@ -132,11 +135,11 @@ class Crossword(object):
                 return 0
             row += 1
         return score
- 
+
     def set_word(self, word, row, col, vertical):
         """Put words on the grid and add them to the word list."""
         word.extend([row, col, vertical])
-        self.current_word_list.append(word)
+        self.current_wordlist.append(word)
 
         horizontal = not vertical
         for letter in word[0]:
@@ -149,14 +152,14 @@ class Crossword(object):
                 row += 1
             else:
                 col += 1
- 
+
     def cell_occupied(self, row, col):
         cell = self.grid[row][col]
-        if cell == self.empty: 
+        if cell == self.empty:
             return False
         else:
             return True
- 
+
 class Exportfiles(object):
     def __init__(self, rows, cols, grid, wordlist, empty=' '):
         self.rows = rows
@@ -309,11 +312,11 @@ class Exportfiles(object):
             lines.append(' '.join(line))
         return '\n'.join(lines)
 
-    def word_bank(self): 
+    def word_bank(self):
         temp_list = list(self.wordlist)
         random.shuffle(temp_list)
         return 'Word bank\n' + ''.join([u'{}\n'.format(word[0]) for word in temp_list])
- 
+
     def legend(self, lang):
         outStrA, outStrD = u'\nClues\n{}\n'.format(lang[0]), u'{}\n'.format(lang[1])
         for word in self.wordlist:
