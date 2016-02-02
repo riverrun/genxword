@@ -21,7 +21,6 @@ import os
 import sys
 import gettext
 import random
-import re
 from .calculate import Crossword, Exportfiles
 
 PY2 = sys.version_info[0] == 2
