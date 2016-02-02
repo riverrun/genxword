@@ -18,6 +18,7 @@
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 class ComplexString(unicode):
+    """Handle accents and superscript / subscript characters."""
     accents = [768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781,
                782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795,
                796, 797, 798, 799, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809,
@@ -32,18 +33,38 @@ class ComplexString(unicode):
                3009, 3010, 3014, 3015, 3016, 3018, 3019, 3020, 3021, 3031, 3633,
                3636, 3637, 3638, 3639, 3640, 3641, 3655, 3656, 3657, 3658, 3659,
                3660, 3661, 3662, 4139, 4140, 4141, 4142, 4143, 4144, 4145, 4146,
-               4150, 4151, 4152, 4154, 4155, 4156, 4157, 4158, 4182, 4185,
-               2381, 2509, 4153]
+               4150, 4151, 4152, 4154, 4155, 4156, 4157, 4158, 4182, 4185]
+
+    special_chars = [2381, 2509, 4153]
+
+    @staticmethod
+    def _check_special(word, special):
+        special_char = False
+        formatted = []
+        for letter in word:
+            if letter in special or special_char:
+                special_char = not special_char
+                formatted[-1] += letter
+                continue
+            formatted.append(letter)
+        return formatted
 
     @staticmethod
     def format_word(word):
+        """Join the accent to the character it modifies.
+        This guarantees that the character is correctly displayed when
+        iterating through the string, and that the length is correct.
+        """
         chars = {unichr(n) for n in ComplexString.accents}
+        special = {unichr(n) for n in ComplexString.special_chars}
         formatted = []
         for letter in word:
             if letter in chars:
                 formatted[-1] += letter
                 continue
             formatted.append(letter)
+        if special.intersection(word):
+            return ComplexString._check_special(formatted, special)
         return formatted
 
     def __new__(cls, content):
