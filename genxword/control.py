@@ -25,12 +25,8 @@ from .calculate import Crossword, Exportfiles
 
 PY2 = sys.version_info[0] == 2
 if PY2:
-    import codecs
-    from functools import partial
     from .complexstring2 import ComplexString
     input = raw_input
-    open = partial(codecs.open, encoding='utf-8')
-    Exportfiles.clues_txt = Exportfiles.old_clues_txt
 else:
     from .complexstring import ComplexString
 
@@ -47,10 +43,9 @@ class Genxword(object):
         self.auto = auto
         self.mixmode = mixmode
 
-    def wlist(self, infile, nwords=50):
+    def wlist(self, words, nwords=50):
         """Create a list of words and clues."""
-        with open(infile) as f:
-            wordlist = [line.strip().split(' ', 1) for line in f if line.strip()]
+        wordlist = [line.strip().split(' ', 1) for line in words if line.strip()]
         if len(wordlist) > nwords:
             wordlist = random.sample(wordlist, nwords)
         self.wordlist = [[ComplexString(line[0].upper()), line[-1]] for line in wordlist]

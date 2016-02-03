@@ -24,6 +24,14 @@ import random, time, cairo
 from operator import itemgetter
 from collections import defaultdict
 
+import sys
+
+PY2 = sys.version_info[0] == 2
+if PY2:
+    import codecs
+    from functools import partial
+    open = partial(codecs.open, encoding='utf-8')
+
 class Crossword(object):
     def __init__(self, rows, cols, empty=' ', available_words=[]):
         self.rows = rows
@@ -328,11 +336,5 @@ class Exportfiles(object):
 
     def clues_txt(self, name, lang):
         with open(name, 'w') as clues_file:
-            clues_file.write(self.word_bank())
-            clues_file.write(self.legend(lang))
-
-    def old_clues_txt(self, name, lang):
-        import codecs
-        with codecs.open(name, 'w', encoding='utf-8') as clues_file:
             clues_file.write(self.word_bank())
             clues_file.write(self.legend(lang))

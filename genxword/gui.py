@@ -20,7 +20,12 @@
 import os
 from gi.repository import Gtk, GtkSource, Pango
 from .control import Genxword, _, PY2, base_dir
-from . import calculate
+from .calculate import Crossword, Exportfiles
+
+if PY2:
+    import codecs
+    from functools import partial
+    open = partial(codecs.open, encoding='utf-8')
 
 ui_info = """
 <ui>
@@ -277,12 +282,14 @@ class Genxinterface(Gtk.Window):
 
     def create_xword(self, button):
         if self.calc_first_time:
-            self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
+            if PY2:
+                self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False).decode('utf-8', 'ignore')
+            else:
+                self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
             nwords = self.choose_nwords.get_value_as_int()
             gen = Genxword(False, self.mixwords)
             gen.wlist(self.words.splitlines(), nwords)
             self.wlist = gen.wordlist
-            self.Thai = gen.Thai
             gen.grid_size(True)
             if self.gsize:
                 gen.check_grid_size(self.choose_gsize.get_text())
@@ -293,7 +300,7 @@ class Genxinterface(Gtk.Window):
             self.calc_xword()
 
     def calc_xword(self):
-        calc = calculate.Crossword(self.nrow, self.ncol, ' ', self.wlist)
+        calc = Crossword(self.nrow, self.ncol, ' ', self.wlist)
         display = '<span font="monospace bold 11">' + calc.compute_crossword() + '</span>'
         self.xword_label.set_markup(display)
         self.xword_view(False, Gtk.Align.FILL)
@@ -331,8 +338,8 @@ class Genxinterface(Gtk.Window):
                 dialog.destroy()
                 return
             dialog.destroy()
-            exp = calculate.Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_wordlist)
-            exp.create_files(self.xwordname, self.saveformat, self.default_lang, '', self.Thai)
+            exp = Exportfiles(self.nrow, self.ncol, self.best_grid, self.best_wordlist)
+            exp.create_files(self.xwordname, self.saveformat, self.default_lang, '')
             with open(self.xwordname + '_wlist.txt', 'w') as wlist_file:
                 wlist_file.write(self.words)
             text = _('Your crossword files have been saved in ') + os.getcwd()

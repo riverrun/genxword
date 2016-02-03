@@ -18,7 +18,12 @@
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import argparse
-from .control import _, Genxword
+from .control import _, Genxword, PY2
+
+if PY2:
+    import codecs
+    from functools import partial
+    open = partial(codecs.open, encoding='utf-8')
 
 usage_info = _("""The word list file contains the words and clues, or just words, that you want in your crossword.
 For further information on how to format the word list file and about the other options, please consult the man page.
@@ -34,6 +39,7 @@ def main():
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help=_('Name of crossword.'))
     args = parser.parse_args()
     gen = Genxword(args.auto, args.mixmode)
-    gen.wlist(args.infile, args.nwords)
+    with open(args.infile) as infile:
+        gen.wlist(infile, args.nwords)
     gen.grid_size()
     gen.gengrid(args.output, args.saveformat)
