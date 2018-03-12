@@ -58,8 +58,8 @@ Dependencies
 ------------
 
 Genxword depends on pycairo (python-cairo), pygobject (python-gobject or python-gi),
-python-gi-cairo (if you are using a Debian-based system), pango (gir1.2-pango-1.0)
-and gtksourceview3 (gir1.2-gtksource-3.0).
+python-gi-cairo (if you are using a Debian-based system), pango (gir1.2-pango-1.0),
+gtksourceview3 (gir1.2-gtksource-3.0) and gettext.
 
 These dependencies can easily be installed on Linux by using your package manager,
 and with most distributions, they will already be installed.
