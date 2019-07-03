@@ -7,8 +7,7 @@ A crossword generator
 Description
 -----------
 
-Genxword is a crossword generator written in Python. It works with Python
-2.7 and Python 3.
+Genxword is a crossword generator written in Python.
 
 When you install genxword, you will have two programs,
 `genxword-gtk <https://github.com/riverrun/genxword/wiki/genxword-gtk>`_,
@@ -45,14 +44,10 @@ information about how to use genxword.
 Installation
 ------------
 
-To install genxword for Python 3 (add *sudo* to the command, or run as root,
+To install genxword (add *sudo* to the command, or run as root,
 if you are using Linux): ::
 
     pip3 install genxword
-
-To install genxword for Python 2.7, or any version on Windows: ::
-
-    pip install genxword
 
 Dependencies
 ------------

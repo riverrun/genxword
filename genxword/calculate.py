@@ -4,7 +4,7 @@
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011-2016 David Whitlock
+# Copyright (C) 2011-2019 David Whitlock
 #
 # Genxword is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,18 +19,13 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
+import gi
+gi.require_version('PangoCairo', '1.0')
+
 from gi.repository import Pango, PangoCairo
 import random, time, cairo
 from operator import itemgetter
 from collections import defaultdict
-
-import sys
-
-PY2 = sys.version_info[0] == 2
-if PY2:
-    import codecs
-    from functools import partial
-    open = partial(codecs.open, encoding='utf-8')
 
 class Crossword(object):
     def __init__(self, rows, cols, empty=' ', available_words=[]):

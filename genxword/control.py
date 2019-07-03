@@ -2,7 +2,7 @@
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011-2016 David Whitlock
+# Copyright (C) 2011-2019 David Whitlock
 #
 # Genxword is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,19 +22,11 @@ import sys
 import gettext
 import random
 from .calculate import Crossword, Exportfiles
-
-PY2 = sys.version_info[0] == 2
-if PY2:
-    from .complexstring2 import ComplexString
-    input = raw_input
-else:
-    from .complexstring import ComplexString
+from .complexstring import ComplexString
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 d = '/usr/local/share' if 'local' in base_dir.split('/') else '/usr/share'
 gettext.bindtextdomain('genxword', os.path.join(d, 'locale'))
-if PY2:
-    gettext.bind_textdomain_codeset('genxword', codeset='utf-8')
 gettext.textdomain('genxword')
 _ = gettext.gettext
 

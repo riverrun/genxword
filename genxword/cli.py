@@ -2,7 +2,7 @@
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011-2016 David Whitlock
+# Copyright (C) 2011-2019 David Whitlock
 #
 # Genxword is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,12 +18,7 @@
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
 import argparse
-from .control import _, Genxword, PY2
-
-if PY2:
-    import codecs
-    from functools import partial
-    open = partial(codecs.open, encoding='utf-8')
+from .control import _, Genxword
 
 usage_info = _("""The word list file contains the words and clues, or just words, that you want in your crossword.
 For further information on how to format the word list file and about the other options, please consult the man page.

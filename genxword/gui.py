@@ -2,7 +2,7 @@
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011-2016 David Whitlock
+# Copyright (C) 2011-2019 David Whitlock
 #
 # Genxword-gtk is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,15 +17,14 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword-gtk.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('GtkSource', '3.0')
+
 import os
 from gi.repository import Gtk, GtkSource, Pango
-from .control import Genxword, _, PY2, base_dir
+from .control import Genxword, _, base_dir
 from .calculate import Crossword, Exportfiles
-
-if PY2:
-    import codecs
-    from functools import partial
-    open = partial(codecs.open, encoding='utf-8')
 
 ui_info = """
 <ui>
@@ -272,20 +271,13 @@ class Genxinterface(Gtk.Window):
 
     def sort_wlist(self, button):
         data = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
-        if PY2:
-            valid = [[word for word in line.split(' ', 1)] for line
-                    in data.splitlines() if line.split(' ', 1)[0].decode('utf-8', 'ignore').isalpha()]
-        else:
-            valid = [[word for word in line.split(' ', 1)] for line in data.splitlines() if line.split(' ', 1)[0].isalpha()]
+        valid = [[word for word in line.split(' ', 1)] for line in data.splitlines() if line.split(' ', 1)[0].isalpha()]
         valid.sort(key=lambda i: len(i[0]))
         self.buff.set_text('\n'.join([' '.join(word) for word in valid]))
 
     def create_xword(self, button):
         if self.calc_first_time:
-            if PY2:
-                self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False).decode('utf-8', 'ignore')
-            else:
-                self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
+            self.words = self.buff.get_text(self.buff.get_start_iter(), self.buff.get_end_iter(), False)
             nwords = self.choose_nwords.get_value_as_int()
             gen = Genxword(False, self.mixwords)
             gen.wlist(self.words.splitlines(), nwords)
