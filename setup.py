@@ -76,6 +76,10 @@ setup(
         'Topic :: Education',
         'Topic :: Office/Business',
     ],
+    install_requires=[
+    	'cairo',
+    	'PyGObject',
+    ],
     entry_points={
         'console_scripts': [
             'genxword = genxword.cli:main',
