@@ -77,7 +77,7 @@ setup(
         'Topic :: Office/Business',
     ],
     install_requires=[
-    	'cairo',
+    	'pycairo',
     	'PyGObject',
     ],
     entry_points={
