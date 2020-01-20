@@ -2,7 +2,7 @@
 # Crossword generator that outputs the grid and clues as a pdf file and/or
 # the grid in png/svg format with a text file containing the words and clues.
 # Copyright (C) 2010-2011 Bryan Helmig
-# Copyright (C) 2011-2019 David Whitlock
+# Copyright (C) 2011-2020 David Whitlock
 #
 # Genxword-gtk is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -154,7 +154,7 @@ class Genxinterface(Gtk.Window):
         self.textview = GtkSource.View.new()
         self.textview.set_show_line_numbers(True)
         self.textview.set_border_width(6)
-        fontdesc = Pango.FontDescription('serif 11')
+        fontdesc = Pango.FontDescription('serif')
         self.textview.modify_font(fontdesc)
         self.buff = self.textview.get_buffer()
         wordlist_win.add(self.textview)
@@ -293,7 +293,7 @@ class Genxinterface(Gtk.Window):
 
     def calc_xword(self):
         calc = Crossword(self.nrow, self.ncol, ' ', self.wlist)
-        display = '<span font="monospace bold 11">' + calc.compute_crossword() + '</span>'
+        display = '<span font="monospace bold">' + calc.compute_crossword() + '</span>'
         self.xword_label.set_markup(display)
         self.xword_view(False, Gtk.Align.FILL)
         self.choose_gsize.set_text(str(self.nrow) + ',' + str(self.ncol))
@@ -362,7 +362,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('1.0.9')
+        about.set_version('2.0.0')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments(_('A crossword generator'))
