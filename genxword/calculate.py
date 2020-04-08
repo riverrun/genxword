@@ -298,7 +298,7 @@ class Exportfiles(object):
             img_files += name + '_clues.txt'
         if 'z' in save_format:
             out = name + '.ipuz'
-            self.write_puz(name=name, filename=out, lang=lang)
+            self.write_ipuz(name=name, filename=out, lang=lang)
             img_files += out
         if message:
             print(message + img_files)
@@ -339,7 +339,7 @@ class Exportfiles(object):
             clues_file.write(self.word_bank())
             clues_file.write(self.legend(lang))
 
-    def write_puz(self, name, filename, lang):
+    def write_ipuz(self, name, filename, lang):
         # Generate the clue numbers if we haven't already
         if len(self.wordlist[0]) < 6:
             self.order_number_words()
