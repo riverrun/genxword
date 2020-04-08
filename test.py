@@ -1,5 +1,5 @@
 import ipuz
-from genxword.control import _, Genxword
+from genxword.control import Genxword
 import tempfile
 import os
 

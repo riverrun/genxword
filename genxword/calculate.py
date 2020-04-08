@@ -374,4 +374,4 @@ class Exportfiles(object):
         }
 
         with open(filename, 'w') as fp:
-            json.dump(data, fp)
+            json.dump(data, fp, indent=4)
