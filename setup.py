@@ -80,6 +80,12 @@ setup(
     	'pycairo',
     	'PyGObject',
     ],
+    extras_require={
+        'dev': [
+            'pytest',
+            'ipuz'
+        ]
+    },
     entry_points={
         'console_scripts': [
             'genxword = genxword.cli:main',

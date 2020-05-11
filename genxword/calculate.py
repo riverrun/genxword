@@ -24,7 +24,7 @@ gi.require_version('PangoCairo', '1.0')
 gi.require_version('Pango', '1.0')
 
 from gi.repository import Pango, PangoCairo
-import random, time, cairo
+import random, time, cairo, json
 from operator import itemgetter
 from collections import defaultdict
 
@@ -296,6 +296,10 @@ class Exportfiles(object):
         if 'n' in save_format or 's' in save_format:
             self.clues_txt(name + '_clues.txt', lang)
             img_files += name + '_clues.txt'
+        if 'z' in save_format:
+            out = name + '.ipuz'
+            self.write_ipuz(name=name, filename=out, lang=lang)
+            img_files += out
         if message:
             print(message + img_files)
 
@@ -334,3 +338,40 @@ class Exportfiles(object):
         with open(name, 'w') as clues_file:
             clues_file.write(self.word_bank())
             clues_file.write(self.legend(lang))
+
+    def write_ipuz(self, name, filename, lang):
+        # Generate the clue numbers if we haven't already
+        if len(self.wordlist[0]) < 6:
+            self.order_number_words()
+
+        # Generate some data structures for the final output
+        puzzle = [[0] * self.cols for row in range(self.rows)]
+        clues = {'Across': [], 'Down': []}
+        solution = [['#' if col == '-' else col for col in row] for row in self.grid]
+
+        # Iterate the clues to calculate the main data
+        for clue in self.wordlist:
+            word, clue_text, row, col, vertical, num = clue[:6]
+            puzzle[row][col] = num
+
+            puz_clue = [num, clue_text]
+            if vertical:
+                clues['Down'].append(puz_clue)
+            else:
+                clues['Across'].append(puz_clue)
+
+        data = {
+            'dimensions': {
+                'width': self.cols,
+                'height': self.rows
+            },
+            'puzzle': puzzle,
+            'clues': clues,
+            'solution': solution,
+            'version': 'http://ipuz.org/v1',
+            'kind': ['http://ipuz.org/crossword#1'],
+            'title': name,
+        }
+
+        with open(filename, 'w') as fp:
+            json.dump(data, fp, indent=4)
