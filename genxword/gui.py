@@ -362,7 +362,7 @@ class Genxinterface(Gtk.Window):
         'along with genxword-gtk.  If not, see http://www.gnu.org/licenses/gpl.html')
         about = Gtk.AboutDialog()
         about.set_program_name('genxword-gtk')
-        about.set_version('2.0.1')
+        about.set_version('2.1.0')
         about.set_license(license)
         about.set_wrap_license(True)
         about.set_comments(_('A crossword generator'))
