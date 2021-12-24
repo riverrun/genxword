@@ -1,0 +1,241 @@
+# SOME DESCRIPTIVE TITLE translation for genxword.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the genxword package.
+# Felix Fritz <erifetim@gmail.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-29 10:38+0700\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Felix Fritz <erifetim@gmail.com>\n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: control.py:30
+msgid ""
+"The word list file contains the words and clues, or just words, that you "
+"want in your crossword. \n"
+"For further information on how to format the word list file and about the "
+"other options, please consult the man page.\n"
+msgstr ""
+"Die Wortliste ist eine Datei mit Wörtern und optionalen Hinweisen, die du "
+"in deinem Kreuzworträtsel willst. \n"
+"Wie die Wortliste zu formatieren ist und welche weiteren Optionen zur "
+"Verfügung stehen, wird auf der man page beschrieben."
+
+#: control.py:68
+msgid "Enter grid size ("
+msgstr "Rastergröße (Standardwert "
+
+#: control.py:68
+msgid " is the default): "
+msgstr "):"
+
+#: control.py:83
+msgid "Calculating your crossword..."
+msgstr "Kreuzworträtsel wird berechnet..."
+
+#: control.py:92
+msgid "Are you happy with this solution? [Y/n] "
+msgstr "Bist du zufrieden mit der Lösung? [J/n]"
+
+#: control.py:93 control.py:96
+msgid "n"
+msgstr "n"
+
+#: control.py:95
+msgid "And increase the grid size? [Y/n] "
+msgstr "Soll das Raster vergrößert werden? [J/n]"
+
+#: control.py:98 gui.py:78
+msgid "Across/Down"
+msgstr "Horizontal/Vertikal"
+
+#: control.py:99
+msgid ""
+"The following files have been saved to your current working directory:\n"
+msgstr "Die folgenden Dateien wurden im aktuellen Verzeichnis erstellt:\n"
+
+#: control.py:105
+msgid "Crossword generator."
+msgstr "Kreuzworträtselgenerator."
+
+#: control.py:106
+msgid "Name of word list file."
+msgstr "Name der Datei mit der Wortliste."
+
+#: control.py:107
+msgid "Save files as A4 pdf (p), letter size pdf (l), png (n) and/or svg (s)."
+msgstr ""
+"Speichern als A4 PDF (p), Letter US PDF (l), png (n) und/oder svg (s)."
+
+#: control.py:108
+msgid "Automated (non-interactive) option."
+msgstr "Automatische (nicht-interaktive) Ausführung."
+
+#: control.py:109
+msgid "Create anagrams for the clues"
+msgstr "Anagramme als Hinweis erstellen"
+
+#: control.py:110
+msgid "Number of words to be used."
+msgstr "Anzahl der Wörter im Kreuzworträtsel."
+
+#: control.py:111
+msgid "Name of crossword."
+msgstr "Name des Kreuzworträtsels."
+
+#: gui.py:104
+msgid "_Word list"
+msgstr "_Wortliste"
+
+#: gui.py:105
+msgid "_New word list"
+msgstr "_Neue Wortliste"
+
+#: gui.py:106
+msgid "Create a new word list or go back to the already open word list"
+msgstr "Neue Wortliste erstellen oder zurück zur bereits geöffneten Wortliste gehen"
+
+#: gui.py:107
+msgid "_Open word list"
+msgstr "_Wortliste öffnen"
+
+#: gui.py:107
+msgid "Open a word list"
+msgstr "Wortliste öffnen"
+
+#: gui.py:108
+msgid "_Sort word list"
+msgstr "_Wörter sortieren"
+
+#: gui.py:109
+msgid "Sort the word list and remove words with non-alphabetic characters"
+msgstr "Wörter sortieren und Wörter mit nicht-alphabetischen Buchstaben entfernen"
+
+#: gui.py:110
+msgid "Quit"
+msgstr "Beenden"
+
+#: gui.py:111
+msgid "_Crossword"
+msgstr "_Kreuzworträtsel"
+
+#: gui.py:112
+msgid "_Calculate crossword"
+msgstr "_Kreuzworträtsel berechnen"
+
+#: gui.py:113
+msgid "Calculate the crossword"
+msgstr "Kreuzworträtsel generieren"
+
+#: gui.py:114
+msgid "_Recalculate"
+msgstr "_Nochmal generieren"
+
+#: gui.py:115
+msgid "Increase the grid size and recalculate the crossword"
+msgstr "Raster vergrößern und neues Kreuzworträtsel generieren"
+
+#: gui.py:116
+msgid "_Save"
+msgstr "_Speichern"
+
+#: gui.py:116
+msgid "Save crossword"
+msgstr "Kreuzworträtsel speichern"
+
+#: gui.py:117 gui.py:118
+msgid "_Help"
+msgstr "_Hilfe"
+
+#: gui.py:118
+msgid "Open the help page"
+msgstr "Hilfe öffnen"
+
+#: gui.py:119
+msgid "_About"
+msgstr "_Über"
+
+#: gui.py:119
+msgid "About"
+msgstr "Über..."
+
+#: gui.py:123
+msgid "Anagram clues"
+msgstr "Anagramm Hinweise"
+
+#: gui.py:124
+msgid "Choose the grid size"
+msgstr "Rastergröße auswählen"
+
+#: gui.py:173
+msgid "Save the crossword as"
+msgstr "Kreuzworträtsel speichern als"
+
+#: gui.py:176
+msgid "A4 pdf"
+msgstr "A4 PDF"
+
+#: gui.py:180
+msgid "letter pdf"
+msgstr "Letter (US) PDF"
+
+#: gui.py:194
+msgid "Name of crossword"
+msgstr "Name des Kreuzworträtsels"
+
+#: gui.py:196
+msgid "Choose the name of your crossword"
+msgstr "Name für dein Kreuzworträtsel"
+
+#: gui.py:201
+msgid "Number of words"
+msgstr "Anzahl der Wörter"
+
+#: gui.py:208
+msgid "Choose the number of words you want to use"
+msgstr "Wie viele Wörter sollen eingesetzt werden?"
+
+#: gui.py:211
+msgid "Grid size"
+msgstr "Rastergröße"
+
+#: gui.py:217
+msgid ""
+"Choose the crossword grid size\n"
+"Go to the Crossword menu to enable this option"
+msgstr ""
+"Rastergröße bestimmen\n"
+"Diese Option kann im Kreuzworträtsel Menu aktiviert werden"
+
+#: gui.py:251
+msgid "Please choose a file"
+msgstr "Datei auswählen"
+
+#: gui.py:321
+msgid "Please choose a folder"
+msgstr "Ordner auswählen"
+
+#: gui.py:336
+msgid "Your crossword files have been saved in "
+msgstr "Dein Kreuzworträtsel wurde gespeichert in "
+
+#: gui.py:340
+msgid ""
+"Please fill in the name of the crossword and the format you want it saved in "
+"(A4 size pdf, letter size pdf, png or svg).\n"
+"Then click on the Save button again."
+msgstr ""
+"Name des Kreuzworträtsels und das Dateiformat (A4 PDF, Letter (US) PDF, png of svg) "
+"müssen angegeben werden. \n"
+"Danach kann gespeichert werden."
+
+#: gui.py:367
+msgid "A crossword generator"
+msgstr "Ein Kreuzworträtselgenerator"
