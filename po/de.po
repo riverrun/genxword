@@ -26,7 +26,7 @@ msgstr ""
 "Die Wortliste ist eine Datei mit Wörtern und optionalen Hinweisen, die du "
 "in deinem Kreuzworträtsel willst. \n"
 "Wie die Wortliste zu formatieren ist und welche weiteren Optionen zur "
-"Verfügung stehen, wird auf der man page beschrieben."
+"Verfügung stehen, wird auf der man page beschrieben.\n"
 
 #: control.py:68
 msgid "Enter grid size ("
