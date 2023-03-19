@@ -19,12 +19,22 @@
 # You should have received a copy of the GNU General Public License
 # along with genxword.  If not, see <http://www.gnu.org/licenses/gpl.html>.
 
-import gi
-gi.require_version('PangoCairo', '1.0')
-gi.require_version('Pango', '1.0')
+NOGTK = False
+try:
+    import gi
+    gi.require_version('PangoCairo', '1.0')
+    gi.require_version('Pango', '1.0')
 
-from gi.repository import Pango, PangoCairo
-import random, time, cairo, json
+    from gi.repository import Pango, PangoCairo
+    import cairo
+except ImportError as e:
+    NOGTK = True
+    print("MISSING DEPENDENCIES!")
+    print("IGNORE IF LITE VERSION WAS INTENTIONALLY INSTALLED!")
+    print(e)
+    print()
+
+import random, time, json, csv
 from operator import itemgetter
 from collections import defaultdict
 
@@ -188,12 +198,12 @@ class Exportfiles(object):
         for r in range(self.rows):
             for i, c in enumerate(self.grid[r]):
                 if c != self.empty:
-                    context.set_line_width(1.0)
-                    context.set_source_rgb(0.5, 0.5, 0.5)
+                    context.set_line_width(3.0)
+                    context.set_source_rgb(0.3, 0.3, 0.3)
                     context.rectangle(xoffset+(i*px), yoffset+(r*px), px, px)
                     context.stroke()
-                    context.set_line_width(1.0)
-                    context.set_source_rgb(0, 0, 0)
+                    context.set_line_width(3.0)
+                    context.set_source_rgb(0.3, 0.3, 0.3)
                     context.rectangle(xoffset+1+(i*px), yoffset+1+(r*px), px-2, px-2)
                     context.stroke()
                     if '_key.' in name:
@@ -277,6 +287,15 @@ class Exportfiles(object):
         else:
             RTL = False
         img_files = ''
+        if 't' in save_format:
+            self.write_text(name, name + '.txt', lang)
+            img_files += name + '.txt'
+        if 'j' in save_format:
+            self.write_json(name, name + '.json', lang)
+            img_files += name + '.json'
+        if 'c' in save_format:
+            self.write_csv(name, name + '.csv', lang)
+            img_files += name + '.csv'
         if 'p' in save_format:
             self.export_pdf(name, '_grid.pdf', lang, RTL)
             self.export_pdf(name, '_key.pdf', lang, RTL)
@@ -375,3 +394,76 @@ class Exportfiles(object):
 
         with open(filename, 'w') as fp:
             json.dump(data, fp, indent=4)
+    
+    def write_json(self, name, filename, lang):
+        # Generate the clue numbers if we haven't already
+        if len(self.wordlist[0]) < 6:
+            self.order_number_words()
+
+        # Generate some data structures for the final output
+        data = {
+            "name": name,
+            'dimensions': {
+                'width': self.cols,
+                'height': self.rows
+            },
+            'puzzle': []
+        }
+        # Iterate the clues to calculate the main data
+        for clue in self.wordlist:
+            word, clue_text, row, col, vertical, num = clue[:6]
+            c = {
+                "ans": word,
+                "clue": clue_text,
+                "row": row,
+                "col": col,
+                "vspan": bool(vertical)  # if Vertical 
+            }
+            data["puzzle"].append(c)
+
+        with open(filename, 'w') as fp:
+            json.dump(data, fp)
+
+    
+    def write_text(self, name, filename, lang):
+        # Generate the clue numbers if we haven't already
+        if len(self.wordlist[0]) < 6:
+            self.order_number_words()
+
+        # Generate some data structures format the final output
+        puzzle = [["##"] * self.cols for row in range(self.rows)]
+        clues = {'Across': [], 'Down': []}
+        solution = [['#' if col == '-' else col for col in row] for row in self.grid]
+
+        # Iterate the clues to calculate the main data
+        for clue in self.wordlist:
+            word, clue_text, row, col, vertical, num = clue[:6]
+            puzzle[row][col] = str(num) if num > 9 else "0" + str(num)
+
+            puz_clue = [num, clue_text]
+            if vertical:
+                clues['Down'].append(puz_clue)
+                for i in range(len(word)):
+                    if puzzle[row + i][col] == "##":
+                        puzzle[row + i][col] = "  "
+            else:
+                clues['Across'].append(puz_clue)
+                for i in range(len(word)):
+                    if puzzle[row][col + i] == "##":
+                        puzzle[row][col + i] = "  "
+
+        with open(filename, 'w') as fp:
+            fp.write(name + "\n\n")
+            for row in puzzle:
+                fp.write(' '.join(row) + '\n')
+            fp.write('\n')
+            for (dir, cluelist) in clues.items():
+                fp.write(dir + ":\n")
+                for clue in cluelist:
+                    fp.write('{:2d}'.format(clue[0]) + ": " + clue[1] + '\n')
+
+    def write_csv(self, name, filename, lang):
+        with open(filename, 'w') as fp:
+            fieldnames = ["word", "clue", "row", "col", "vertical", "num"]
+            writer = csv.writer(fp)
+            writer.writerows(self.wordlist)            
