@@ -27,13 +27,18 @@ For further information on how to format the word list file and about the other 
 def main():
     parser = argparse.ArgumentParser(description=_('Crossword generator.'), prog='genxword', epilog=usage_info)
     parser.add_argument('infile', help=_('Name of word list file.'))
-    parser.add_argument('saveformat', help=_('Save files as A4 pdf (p), letter size pdf (l), png (n), svg(s) and/or '
-                                             'ipuz(z).'))
+    filetypes = [c for c in 'plnszcjt']
+    parser.add_argument('saveformat', help=_('Save files as A4 PDF (p), Letter Size PDF (l), PNG (n), SVG (s), IPUZ (z),'
+                                             'Plain Text (t), CSV (c), and/or JSON (j).'))
     parser.add_argument('-a', '--auto', dest='auto', action='store_true', help=_('Automated (non-interactive) option.'))
     parser.add_argument('-m', '--mix', dest='mixmode', action='store_true', help=_('Create anagrams for the clues'))
     parser.add_argument('-n', '--number', dest='nwords', type=int, default=50, help=_('Number of words to be used.'))
     parser.add_argument('-o', '--output', dest='output', default='Gumby', help=_('Name of crossword.'))
     args = parser.parse_args()
+    if not any([f in args.saveformat for f in filetypes]):
+        # If none of the filetypes matched
+        print("ERROR: Unrecognized File Type!")
+        quit(1)
     gen = Genxword(args.auto, args.mixmode)
     with open(args.infile) as infile:
         gen.wlist(infile, args.nwords)
